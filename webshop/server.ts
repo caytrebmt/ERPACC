@@ -1,10 +1,13 @@
 import express from "express";
 import path from "path";
 import http from "http";
+import cors from "cors";
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const ERPACC_BACKEND = process.env.ERPACC_BACKEND_URL || "http://localhost:5000";
+
+app.use(cors());
 
 // Simple proxy middleware for /api/shop/* -> ERPACC backend
 function proxyToERP(req: express.Request, res: express.Response) {
