@@ -563,6 +563,14 @@ def update_profile():
     current_user.phone        = request.form.get('phone', '').strip()
     current_user.company_name = request.form.get('company_name', '').strip()
     current_user.tax_code     = request.form.get('tax_code', '').strip()
+    email = request.form.get('email')
+    if email:
+        current_user.email = email.strip().lower()
+    customer = _ensure_erp_customer_for_web(current_user)
+    customer.name = current_user.name
+    customer.phone = current_user.phone
+    if email:
+        customer.email = current_user.email
     db.session.commit()
     flash('Đã cập nhật thông tin.', 'success')
     return redirect(url_for('shop.account'))
@@ -604,18 +612,16 @@ def register():
         elif WebCustomer.query.filter_by(email=email).first():
             flash('Email này đã được đăng ký.', 'warning')
         else:
-            filters = [Customer.email == email]
-            if phone:
-                filters.append(Customer.phone == phone)
-            customer = Customer.query.filter(or_(*filters)).first()
             web_customer = WebCustomer(
-                customer_id=customer.id if customer else None,
+                customer_id=None,
                 email=email,
                 name=name,
                 phone=phone,
             )
             web_customer.set_password(password)
             db.session.add(web_customer)
+            db.session.commit()
+            _ensure_erp_customer_for_web(web_customer)
             db.session.commit()
             login_user(web_customer)
             flash('Tạo tài khoản mua hàng thành công.', 'success')

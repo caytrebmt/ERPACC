@@ -101,17 +101,22 @@ def _json_err(message, status=400):
 
 
 def _ensure_erp_customer_for_web(web_customer: WebCustomer) -> Customer:
-    if web_customer.customer_id:
-        return web_customer.customer
     filters = []
     if web_customer.email:
         filters.append(Customer.email == web_customer.email)
     if web_customer.phone:
         filters.append(Customer.phone == web_customer.phone)
-    existing = Customer.query.filter(db.or_(*filters)).first() if filters else None
-    if existing:
-        web_customer.customer_id = existing.id
-        return existing
+    if filters:
+        existing = Customer.query.filter(db.or_(*filters)).first()
+        if existing:
+            web_customer.customer_id = existing.id
+            return existing
+    if web_customer.customer_id:
+        if web_customer.customer:
+            return web_customer.customer
+        customer = Customer.query.get(web_customer.customer_id)
+        if customer:
+            return customer
     code = f'WEB-{web_customer.id}'
     while Customer.query.filter_by(code=code).first():
         code = f'WEB-{web_customer.id}-{__import__("random").randint(100, 999)}'
@@ -854,6 +859,7 @@ def update_profile():
     customer.phone = web_customer.phone
     if payload.get('email'):
         web_customer.email = payload['email'].strip().lower()
+        customer = _ensure_erp_customer_for_web(web_customer)
         customer.email = web_customer.email
     db.session.commit()
     return _json_ok({
@@ -964,8 +970,11 @@ def checkout_json_legacy():
     customer_id = None
     web_customer_id = None
     if current_user.is_authenticated and isinstance(current_user._get_current_object(), WebCustomer):
-        customer_id = current_user.customer_id
-        web_customer_id = current_user.id
+        web_customer = _get_web_customer_from_jwt()
+        if web_customer:
+            customer = _ensure_erp_customer_for_web(web_customer)
+            customer_id = customer.id
+            web_customer_id = web_customer.id
     order = OnlineOrder(
         code=order_code,
         tracking_token=generate_tracking_token(),

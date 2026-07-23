@@ -3,7 +3,7 @@ import secrets
 from datetime import date, datetime
 
 from app.database import db
-from app.domains.ecommerce.models import OnlineOrder, OnlineOrderItem, ProductListing
+from app.domains.ecommerce.models import OnlineOrder, OnlineOrderItem, ProductListing, WebCustomer
 from app.domains.master.models import Product, Warehouse
 from app.domains.inventory.models import StockOut, StockOutItem
 from app.domains.inventory.services.inventory_service import InventoryService
@@ -93,6 +93,11 @@ def sync_online_order_to_stock_out(order_id, warehouse_id=None, user_id=None, co
     order = OnlineOrder.query.get_or_404(order_id)
     if order.stock_out_id:
         return order.stock_out
+
+    if order.web_customer_id:
+        web_customer = WebCustomer.query.get(order.web_customer_id)
+        if web_customer and web_customer.customer_id and web_customer.customer_id != order.customer_id:
+            order.customer_id = web_customer.customer_id
 
     warehouse = Warehouse.query.get(warehouse_id) if warehouse_id else _default_warehouse()
     if not warehouse:
