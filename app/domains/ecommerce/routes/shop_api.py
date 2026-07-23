@@ -701,6 +701,9 @@ def order_detail(code):
     order = _get_orders_query_for_current_user().filter_by(code=code).first()
     if not order:
         return _json_err('Không tìm thấy đơn hàng.', 404)
+    if order.stock_out_id:
+        order.update_erp_status('auto')
+        db.session.commit()
     return _json_ok(_serialize_order(order))
 
 
