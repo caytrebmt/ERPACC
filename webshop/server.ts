@@ -23,7 +23,6 @@ function setCorsHeaders(req: express.Request, res: express.Response) {
 }
 
 app.options("/api/shop/*", cors());
-setCorsHeaders({} as express.Request, {} as express.Response);
 
 function rewriteLocationHeader(
   headers: http.OutgoingHttpHeaders,
