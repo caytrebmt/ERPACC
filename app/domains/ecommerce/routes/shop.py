@@ -462,6 +462,11 @@ def order_history():
     orders = query.order_by(OnlineOrder.created_at.desc()).paginate(
         page=page, per_page=10, error_out=False
     )
+    for o in orders.items:
+        if o.stock_out_id:
+            o.update_erp_status('auto')
+    if orders.items:
+        db.session.commit()
     return render_template('shop/order_history.html', orders=orders, status=status)
 
 
@@ -476,6 +481,9 @@ def order_detail(code):
     if not order:
         flash('Không tìm thấy đơn hàng.', 'warning')
         return redirect(url_for('shop.order_history'))
+    if order.stock_out_id:
+        order.update_erp_status('auto')
+        db.session.commit()
     return render_template('shop/order_detail.html', order=order)
 
 
