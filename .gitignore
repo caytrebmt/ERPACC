@@ -32,6 +32,18 @@ instance/
 .env.prod
 .flaskenv
 
+# Archives
+*.rar
+*.zip
+*.7z
+*.tar.gz
+*.gz
+
+# Node / frontend
+node_modules/
+.venv
+webshop/node_modules/
+
 # IDE
 .vscode/
 .idea/
@@ -46,3 +58,4 @@ Thumbs.db
 logs/
 temp/
 *.log
+backups/
