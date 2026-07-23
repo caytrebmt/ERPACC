@@ -45,10 +45,18 @@ function proxyToERP(req: express.Request, res: express.Response) {
       proxyRes.on("data", (chunk) => body.push(chunk));
       proxyRes.on("end", () => {
         const buf = Buffer.concat(body);
-        const headers = rewriteLocationHeader(
+        const backendHeaders = rewriteLocationHeader(
           { ...proxyRes.headers },
           req
         );
+        const headers: Record<string, string | number | string[]> = {
+          ...backendHeaders,
+        };
+        delete (headers as any)["access-control-allow-origin"];
+        delete (headers as any)["access-control-allow-methods"];
+        delete (headers as any)["access-control-allow-headers"];
+        delete (headers as any)["access-control-allow-credentials"];
+        delete (headers as any)["access-control-max-age"];
         headers["Access-Control-Allow-Origin"] = req.headers.origin || "*";
         headers["Vary"] = "Origin";
         headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS";
