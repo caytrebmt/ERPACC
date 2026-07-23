@@ -103,9 +103,12 @@ def _json_err(message, status=400):
 def _ensure_erp_customer_for_web(web_customer: WebCustomer) -> Customer:
     if web_customer.customer_id:
         return web_customer.customer
-    existing = Customer.query.filter(
-        db.or_(Customer.email == web_customer.email, Customer.phone == web_customer.phone)
-    ).first() if (web_customer.email or web_customer.phone) else None
+    filters = []
+    if web_customer.email:
+        filters.append(Customer.email == web_customer.email)
+    if web_customer.phone:
+        filters.append(Customer.phone == web_customer.phone)
+    existing = Customer.query.filter(db.or_(*filters)).first() if filters else None
     if existing:
         web_customer.customer_id = existing.id
         return existing

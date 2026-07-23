@@ -17,7 +17,12 @@ from app.domains.ecommerce.models import (
     WebCustomer,
 )
 from app.domains.master.models import Customer, Product
-from app.domains.ecommerce.services.ecommerce_sync_service import generate_online_order_code, generate_tracking_token, listing_query
+from app.domains.ecommerce.services.ecommerce_sync_service import (
+    _ensure_erp_customer_for_web,
+    generate_online_order_code,
+    generate_tracking_token,
+    listing_query,
+)
 from app.domains.ecommerce.middleware.role_middleware import web_customer_only
 from zoneinfo import ZoneInfo
 
@@ -352,6 +357,8 @@ def checkout():
 
     if _is_web_customer():
         customer_id = current_user.customer_id
+        if customer_id is None:
+            customer_id = _ensure_erp_customer_for_web(current_user).id
         customer = current_user
     else:
         email = (request.form.get('customer_email') or '').strip().lower()
