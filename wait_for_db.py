@@ -28,3 +28,14 @@ for i in range(10):
 else:
     print("❌ DB NOT READY")
     exit(1)
+
+try:
+    from app import create_app
+    app = create_app('production')
+    with app.app_context():
+        from flask_migrate import upgrade
+        upgrade()
+        print("✅ MIGRATIONS APPLIED")
+except Exception as e:
+    print(f"❌ Migration failed: {e}")
+    exit(1)
