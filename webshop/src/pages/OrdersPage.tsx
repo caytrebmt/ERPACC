@@ -27,6 +27,17 @@ const OrdersPage: React.FC = () => {
     loadOrders();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      client.get("/api/shop/orders").then((res) => {
+        if (res.data && res.data.ok) {
+          setOrders(res.data.data.items || []);
+        }
+      }).catch(() => {});
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
   const getStatusBadgeClass = (status: string) => {
     switch (status.toLowerCase()) {
       case "new":

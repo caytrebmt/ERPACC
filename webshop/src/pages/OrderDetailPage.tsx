@@ -41,6 +41,14 @@ const OrderDetailPage: React.FC = () => {
     loadOrderDetails();
   }, [code]);
 
+  useEffect(() => {
+    if (!code) return;
+    const interval = setInterval(() => {
+      loadOrderDetails();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [code]);
+
   const handleCancelOrder = async () => {
     if (!order) return;
     if (!window.confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?")) return;
