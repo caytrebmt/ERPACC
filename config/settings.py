@@ -91,7 +91,8 @@ class Config:
     JWT_ACCESS_COOKIE_NAME = 'shop_access_token'
     JWT_REFRESH_COOKIE_NAME = 'shop_refresh_token'
 
-    SHOP_CORS_ORIGINS = os.getenv('SHOP_CORS_ORIGINS', 'http://localhost:3000,http://localhost:5000')
+    _raw_cors_origins = os.getenv('SHOP_CORS_ORIGINS', 'http://localhost:3000,http://localhost:5000')
+    SHOP_CORS_ORIGINS = [o.strip() for o in _raw_cors_origins.split(',') if o.strip()]
 
     GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID', '')
     GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET', '')
