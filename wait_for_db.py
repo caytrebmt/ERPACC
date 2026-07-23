@@ -39,9 +39,33 @@ try:
     )
     print(result.stdout)
     if result.returncode != 0:
-        print(f"❌ Migration failed: {result.stderr}")
-        exit(1)
-    print("✅ MIGRATIONS APPLIED")
+        print(f"⚠️ flask db upgrade failed: {result.stderr}")
+        print("🔧 Falling back to direct SQL migration...")
+        try:
+            conn = psycopg2.connect(
+                host=DB_HOST,
+                database=DB_NAME,
+                user=DB_USER,
+                password=DB_PASS
+            )
+            conn.autocommit = True
+            cur = conn.cursor()
+            cur.execute("""
+                ALTER TABLE online_orders
+                ADD COLUMN IF NOT EXISTS tracking_token VARCHAR(64) NULL
+            """)
+            cur.execute("""
+                CREATE UNIQUE INDEX IF NOT EXISTS ix_online_orders_tracking_token
+                ON online_orders (tracking_token)
+            """)
+            cur.close()
+            conn.close()
+            print("✅ Direct SQL migration applied")
+        except Exception as sql_err:
+            print(f"❌ Direct SQL migration failed: {sql_err}")
+            exit(1)
+    else:
+        print("✅ MIGRATIONS APPLIED")
 except Exception as e:
     print(f"❌ Migration failed: {e}")
     exit(1)
