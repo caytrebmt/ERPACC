@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import http from "http";
+import https from "https";
 import cors from "cors";
 
 const app = express();
@@ -9,11 +10,11 @@ const ERPACC_BACKEND = process.env.ERPACC_BACKEND_URL || "http://localhost:5000"
 
 app.use(cors());
 
-// Simple proxy middleware for /api/shop/* -> ERPACC backend
 function proxyToERP(req: express.Request, res: express.Response) {
   const url = new URL(req.originalUrl, ERPACC_BACKEND);
-  
-  const proxyReq = http.request({
+  const transport = url.protocol === "https:" ? https : http;
+
+  const proxyReq = transport.request({
     hostname: url.hostname,
     port: url.port,
     path: url.pathname + url.search,
