@@ -110,6 +110,24 @@ def create_app(config_name=None):
 
     db.init_app(app)
     migrate.init_app(app, db)
+
+    try:
+        from sqlalchemy import text
+        with app.app_context():
+            db.session.execute(text("""
+                ALTER TABLE online_orders 
+                ADD COLUMN IF NOT EXISTS tracking_token VARCHAR(64) NULL
+            """))
+            db.session.execute(text("""
+                CREATE UNIQUE INDEX IF NOT EXISTS ix_online_orders_tracking_token 
+                ON online_orders (tracking_token)
+            """))
+            db.session.commit()
+    except Exception as e:
+        if db.session.is_active:
+            db.session.rollback()
+        app.logger.warning(f"Tracking token migration skipped/failed: {e}")
+
     login_manager.init_app(app)
     login_manager.session_protection = app.config.get('SESSION_PROTECTION', 'strong')
 
