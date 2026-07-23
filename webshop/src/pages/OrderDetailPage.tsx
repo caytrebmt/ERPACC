@@ -112,6 +112,16 @@ const OrderDetailPage: React.FC = () => {
     }
   };
 
+  const getErpSyncDone = (): boolean => {
+    if (!order.erp_status) return false;
+    return order.erp_status === "Đã xuất kho";
+  };
+
+  const getErpStatusLabel = (): string => {
+    if (!order.erp_status) return "Đang chờ duyệt kho";
+    return order.erp_status;
+  };
+
   if (loading) {
     return (
       <div className="min-h-[50vh] flex flex-col items-center justify-center">
@@ -148,10 +158,21 @@ const OrderDetailPage: React.FC = () => {
         </div>
 
         {/* Status badges header */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <span className={`text-xs font-bold border px-3 py-1 rounded-full uppercase ${getStatusBadgeClass(order.status)}`}>
-            Trạng thái: {getStatusLabel(order.status)}
+            {getStatusLabel(order.status)}
           </span>
+          {order.erp_status && (
+            <span className={`text-xs font-bold border px-3 py-1 rounded-full uppercase ${
+              order.erp_status === "Đã xuất kho"
+                ? "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-300"
+                : order.erp_status === "Đã hủy"
+                ? "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/20 dark:border-red-900/40 dark:text-red-300"
+                : "bg-amber-50 border-amber-200 text-amber-700 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-300"
+            }`}>
+              {order.erp_status}
+            </span>
+          )}
         </div>
       </div>
 
@@ -217,14 +238,17 @@ const OrderDetailPage: React.FC = () => {
               {order.status !== "cancelled" ? (
                 <>
                   <div className="relative">
-                    <span className={`absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 ${order.status === "confirmed" ? "bg-indigo-600 ring-indigo-50 dark:ring-indigo-950" : "bg-gray-300 ring-gray-100 dark:ring-gray-800"}`}></span>
-                    <p className={`font-bold m-0 leading-tight ${order.status === "confirmed" ? "text-gray-800 dark:text-gray-200" : "text-gray-400 dark:text-gray-550"}`}>Đồng bộ ERPACC & Duyệt Kho Hàng</p>
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">Trạng thái: {order.status === "confirmed" ? "Đã đồng bộ kho thành công" : "Đang chờ duyệt kho"}</p>
+                    <span className={`absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 ${getErpSyncDone() ? "bg-indigo-600 ring-indigo-50 dark:ring-indigo-950" : "bg-gray-300 ring-gray-100 dark:ring-gray-800"}`}></span>
+                    <p className={`font-bold m-0 leading-tight ${getErpSyncDone() ? "text-gray-800 dark:text-gray-200" : "text-gray-400 dark:text-gray-550"}`}>Đồng bộ ERPACC & Duyệt Kho Hàng</p>
+                    <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">Trạng thái: {getErpStatusLabel()}</p>
+                    {order.erp_note && (
+                      <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0 italic">{order.erp_note}</p>
+                    )}
                   </div>
                   <div className="relative">
-                    <span className="absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 bg-gray-300 dark:bg-gray-800 ring-gray-100 dark:ring-gray-900"></span>
-                    <p className="font-bold text-gray-400 dark:text-gray-550 m-0 leading-tight">Đóng gói & Bàn giao Shipper</p>
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">Chờ cập nhật</p>
+                    <span className={`absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 ${getErpSyncDone() ? "bg-indigo-600 ring-indigo-50 dark:ring-indigo-950" : "bg-gray-300 dark:bg-gray-800 ring-gray-100 dark:ring-gray-900"}`}></span>
+                    <p className={`font-bold m-0 leading-tight ${getErpSyncDone() ? "text-gray-800 dark:text-gray-200" : "text-gray-400 dark:text-gray-550"}`}>Đóng gói & Bàn giao Shipper</p>
+                    <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">{getErpSyncDone() ? "Đã sẵn sàng bàn giao" : "Chờ cập nhật"}</p>
                   </div>
                 </>
               ) : (

@@ -75,6 +75,8 @@ export interface Order {
   total_amount: number;
   status: "new" | "pending" | "confirmed" | "cancelled" | string;
   createdAt: string;
+  erp_status?: string | null;
+  erp_note?: string | null;
 }
 
 export interface Promotion {
