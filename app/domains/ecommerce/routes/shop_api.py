@@ -687,8 +687,16 @@ def list_orders():
     pagination = q.order_by(OnlineOrder.created_at.desc()).paginate(
         page=page, per_page=per_page, error_out=False
     )
+    items = list(pagination.items)
+    dirty = []
+    for o in items:
+        if o.stock_out_id:
+            o.update_erp_status('auto')
+            dirty.append(o)
+    if dirty:
+        db.session.commit()
     return _json_ok({
-        'items': [_serialize_order(o) for o in pagination.items],
+        'items': [_serialize_order(o) for o in items],
         'total': pagination.total,
         'page': page,
         'per_page': per_page,
