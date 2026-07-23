@@ -10,18 +10,6 @@ const ERPACC_BACKEND = process.env.ERPACC_BACKEND_URL || "http://localhost:5000"
 
 app.use(cors());
 
-function setCorsHeaders(req: express.Request, res: express.Response) {
-  const origin = req.headers.origin || "*";
-  res.setHeader("Access-Control-Allow-Origin", origin);
-  res.setHeader("Vary", "Origin");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, X-Cart-Session-Id"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-}
-
 app.options("/api/shop/*", cors());
 
 function rewriteLocationHeader(
@@ -61,7 +49,11 @@ function proxyToERP(req: express.Request, res: express.Response) {
           { ...proxyRes.headers },
           req
         );
-        setCorsHeaders(req, res);
+        headers["Access-Control-Allow-Origin"] = req.headers.origin || "*";
+        headers["Vary"] = "Origin";
+        headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS";
+        headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Cart-Session-Id";
+        headers["Access-Control-Allow-Credentials"] = "true";
         res.writeHead(proxyRes.statusCode || 500, headers);
         res.end(buf);
       });
@@ -70,7 +62,14 @@ function proxyToERP(req: express.Request, res: express.Response) {
 
   proxyReq.on("error", (err) => {
     console.error("Proxy error:", err);
-    setCorsHeaders(req, res);
+    res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, X-Cart-Session-Id"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", "true");
     res.status(502).json({
       ok: false,
       message: "Không thể kết nối với hệ thống máy chủ.",
