@@ -30,12 +30,18 @@ else:
     exit(1)
 
 try:
-    from app import create_app
-    app = create_app('production')
-    with app.app_context():
-        from flask_migrate import upgrade
-        upgrade()
-        print("✅ MIGRATIONS APPLIED")
+    import subprocess
+    result = subprocess.run(
+        ["python", "-m", "flask", "db", "upgrade"],
+        env={**os.environ, "FLASK_APP": "wsgi.py"},
+        capture_output=True,
+        text=True
+    )
+    print(result.stdout)
+    if result.returncode != 0:
+        print(f"❌ Migration failed: {result.stderr}")
+        exit(1)
+    print("✅ MIGRATIONS APPLIED")
 except Exception as e:
     print(f"❌ Migration failed: {e}")
     exit(1)
