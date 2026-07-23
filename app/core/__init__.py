@@ -258,6 +258,30 @@ def create_app(config_name=None):
                 return redirect(url_for('auth.login'))
             session['last_seen_ts'] = now
 
+    @app.before_request
+    def _ensure_tracking_token_column():
+        if request.blueprint == 'shop_api' or request.path.startswith('/shop'):
+            return
+        try:
+            from sqlalchemy import text
+            has_col = db.session.execute(text("""
+                SELECT 1 FROM information_schema.columns
+                WHERE table_name = 'online_orders' AND column_name = 'tracking_token'
+            """)).fetchone()
+            if not has_col:
+                db.session.execute(text("""
+                    ALTER TABLE online_orders ADD COLUMN tracking_token VARCHAR(64) NULL
+                """))
+                db.session.execute(text("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS ix_online_orders_tracking_token
+                    ON online_orders (tracking_token)
+                """))
+                db.session.commit()
+                app.logger.info("Auto-added tracking_token column to online_orders")
+        except Exception:
+            if db.session.is_active:
+                db.session.rollback()
+
     def _get_nav_menus(role: str, user_id: int | None = None) -> list:
         from app.domains.platform.models import Menu, UserMenuOverride
 
