@@ -228,3 +228,37 @@ def ensure_listing_for_all_active_products():
         created += 1
     db.session.commit()
     return created
+
+def _ensure_erp_customer_for_web(web_customer: WebCustomer) -> Customer:
+    filters = []
+    if web_customer.email:
+        filters.append(Customer.email == web_customer.email)
+    if web_customer.phone:
+        filters.append(Customer.phone == web_customer.phone)
+    if filters:
+        existing = Customer.query.filter(db.or_(*filters)).first()
+        if existing:
+            web_customer.customer_id = existing.id
+            return existing
+    if web_customer.customer_id:
+        if web_customer.customer:
+            return web_customer.customer
+        customer = Customer.query.get(web_customer.customer_id)
+        if customer:
+            return customer
+    code = f'WEB-{web_customer.id}'
+    while Customer.query.filter_by(code=code).first():
+        code = f'WEB-{web_customer.id}-{__import__("random").randint(100, 999)}'
+    customer = Customer(
+        code=code,
+        name=web_customer.name,
+        short_name=web_customer.name,
+        customer_type='retail',
+        phone=web_customer.phone,
+        email=web_customer.email,
+        address='',
+    )
+    db.session.add(customer)
+    db.session.flush()
+    web_customer.customer_id = customer.id
+    return customer
