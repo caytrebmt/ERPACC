@@ -1,4 +1,4 @@
-# 🏢 ERPmini - Hệ thống ERP quản lý doanh nghiệp
+# 🏢 ERPmini - Hệ thống ERP quản lý kho
 
 ## Tính năng chính
 - ✅ Quản lý **hàng hóa** (CRUD, import/export Excel)
