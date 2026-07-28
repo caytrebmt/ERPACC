@@ -277,9 +277,6 @@ def _post_journal_for_stock_in(si):
     from app.domains.accounting.services.account_mapping_service import get_account_code
     def dec(v):
         return Decimal(str(v or 0)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-        
-    from app.domains.accounting.services.accounting_helper import create_entry
-    from app.domains.accounting.services.account_mapping_service import get_account_code
     inv_val = max(dec(si.subtotal) - dec(si.discount_amount or 0), Decimal("0"))
     vat_in = dec(si.vat_amount)
     total = dec(si.total_amount)
