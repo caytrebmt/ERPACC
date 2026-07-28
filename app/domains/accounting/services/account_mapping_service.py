@@ -7,7 +7,7 @@ ACCOUNT_MAPPING_DEFAULTS = {
     "acc_bank": "112",
     "acc_ar": "131",
     "acc_ap": "331",
-    "acc_inventory": "156",
+    "acc_inventory": "1561",
     "acc_vat_in": "1331",
     "acc_vat_out": "3331",
     "acc_revenue": "511",
