@@ -289,7 +289,7 @@ def _post_journal_for_stock_in(si):
     ]
     if vat_in > 0:
         lines.append({'account_code': acc_vat_in, 'debit': vat_in, 'credit': 0})
-    lines.append({'account_code': acc_ap, 'debit': 0, 'credit': total})
+        lines.append({'account_code': acc_ap, 'debit': 0, 'credit': total})
     create_entry(
         code=entry_code,
         date=si.date or date.today(),
