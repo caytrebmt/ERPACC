@@ -305,6 +305,8 @@ def _post_journal_for_stock_in(si):
 def _post_journal_for_stock_out(so):
     def dec(v):
         return Decimal(str(v or 0)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    from app.domains.accounting.services.accounting_helper import create_entry
+    from app.domains.accounting.services.account_mapping_service import get_account_code
     revenue = max(dec(so.subtotal) - dec(so.discount_amount or 0), Decimal('0'))
     vat_out = dec(so.vat_amount)
     total = dec(so.total_amount)
