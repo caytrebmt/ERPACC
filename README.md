@@ -10,7 +10,7 @@
 - ✅ **Công nợ** phải thu / phải trả + thanh toán
 - ✅ **Sổ VAT** đầu vào / đầu ra (bảng kê theo tháng)
 - ✅ **Kế toán**: nhật ký chung, hệ thống tài khoản, cân đối số phát sinh
-- ✅ **Menu & Thông báo** định nghĩa bằng bảng DB (dễ mở rộng)
+- ✅ **Menu & Thông báo** định nghĩa bằng bảng DB
 - ✅ Export **Excel** & **PDF** (pandas, reportlab)
 - ✅ Import Excel cho hàng hóa, KH, NCC
 
@@ -31,18 +31,7 @@ GRANT ALL PRIVILEGES ON DATABASE erpmini TO erp_user;
 
 ### 3. Clone / Copy project
 ```
-erpmini/
-├── app/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   ├── static/
-│   └── templates/
-├── config/
-├── run.py
-├── init_db.py
-├── requirements.txt
-└── .env
+erpacc/
 ```
 
 ### 4. Tạo môi trường ảo
