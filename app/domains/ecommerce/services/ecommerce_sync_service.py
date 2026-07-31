@@ -4,7 +4,7 @@ from datetime import date, datetime
 
 from app.database import db
 from app.domains.ecommerce.models import OnlineOrder, OnlineOrderItem, ProductListing, WebCustomer
-from app.domains.master.models import Product, Warehouse
+from app.domains.master.models import Customer, Product, Warehouse
 from app.domains.inventory.models import StockOut, StockOutItem
 from app.domains.inventory.services.inventory_service import InventoryService
 
