@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 
 from app.database import db
 from app.domains.ecommerce.models import OnlineOrder, OnlineOrderItem, ProductListing
-from app.domains.master.models import Product, Warehouse
+from app.domains.master.models import Product, Warehouse, Category
 from app.shared.authz import require_permission
 from app.domains.ecommerce.services.ecommerce_sync_service import (
     ensure_listing_for_all_active_products,
@@ -31,15 +31,25 @@ def dashboard():
 def listings():
     search = request.args.get('search', '')
     published = request.args.get('published', '')
+    category_id = request.args.get('category_id', type=int)
     page = request.args.get('page', 1, type=int)
-    rows = listing_query(search, published).order_by(Product.code.asc()).paginate(
+
+    rows = listing_query(search, published, category_id).order_by(Product.code.asc()).paginate(
         page=page, per_page=30, error_out=False
     )
+
+    try:
+        categories = Category.query.filter_by(is_active=True).order_by(Category.name).all()
+    except Exception:
+        categories = []
+
     return render_template(
         'ecommerce/listings.html',
         listings=rows,
         search=search,
         published=published,
+        category_id=category_id,
+        categories=categories,
     )
 
 
