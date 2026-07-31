@@ -328,7 +328,7 @@ const OrderDetailPage: React.FC = () => {
             {/* Action buttons CTAs */}
             <div className="flex flex-col gap-2 pt-3 border-t border-gray-100 dark:border-gray-800">
               {/* Cancel button if new */}
-              {order.status === "new" && (
+              {order.status === "new" && !order.stock_out_id && !order.erp_status && (
                 <button
                   onClick={handleCancelOrder}
                   disabled={submittingAction}
@@ -339,7 +339,7 @@ const OrderDetailPage: React.FC = () => {
               )}
 
               {/* Reorder button */}
-              {(order.status === "cancelled" || order.status === "confirmed") && (
+              {(order.status === "cancelled" || order.status === "confirmed") && !order.stock_out_id && !order.erp_status && (
                 <button
                   onClick={handleReorder}
                   disabled={submittingAction}

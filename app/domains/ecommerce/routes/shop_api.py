@@ -832,6 +832,8 @@ def cancel_order(order_id):
         return _json_err('Không tìm thấy đơn hàng.', 404)
     if order.status != 'new':
         return _json_err('Chỉ có thể hủy đơn hàng ở trạng thái Mới.', 400)
+    if order.stock_out_id or order.erp_status:
+        return _json_err('Đơn hàng đã được đồng bộ với phiếu xuất kho, không thể hủy.', 400)
     order.status = 'cancelled'
     db.session.commit()
     return _json_ok({'order': _serialize_order(order)})
