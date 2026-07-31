@@ -182,7 +182,7 @@ def sync_online_order_to_stock_out(order_id, warehouse_id=None, user_id=None, co
     return stock_out
 
 
-def listing_query(search=None, published=None):
+def listing_query(search=None, published=None, category_id=None):
     q = db.session.query(ProductListing).join(Product)
     if search:
         pattern = f'%{search}%'
@@ -195,6 +195,15 @@ def listing_query(search=None, published=None):
         q = q.filter(ProductListing.is_published.is_(True))
     elif published in ('0', 'false', False):
         q = q.filter(ProductListing.is_published.is_(False))
+
+    if category_id:
+        try:
+            cid = int(category_id)
+            q = q.filter(Product.category_id == cid)
+        except Exception:
+            # ignore invalid category_id
+            pass
+
     return q
 
 
@@ -228,6 +237,7 @@ def ensure_listing_for_all_active_products():
         created += 1
     db.session.commit()
     return created
+
 
 def _ensure_erp_customer_for_web(web_customer: WebCustomer) -> Customer:
     filters = []
