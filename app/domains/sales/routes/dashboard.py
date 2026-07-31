@@ -7,6 +7,11 @@ from app.domains.master.models import Product, Supplier, Customer
 from app.domains.inventory.models import (StockIn, StockOut, StockOutItem, Inventory)
 from app.models.transaction import (Debt, VatRecord)
 from app.domains.inventory.services.inventory_service import InventoryService
+from app.domains.sales.services.profit_metrics import (
+    build_cogs_expr,
+    build_net_revenue_expr,
+    calculate_profit,
+)
 from app.shared.constants import DocStatus, DebtStatus
 
 dashboard_bp = Blueprint('dashboard', __name__)
@@ -17,19 +22,11 @@ def _confirmed_filter(model):
 
 
 def _stock_out_revenue_expr():
-    return func.coalesce(StockOut.subtotal, 0) - func.coalesce(StockOut.discount_amount, 0)
+    return build_net_revenue_expr(StockOut)
 
 
 def _stock_out_cogs_expr():
-    unit_cost = case(
-        (StockOutItem.cost_price > 0, StockOutItem.cost_price),
-        else_=func.coalesce(Product.purchase_price, 0),
-    )
-    return (
-        func.coalesce(StockOutItem.quantity, 0)
-        * func.coalesce(StockOutItem.conversion_factor, 1)
-        * unit_cost
-    )
+    return build_cogs_expr(StockOutItem, Product)
 
 
 @dashboard_bp.route('/')
@@ -129,7 +126,7 @@ def index():
     chart_purchase = [float(cost_by_date.get(d) or 0) for d in chart_dates]
 
     chart_labels = [d.strftime('%d/%m') for d in chart_dates]
-    chart_profit = [rev - pur for rev, pur in zip(chart_revenue, chart_purchase)]
+    chart_profit = [float(calculate_profit(rev, pur)) for rev, pur in zip(chart_revenue, chart_purchase)]
 
     vat_output = db.session.query(func.sum(VatRecord.vat_amount)).filter(
         VatRecord.vat_type == 'output',

@@ -304,15 +304,14 @@ def _post_journal_for_stock_in(si):
 def _post_journal_for_stock_out(so):
     from app.domains.accounting.services.accounting_helper import create_entry
     from app.domains.accounting.services.account_mapping_service import get_account_code
+    from app.domains.sales.services.profit_metrics import calculate_cogs, calculate_net_revenue
     def dec(v):
         return Decimal(str(v or 0)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-    from app.domains.accounting.services.accounting_helper import create_entry
-    from app.domains.accounting.services.account_mapping_service import get_account_code
-    revenue = max(dec(so.subtotal) - dec(so.discount_amount or 0), Decimal('0'))
+    revenue = calculate_net_revenue(so.subtotal, so.discount_amount)
     vat_out = dec(so.vat_amount)
     total = dec(so.total_amount)
     cost_total = sum(
-        dec(item.cost_price) * dec(item.quantity) * dec(item.conversion_factor or 1)
+        calculate_cogs(item.quantity, item.conversion_factor, item.cost_price)
         for item in so.items
     )
     entry_code = f"JE-{so.code}"

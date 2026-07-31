@@ -2,7 +2,8 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.database import db
 from app.domains.master.models import Product, Customer, Supplier, Warehouse, Unit, Category
-from app.domains.inventory.models import Inventory
+from app.domains.inventory.models import Inventory, StockOut
+from app.domains.sales.services.profit_metrics import build_net_revenue_expr
 from app.shared.constants import DocStatus
 from app.shared.authz import require_permission
 
@@ -71,14 +72,13 @@ def dashboard_stats():
     from datetime import date
     today = date.today()
     month_start = today.replace(day=1)
-    from app.domains.inventory.models import StockIn, StockOut
     from app.domains.finance.models import Debt
 
     return jsonify({
         'products': Product.query.filter_by(is_active=True).count(),
         'customers': Customer.query.filter_by(is_active=True).count(),
         'suppliers': Supplier.query.filter_by(is_active=True).count(),
-        'revenue_month': float(db.session.query(func.sum(StockOut.total_amount)).filter(
+        'revenue_month': float(db.session.query(func.sum(build_net_revenue_expr(StockOut))).filter(
             StockOut.date >= month_start, StockOut.status == DocStatus.CONFIRMED).scalar() or 0),
         'receivable': float(db.session.query(func.sum(Debt.balance)).filter(
             Debt.partner_type == 'customer', Debt.status != 'paid').scalar() or 0),
