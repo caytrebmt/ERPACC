@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserPlus, User, Mail, Phone, Lock, Loader2, ArrowLeft } from "lucide-react";
+import { UserPlus, User, Mail, Phone, Lock, Loader2, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 
@@ -17,6 +17,11 @@ const RegisterPage: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  // New states: visibility toggles and confirm error
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [confirmError, setConfirmError] = useState("");
+
   useEffect(() => {
     if (isAuthenticated && !loading) {
       navigate("/", { replace: true });
@@ -26,17 +31,24 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim() || !email.trim() || !phone.trim() || !password || !confirmPassword) {
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPhone = phone.trim();
+    const pw = password.trim();
+    const cpw = confirmPassword.trim();
+
+    if (!trimmedName || !trimmedEmail || !trimmedPhone || !pw || !cpw) {
       showToast("Vui lòng điền đầy đủ tất cả các trường dữ liệu bắt buộc", "error");
       return;
     }
 
-    if (password.length < 8) {
+    if (pw.length < 8) {
       showToast("Mật khẩu bảo mật phải chứa ít nhất 8 ký tự", "error");
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (pw !== cpw) {
+      setConfirmError("Xác nhận mật khẩu không khớp");
       showToast("Xác nhận mật khẩu bảo mật không khớp", "error");
       return;
     }
@@ -44,11 +56,11 @@ const RegisterPage: React.FC = () => {
     try {
       setSubmitting(true);
       const result = await register({
-        name: name.trim(),
-        email: email.trim(),
-        phone: phone.trim(),
-        password,
-        confirmPassword,
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: trimmedPhone,
+        password: pw,
+        confirmPassword: cpw,
       });
 
       if (result.ok) {
@@ -87,7 +99,7 @@ const RegisterPage: React.FC = () => {
               placeholder="Ví dụ: Nguyễn Văn A"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+              className="bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-800"
             />
           </div>
 
@@ -101,7 +113,7 @@ const RegisterPage: React.FC = () => {
               placeholder="customer@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+              className="bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-800"
             />
           </div>
 
@@ -115,7 +127,7 @@ const RegisterPage: React.FC = () => {
               placeholder="Ví dụ: 0909123456"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+              className="bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-800"
             />
           </div>
 
@@ -124,35 +136,68 @@ const RegisterPage: React.FC = () => {
               <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 flex items-center gap-1.5">
                 <Lock className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-450" /> Mật khẩu <span className="text-red-500">*</span>
               </label>
-              <input
-                type="password"
-                required
-                placeholder="Tối thiểu 8 ký tự"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  placeholder="Tối thiểu 8 ký tự"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    // update confirm error live
+                    if (confirmPassword && e.target.value.trim() !== confirmPassword.trim()) {
+                      setConfirmError("Mật khẩu xác nhận không khớp");
+                    } else {
+                      setConfirmError("");
+                    }
+                  }}
+                  className="w-full bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-800"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((s) => !s)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
             <div className="flex flex-col gap-1">
               <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 flex items-center gap-1.5">
                 <Lock className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-450" /> Xác nhận <span className="text-red-500">*</span>
               </label>
-              <input
-                type="password"
-                required
-                placeholder="Xác nhận mật khẩu"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-              />
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  required
+                  placeholder="Xác nhận mật khẩu"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setConfirmPassword(v);
+                    setConfirmError(v.trim() !== password.trim() ? "Mật khẩu xác nhận không khớp" : "");
+                  }}
+                  className="w-full bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white dark:focus:bg-gray-800"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((s) => !s)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
+                  aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                >
+                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              {confirmError && <p className="text-xs text-red-500 mt-1">{confirmError}</p>}
             </div>
           </div>
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-indigo-600 text-white hover:bg-indigo-700 disabled:bg-gray-150 disabled:text-gray-400 font-bold rounded-xl py-3 text-xs flex items-center justify-center gap-2 transition-all shadow-xs mt-3 cursor-pointer"
+            className="w-full bg-indigo-600 text-white hover:bg-indigo-700 disabled:bg-gray-150 disabled:text-gray-400 font-bold rounded-xl py-3 text-xs flex items-center justify-center gap-2 transition-colors duration-150"
           >
             {submitting ? (
               <>
