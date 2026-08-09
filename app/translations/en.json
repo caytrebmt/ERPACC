@@ -143,6 +143,28 @@
     "notification_templates": "Notification templates",
     "backup_restore_db": "Backup / Restore DB"
   },
+  "settings": {
+    "general_settings": "General settings",
+    "system_configuration": "System Configuration",
+    "save_configuration": "Save configuration",
+    "no_configuration_found": "No configuration found.",
+    "initialize_sample_data": "Initialize sample data",
+    "first": "first",
+    "menu_code": "Menu code",
+    "display_name": "Display name",
+    "parent_menu": "Parent menu",
+    "top_level_menu": "Top level menu",
+    "module": "Module",
+    "module_hint": "Module determines who can see this menu. Menu is visible to users with View permission for the module (at Settings → Users management). Leave empty → only Admin sees it.",
+    "url": "URL",
+    "url_hint": "Leave empty if this is a parent menu (folder).",
+    "order_no": "Order",
+    "order_no_hint": "Smaller number → shown first.",
+    "icon": "Icon FontAwesome",
+    "create_menu": "Create menu",
+    "update_menu": "Update menu",
+    "menu_list": "Menu list"
+  },
   "messages": {
     "please_select_warehouse": "Please select warehouse!",
     "please_add_valid_item": "Please add at least one valid item!",

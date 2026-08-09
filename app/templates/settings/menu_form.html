@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}{{ 'Sửa' if menu else 'Thêm' }} menu{% endblock %}
+{% block title %}{{ t('Edit') if menu else t('Create') }} {{ t('Menu') }}{% endblock %}
 {% block page_title %}
   <i class="fas fa-bars me-2"></i>
-  {{ 'Sửa menu: ' + menu.code if menu else 'Thêm menu mới' }}
+  {{ t('Edit menu: ') + menu.code if menu else t('Create new menu') }}
 {% endblock %}
 
 {% block content %}
@@ -10,9 +10,9 @@
   <div class="col-xl-7">
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <span>{{ 'Cập nhật' if menu else 'Tạo menu mới' }}</span>
+        <span>{{ t('Update') if menu else t('Create menu') }}</span>
         <a href="{{ url_for('settings.menus.menus') }}" class="btn btn-sm btn-outline-secondary">
-          <i class="fas fa-arrow-left me-1"></i>Danh sách menu
+          <i class="fas fa-arrow-left me-1"></i>{{ t('Menu list') }}
         </a>
       </div>
 
@@ -22,7 +22,7 @@
 
             <!-- Mã menu -->
             <div class="col-md-4">
-              <label class="form-label fw-semibold">{{ _('Menu code') }} <span class="text-danger">*</span></label>
+              <label class="form-label fw-semibold">{{ t('Menu code') }} <span class="text-danger">*</span></label>
               <input type="text" name="code" class="form-control text-uppercase fw-bold"
                      value="{{ menu.code if menu else '' }}"
                      {% if menu %}readonly{% endif %}
@@ -32,7 +32,7 @@
 
             <!-- Tên menu -->
             <div class="col-md-8">
-              <label class="form-label fw-semibold">{{ _('Display name') }} <span class="text-danger">*</span></label>
+              <label class="form-label fw-semibold">{{ t('Display name') }} <span class="text-danger">*</span></label>
               <input type="text" name="name" class="form-control"
                      value="{{ menu.name if menu else '' }}"
                      required placeholder="VD: Hàng hóa, Phiếu nhập kho">

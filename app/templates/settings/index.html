@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Cài đặt hệ thống{% endblock %}
-{% block page_title %}<i class="fas fa-cogs me-2"></i>Cài đặt hệ thống{% endblock %}
+{% block title %}{{ t('General settings') }}{% endblock %}
+{% block page_title %}<i class="fas fa-cogs me-2"></i>{{ t('General settings') }}{% endblock %}
 {% block content %}
 <div class="row g-3">
   <!-- Sidebar nav -->
@@ -8,15 +8,15 @@
     <div class="list-group">
       <a href="{{ url_for('settings.system.index') }}"
          class="list-group-item list-group-item-action {{ 'active' if request.endpoint=='settings.index' }}">
-        <i class="fas fa-sliders-h me-2"></i>{{ _('General settings') }}
+        <i class="fas fa-sliders-h me-2"></i>{{ t('General settings') }}
       </a>
       <a href="{{ url_for('settings.users.users_list') }}"
          class="list-group-item list-group-item-action {{ 'active' if request.endpoint in ['settings.users','settings.create_user','settings.edit_user'] }}">
-        <i class="fas fa-users me-2"></i>{{ _('Users management') }}
+        <i class="fas fa-users me-2"></i>{{ t('Users management') }}
       </a>
       <a href="{{ url_for('settings.menus.menus') }}"
          class="list-group-item list-group-item-action {{ 'active' if request.endpoint=='settings.menus' }}">
-        <i class="fas fa-bars me-2"></i>{{ _('Menu settings') }}
+        <i class="fas fa-bars me-2"></i>{{ t('Menu settings') }}
       </a>
       <a href="{{ url_for('settings.system.unit_conversions') }}"
          class="list-group-item list-group-item-action {{ 'active' if request.endpoint in ['settings.unit_conversions','settings.create_unit_conversion','settings.edit_unit_conversion'] }}">
@@ -24,11 +24,11 @@
       </a>
       <a href="{{ url_for('settings.notifications.notifications_list') }}"
          class="list-group-item list-group-item-action {{ 'active' if request.endpoint=='settings.notifications' }}">
-        <i class="fas fa-bell me-2"></i>{{ _('Notification templates') }}
+        <i class="fas fa-bell me-2"></i>{{ t('Notification templates') }}
       </a>
       <a href="{{ url_for('settings.backup.db_tools') }}"
          class="list-group-item list-group-item-action {{ 'active' if request.endpoint=='settings.db_tools' }}">
-        <i class="fas fa-database me-2"></i>{{ _('Backup / Restore DB') }}
+        <i class="fas fa-database me-2"></i>{{ t('Backup / Restore DB') }}
       </a>
       <a href="{{ url_for('settings.translations.list_translations') }}"
          class="list-group-item list-group-item-action {{ 'active' if request.endpoint in ['settings.translations','settings.translations.list_translations','settings.translations.save_translation','settings.translations.delete_translation','settings.translations.scan_missing'] }}">
@@ -42,7 +42,7 @@
   </div>
   <div class="col-md-9">
     <div class="card">
-      <div class="card-header">Cấu hình hệ thống</div>
+      <div class="card-header">{{ t('System Configuration') }}</div>
       <form method="POST" action="{{ url_for('settings.system.save') }}">
         <div class="card-body">
           <div class="row g-3">
@@ -60,7 +60,7 @@
               </div>
             {% else %}
               <div class="col-12 text-center text-muted py-3">
-                Chưa có cấu hình. <a href="{{ url_for('dashboard.index') }}">Khởi tạo dữ liệu mẫu</a> trước.
+                {{ t('No configuration found.') }} <a href="{{ url_for('dashboard.index') }}">{{ t('Initialize sample data') }}</a> {{ t('first.') }}
               </div>
             {% endfor %}
           </div>
@@ -68,7 +68,7 @@
         {% if configs %}
         <div class="card-footer text-end">
           <button type="submit" class="btn btn-primary">
-            <i class="fas fa-save me-1"></i>Lưu cấu hình
+            <i class="fas fa-save me-1"></i>{{ t('Save configuration') }}
           </button>
         </div>
         {% endif %}

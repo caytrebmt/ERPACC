@@ -143,6 +143,28 @@
     "notification_templates": "Mẫu thông báo",
     "backup_restore_db": "Sao lưu / Khôi phục DB"
   },
+  "settings": {
+    "general_settings": "Cài đặt chung",
+    "system_configuration": "Cấu hình hệ thống",
+    "save_configuration": "Lưu cấu hình",
+    "no_configuration_found": "Chưa có cấu hình.",
+    "initialize_sample_data": "Khởi tạo dữ liệu mẫu",
+    "first": "trước",
+    "menu_code": "Mã menu",
+    "display_name": "Tên hiển thị",
+    "parent_menu": "Menu cha",
+    "top_level_menu": "Là menu nhóm (cấp cao nhất)",
+    "module": "Module chức năng",
+    "module_hint": "Module quyết định ai được thấy menu này. Menu hiển thị với user có quyền Xem module tương ứng (tại Cài đặt → Quản lý users). Để trống → chỉ Admin thấy.",
+    "url": "URL đường dẫn",
+    "url_hint": "Để trống nếu là menu nhóm (folder).",
+    "order_no": "Thứ tự",
+    "order_no_hint": "Số nhỏ → hiển thị trước.",
+    "icon": "Icon FontAwesome",
+    "create_menu": "Tạo menu mới",
+    "update_menu": "Cập nhật menu",
+    "menu_list": "Danh sách menu"
+  },
   "messages": {
     "please_select_warehouse": "Vui lòng chọn kho!",
     "please_add_valid_item": "Vui lòng thêm ít nhất một mặt hàng hợp lệ!",
