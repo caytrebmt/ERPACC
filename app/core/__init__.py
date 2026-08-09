@@ -87,8 +87,9 @@ def create_app(config_name=None):
             """))
             db.session.commit()
     except Exception as e:
-        if db.session.is_active:
-            db.session.rollback()
+        with app.app_context():
+            if db.session.is_active:
+                db.session.rollback()
         app.logger.warning(f"Tracking token migration skipped/failed: {e}")
 
     login_manager.init_app(app)
@@ -242,8 +243,9 @@ def create_app(config_name=None):
                 db.session.commit()
                 app.logger.info("Auto-added tracking_token column to online_orders")
         except Exception:
-            if db.session.is_active:
-                db.session.rollback()
+            with app.app_context():
+                if db.session.is_active:
+                    db.session.rollback()
 
     def _get_nav_menus(role: str, user_id: int | None = None) -> list:
         from app.domains.platform.models import Menu, UserMenuOverride

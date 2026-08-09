@@ -30,12 +30,12 @@
          class="list-group-item list-group-item-action {{ 'active' if request.endpoint=='settings.db_tools' }}">
         <i class="fas fa-database me-2"></i>{{ _('Backup / Restore DB') }}
       </a>
-      <a href="{{ url_for('translations.list_translations') }}"
-         class="list-group-item list-group-item-action {{ 'active' if request.endpoint in ['settings.translations','settings.save_translation','settings.delete_translation','settings.scan_missing'] }}">
+      <a href="{{ url_for('settings.translations.list_translations') }}"
+         class="list-group-item list-group-item-action {{ 'active' if request.endpoint in ['settings.translations','settings.translations.list_translations','settings.translations.save_translation','settings.translations.delete_translation','settings.translations.scan_missing'] }}">
         <i class="fas fa-language me-2"></i>Quản lý bản dịch
       </a>
-      <a href="{{ url_for('business_changes.list_changes') }}"
-         class="list-group-item list-group-item-action {{ 'active' if request.endpoint in ['settings.list_changes','settings.create_change','settings.toggle_change','settings.delete_change'] }}">
+      <a href="{{ url_for('settings.business_changes.list_changes') }}"
+         class="list-group-item list-group-item-action {{ 'active' if request.endpoint in ['settings.business_changes','settings.business_changes.list_changes','settings.business_changes.create_change','settings.business_changes.toggle_change','settings.business_changes.delete_change'] }}">
         <i class="fas fa-exchange-alt me-2"></i>Thay đổi nghiệp vụ
       </a>
     </div>

@@ -63,7 +63,7 @@
               </div>
             </td>
             <td class="text-center no-print">
-              <form method="POST" action="{{ url_for('business_changes.delete_change', id=c.id) }}"
+              <form method="POST" action="{{ url_for('settings.business_changes.delete_change', id=c.id) }}"
                     class="d-inline"
                     onsubmit="return confirm('Xóa thông báo [{{ c.title }}]?')">
                 <button class="btn btn-sm btn-outline-danger py-0 px-2" title="Xóa">
@@ -96,7 +96,7 @@
         <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Thêm thay đổi nghiệp vụ</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <form method="POST" action="{{ url_for('business_changes.create_change') }}">
+      <form method="POST" action="{{ url_for('settings.business_changes.create_change') }}">
         <div class="modal-body">
           <div class="mb-2">
             <label class="form-label">Module</label>
