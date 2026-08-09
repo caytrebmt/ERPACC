@@ -340,7 +340,7 @@ const ProductPage: React.FC = () => {
             <Tag className="w-4 h-4 text-indigo-600" />
             SẢN PHẨM LIÊN QUAN
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {relatedProducts.map((prod) => (
               <ProductCard key={prod.id} product={prod} />
             ))}

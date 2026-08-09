@@ -102,3 +102,20 @@ class SystemConfig(db.Model):
 
     def __repr__(self):
         return f'<Config {self.key}={self.value}>'
+
+
+class BusinessChange(db.Model):
+    """Ghi lại thay đổi nghiệp vụ ERP / Webshop để thông báo cho người dùng."""
+    __tablename__ = 'business_changes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    module = db.Column(db.String(50), nullable=False, comment='Module bị ảnh hưởng')
+    source = db.Column(db.String(50), nullable=False, comment='Nguồn: erp / webshop')
+    change_type = db.Column(db.String(50), nullable=False, comment='Loại thay đổi')
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<BusinessChange {self.module}:{self.change_type}>'

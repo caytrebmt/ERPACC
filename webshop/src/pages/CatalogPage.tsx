@@ -173,7 +173,7 @@ const CatalogPage: React.FC = () => {
 
           {/* Products Grid / Skeletons */}
           {initialLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 content-start">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 content-start">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <div
                   key={idx}
@@ -203,7 +203,7 @@ const CatalogPage: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 content-start"
+               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 content-start"
             >
               {products.map((prod) => (
                 <ProductCard key={prod.id} product={prod} />

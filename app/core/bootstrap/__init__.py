@@ -599,6 +599,75 @@ def _fix_menu_modules():
         print(f"  [OK] Fixed {updated} menu modules")
 
 
+def _ensure_business_changes_table():
+    inspector = inspect(db.engine)
+    if inspector.has_table('business_changes'):
+        return
+    with db.engine.begin() as conn:
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS business_changes (
+                id SERIAL PRIMARY KEY,
+                module VARCHAR(50) NOT NULL,
+                source VARCHAR(50) NOT NULL,
+                change_type VARCHAR(50) NOT NULL,
+                title VARCHAR(200) NOT NULL,
+                description TEXT NULL,
+                is_active BOOLEAN DEFAULT TRUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """))
+
+
+def _ensure_settings_translations_menu():
+    from app.domains.platform.models import Menu, MenuRole
+    inspector = inspect(db.engine)
+    if not inspector.has_table('menus'):
+        return
+
+    parent = Menu.query.filter(
+        Menu.module == 'settings',
+        Menu.parent_id.is_(None)
+    ).order_by(Menu.order_no).first()
+    if not parent:
+        return
+
+    for code, name, url, icon, order_no in [
+        ('SETTINGS_TRANSLATIONS', 'Quản lý bản dịch', '/settings/translations', 'fas fa-language', 98),
+        ('SETTINGS_BUSINESS_CHANGES', 'Thay đổi nghiệp vụ', '/settings/business-changes', 'fas fa-exchange-alt', 99),
+    ]:
+        m = Menu.query.filter_by(code=code).first()
+        if not m:
+            m = Menu(
+                code=code,
+                name=name,
+                parent_id=parent.id,
+                url=url,
+                icon=icon,
+                order_no=order_no,
+                module='settings',
+                roles='',
+                is_active=True,
+            )
+            db.session.add(m)
+            db.session.flush()
+        else:
+            m.name = name
+            m.parent_id = parent.id
+            m.url = url
+            m.icon = icon
+            m.order_no = order_no
+            m.module = 'settings'
+            m.is_active = True
+            m.roles = ''
+
+        current = {r.role for r in m.roles_rel}
+        for role in ['admin']:
+            if role not in current:
+                db.session.add(MenuRole(menu_id=m.id, role=role))
+
+    db.session.commit()
+
+
 def run_bootstrap(app):
     with app.app_context():
         try:
@@ -656,6 +725,17 @@ def run_bootstrap(app):
             pass
         try:
             _fix_menu_modules()
+            invalidate_nav_cache()
+        except Exception:
+            db.session.rollback()
+            pass
+        try:
+            _ensure_business_changes_table()
+        except Exception:
+            db.session.rollback()
+            pass
+        try:
+            _ensure_settings_translations_menu()
             invalidate_nav_cache()
         except Exception:
             db.session.rollback()

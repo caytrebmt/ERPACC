@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Thay đổi nghiệp vụ{% endblock %}
+{% block page_title %}<i class="fas fa-exchange-alt me-2"></i>Thông báo thay đổi nghiệp vụ{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <span>Thay đổi nghiệp vụ — <small class="text-muted">ERP & Webshop</small></span>
+      <select name="module" class="form-select form-select-sm" style="width:180px" onchange="this.form.submit()">
+        <option value="">— Tất cả module —</option>
+        {% for m in modules %}
+        <option value="{{ m }}" {{ 'selected' if module==m }}>{{ m }}</option>
+        {% endfor %}
+      </select>
+      <select name="source" class="form-select form-select-sm" style="width:180px" onchange="this.form.submit()">
+        <option value="">— Tất cả nguồn —</option>
+        <option value="erp" {{ 'selected' if source=='erp' }}>ERP</option>
+        <option value="webshop" {{ 'selected' if source=='webshop' }}>Webshop</option>
+      </select>
+    </div>
+    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+      <i class="fas fa-plus me-1"></i>Thêm thay đổi
+    </button>
+  </div>
+
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-erp table-hover mb-0" data-advanced-table="light">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Nguồn</th>
+            <th>Loại</th>
+            <th>Tiêu đề</th>
+            <th>Mô tả</th>
+            <th class="text-center">Hiện</th>
+            <th class="text-center no-print">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in changes %}
+          <tr class="{{ '' if c.is_active else 'opacity-50' }}" id="change-row-{{ c.id }}">
+            <td>
+              {% if c.module %}
+                <span class="badge bg-secondary">{{ c.module }}</span>
+              {% else %}
+                <span class="text-muted">—</span>
+              {% endif %}
+            </td>
+            <td>
+              <span class="badge bg-{{ 'primary' if c.source=='erp' else 'success' }}">
+                {{ c.source }}
+              </span>
+            </td>
+            <td><code>{{ c.change_type }}</code></td>
+            <td class="fw-semibold">{{ c.title }}</td>
+            <td class="small text-muted">{{ c.description or '—' }}</td>
+            <td class="text-center">
+              <div class="form-check form-switch d-flex justify-content-center mb-0">
+                <input class="form-check-input toggle-change" type="checkbox"
+                       data-id="{{ c.id }}" {{ 'checked' if c.is_active else '' }}>
+              </div>
+            </td>
+            <td class="text-center no-print">
+              <form method="POST" action="{{ url_for('business_changes.delete_change', id=c.id) }}"
+                    class="d-inline"
+                    onsubmit="return confirm('Xóa thông báo [{{ c.title }}]?')">
+                <button class="btn btn-sm btn-outline-danger py-0 px-2" title="Xóa">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">
+              Chưa có thông báo thay đổi nghiệp vụ nào.
+              <button class="btn btn-sm btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#createModal">
+                <i class="fas fa-plus me-1"></i>Thêm ngay
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Thêm thay đổi nghiệp vụ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="POST" action="{{ url_for('business_changes.create_change') }}">
+        <div class="modal-body">
+          <div class="mb-2">
+            <label class="form-label">Module</label>
+            <input type="text" name="module" class="form-control" placeholder="VD: stock_in, stock_out, webshop">
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Nguồn</label>
+            <select name="source" class="form-select">
+              <option value="erp">ERP</option>
+              <option value="webshop">Webshop</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Loại thay đổi</label>
+            <input type="text" name="change_type" class="form-control" placeholder="VD: feature, bugfix, breaking">
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Tiêu đề</label>
+            <input type="text" name="title" class="form-control" placeholder="Tiêu đề ngắn gọn" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Mô tả</label>
+            <textarea name="description" class="form-control" rows="3" placeholder="Mô tả chi tiết thay đổi..."></textarea>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="is_active" checked>
+            <label class="form-check-label">Hiển thị</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.toggle-change').forEach(chk => {
+  chk.addEventListener('change', function() {
+    const id = this.dataset.id;
+    fetch(`/settings/business-changes/toggle/${id}`, { method: 'POST' })
+      .then(r => r.json())
+      .then(d => {
+        if (!d.ok) { this.checked = !this.checked; return; }
+        const row = document.getElementById(`change-row-${id}`);
+        if (row) row.style.opacity = d.is_active ? '1' : '0.5';
+      });
+  });
+});
+</script>
+{% endblock %}

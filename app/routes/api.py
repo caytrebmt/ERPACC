@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, redirect, url_for
 from flask_login import login_required, current_user
 from app.database import db
 from app.domains.master.models import Product, Customer, Supplier, Warehouse, Unit, Category
@@ -6,6 +6,7 @@ from app.domains.inventory.models import Inventory, StockOut
 from app.domains.sales.services.profit_metrics import build_net_revenue_expr
 from app.shared.constants import DocStatus
 from app.shared.authz import require_permission
+from app.services.i18n_service import I18nService
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -427,6 +428,14 @@ def api_stock_in_detail():
       </table>
     </div>
     '''
+
+
+@api_bp.route('/i18n/set-language/<lang>')
+def set_language(lang):
+    I18nService.switch_language(lang)
+    resp = redirect(request.referrer or url_for('dashboard.index'))
+    resp.set_cookie('lang', lang, max_age=30 * 24 * 3600)
+    return resp
 
 
 @api_bp.route('/stock-out/detail')

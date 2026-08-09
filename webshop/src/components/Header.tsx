@@ -47,7 +47,7 @@ const Header: React.FC = () => {
           <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg leading-none">W</span>
           </div>
-          <span className="text-xl font-bold tracking-tight text-[#111827] dark:text-white flex items-center">
+          <span className="text-lg sm:text-xl font-bold tracking-tight text-[#111827] dark:text-white flex items-center">
             WebShop <span className="text-indigo-600 ml-1"></span>
           </span>
         </Link>

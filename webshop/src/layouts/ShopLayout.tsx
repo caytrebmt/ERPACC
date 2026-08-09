@@ -17,16 +17,16 @@ const ShopLayout: React.FC<ShopLayoutProps> = ({ children }) => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F9FAFB] dark:bg-[#030712] text-[#111827] dark:text-gray-100 font-sans transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#F9FAFB] dark:bg-[#030712] text-[#111827] dark:text-gray-100 font-sans transition-colors duration-200 overflow-x-hidden">
       {/* Universal Sticky Header */}
       <Header />
 
       {/* Body: Sidebar + Main */}
-      <div className="flex flex-1 w-full max-w-7xl mx-auto">
+      <div className="flex flex-1 w-full max-w-7xl mx-auto px-0 sm:px-4 md:px-4 lg:px-0">
         <Sidebar />
 
         {/* Main Container */}
-        <main className="flex-1 min-w-0 px-4 py-6 md:py-8 lg:px-8">
+        <main className="flex-1 min-w-0 px-4 py-6 md:py-8 md:px-4 lg:px-8">
           <motion.div
             key={location.pathname}
             initial={{ opacity: 0 }}

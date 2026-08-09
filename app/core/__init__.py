@@ -13,6 +13,7 @@ from flask_babel import Babel
 from flask_login import current_user, logout_user
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import RequestEntityTooLarge
+from app.services.i18n_service import I18nService
 
 
 def _resource_base_dir() -> Path:
@@ -32,44 +33,6 @@ def _runtime_data_dir() -> Path:
 
 def invalidate_nav_cache(role: str | None = None) -> None:
     cache.clear()
-
-
-_VI_MAP: dict[str, str] = {
-    'Edit': 'Sửa',
-    'Confirm': 'Xác nhận',
-    'Cancel': 'Hủy',
-    'Print PDF': 'In PDF',
-    'Back': 'Quay lại',
-    'Status': 'Trạng thái',
-    'Code': 'Số phiếu',
-    'Date': 'Ngày',
-    'Warehouse': 'Kho',
-    'Supplier': 'Nhà cung cấp',
-    'Customer': 'Khách hàng',
-    'Customer tax code': 'MST Khách hàng',
-    'Invoice no.': 'Số HĐ',
-    'Supplier invoice no.': 'Số HĐ NCC',
-    'Subtotal': 'Tiền hàng',
-    'Total': 'Tổng cộng',
-    'VAT': 'Thuế VAT',
-    'Actions': 'Thao tác',
-    'Export Excel': 'Xuất Excel',
-    'Create': 'Tạo phiếu',
-    'Stock-in list': 'Danh sách phiếu nhập',
-    'Stock-out list': 'Danh sách phiếu xuất',
-    'Stock-in detail': 'Chi tiết phiếu nhập kho',
-    'Stock-out detail': 'Chi tiết phiếu xuất kho',
-    'Filter code or invoice': 'Số phiếu, số HĐ...',
-    'All suppliers': '-- Tất cả NCC --',
-    'All customers': '-- Tất cả KH --',
-    'All status': '-- Tất cả TT --',
-    'From date': 'Từ ngày',
-    'To date': 'Đến ngày',
-    'Draft': 'Bản nháp',
-    'Confirmed': 'Đã xác nhận',
-    'Cancelled': 'Đã hủy',
-    'Source': 'Nguồn',
-}
 
 
 def create_app(config_name=None):
@@ -346,17 +309,8 @@ def create_app(config_name=None):
 
     @app.context_processor
     def inject_globals():
-        def t(text: str) -> str:
-            try:
-                from flask_babel import gettext as _babel_gettext
-                result = _babel_gettext(text)
-                if result != text:
-                    return result
-            except Exception:
-                pass
-            if session.get('lang', 'vi') == 'vi':
-                return _VI_MAP.get(text, text)
-            return text
+        def t(key: str) -> str:
+            return I18nService.translate(key)
 
         def can(module: str, action: str = 'view') -> bool:
             try:

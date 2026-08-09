@@ -202,7 +202,7 @@
             <i class="fas fa-bars"></i>
           </button>
           <h6 class="page-title mb-0">
-            {% block page_title %}{{ _('Dashboard') }}{% endblock %}
+            {% block page_title %}{{ t('Dashboard') }}{% endblock %}
           </h6>
         </div>
 
@@ -228,23 +228,21 @@
               class="btn btn-sm btn-outline-secondary dropdown-toggle"
               data-bs-toggle="dropdown"
             >
-              <i class="fas fa-language me-1"></i>{{ _('Tiếng Việt') if session.get('lang','vi')=='vi' else _('English') }}
+              <i class="fas fa-language me-1"></i>{{ t('Tiếng Việt') if session.get('lang','vi')=='vi' else t('English') }}
             </button>
             <ul class="dropdown-menu">
               <li>
                 <a
                   class="dropdown-item {% if session.get('lang','vi')=='vi' %}active{% endif %}"
-                  href="{{ url_for('auth.switch_lang', lang_code='vi') }}"
-                  >{{ _('Tiếng Việt') }}</a
-                >
-              </li>
+                  href="{{ url_for('api.set_language', lang='vi') }}"
+                   >{{ t('Tiếng Việt') }}</a>
+               </li>
               <li>
                 <a
                   class="dropdown-item {% if session.get('lang','vi')=='en' %}active{% endif %}"
-                  href="{{ url_for('auth.switch_lang', lang_code='en') }}"
-                  >{{ _('English') }}</a
-                >
-              </li>
+                  href="{{ url_for('api.set_language', lang='en') }}"
+                   >{{ t('English') }}</a>
+               </li>
             </ul>
           </div>
 
@@ -261,16 +259,14 @@
                   class="dropdown-item"
                   href="{{ url_for('auth.change_password') }}"
                 >
-                  <i class="fas fa-key me-2"></i>{{ _('Đổi mật khẩu') }}</a
-                >
-              </li>
+                  <i class="fas fa-key me-2"></i>{{ t('Đổi mật khẩu') }}</a>
+                </li>
               {% if current_user.role == 'admin' %}
               <li>
                 <a class="dropdown-item" href="{{ url_for('settings.users.users_list') }}">
-                  <i class="fas fa-users-cog me-2"></i>{{ _('Quản lý users')
-                  }}</a
-                >
-              </li>
+                  <i class="fas fa-users-cog me-2"></i>{{ t('Quản lý users') }}
+                  </a>
+                </li>
               {% endif %}
               <li><hr class="dropdown-divider" /></li>
               <li>
@@ -278,10 +274,9 @@
                   class="dropdown-item text-danger"
                   href="{{ url_for('auth.logout') }}"
                 >
-                  <i class="fas fa-sign-out-alt me-2"></i>{{ _('Đăng xuất')
-                  }}</a
-                >
-              </li>
+                  <i class="fas fa-sign-out-alt me-2"></i>{{ t('Đăng xuất') }}
+                  </a>
+                </li>
             </ul>
           </div>
           <!-- Hiển thị ngày tháng ở góc phải trên cùng (nếu cần) 

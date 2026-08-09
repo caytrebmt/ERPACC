@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Kiểm tra bản dịch thiếu{% endblock %}
+{% block page_title %}<i class="fas fa-search me-2"></i>Kiểm tra key dịch thiếu{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-clipboard-check me-2"></i>Kết quả quét
+        <small class="text-muted">So sánh các key dùng trong templates/routes với file dịch hiện có</small>
+      </div>
+      <div class="card-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <div class="alert alert-info mb-0">
+              <div class="small text-muted">Tổng key đang dùng</div>
+              <div class="fw-bold fs-3">{{ total_used }}</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="alert alert-success mb-0">
+              <div class="small text-muted">Đã có trong VI</div>
+              <div class="fw-bold fs-3">{{ total_vi }}</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="alert alert-primary mb-0">
+              <div class="small text-muted">Đã có trong EN</div>
+              <div class="fw-bold fs-3">{{ total_en }}</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="alert alert-warning mb-0">
+              <div class="small text-muted">Thiếu VI / EN</div>
+              <div class="fw-bold fs-3">{{ missing_vi|length }} / {{ missing_en|length }}</div>
+            </div>
+          </div>
+        </div>
+
+        <ul class="nav nav-tabs mb-3">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-used">
+              Tất cả key đang dùng
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link text-warning" data-bs-toggle="tab" data-bs-target="#tab-missing-vi">
+              Thiếu tiếng Việt ({{ missing_vi|length }})
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link text-primary" data-bs-toggle="tab" data-bs-target="#tab-missing-en">
+              Thiếu tiếng Anh ({{ missing_en|length }})
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="tab-used">
+            <div class="table-responsive">
+              <table class="table table-sm table-hover mb-0">
+                <thead><tr><th>Key</th><th class="text-center">Có VI</th><th class="text-center">Có EN</th></tr></thead>
+                <tbody>
+                  {% for key in used_keys %}
+                  <tr>
+                    <td><code>{{ key }}</code></td>
+                    <td class="text-center">
+                      {% if key in missing_vi %}<i class="fas fa-times text-danger"></i>
+                      {% else %}<i class="fas fa-check text-success"></i>{% endif %}
+                    </td>
+                    <td class="text-center">
+                      {% if key in missing_en %}<i class="fas fa-times text-danger"></i>
+                      {% else %}<i class="fas fa-check text-success"></i>{% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="tab-missing-vi">
+            {% if missing_vi %}
+            <div class="table-responsive">
+              <table class="table table-sm table-hover mb-0">
+                <thead><tr><th>Key thiếu bản dịch tiếng Việt</th></tr></thead>
+                <tbody>
+                  {% for key in missing_vi %}
+                  <tr><td><code>{{ key }}</code></td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <div class="text-center text-muted py-3">Không có key thiếu tiếng Việt.</div>
+            {% endif %}
+          </div>
+
+          <div class="tab-pane fade" id="tab-missing-en">
+            {% if missing_en %}
+            <div class="table-responsive">
+              <table class="table table-sm table-hover mb-0">
+                <thead><tr><th>Key thiếu bản dịch tiếng Anh</th></tr></thead>
+                <tbody>
+                  {% for key in missing_en %}
+                  <tr><td><code>{{ key }}</code></td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <div class="text-center text-muted py-3">Không có key thiếu tiếng Anh.</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <a href="{{ url_for('translations.list_translations') }}" class="btn btn-sm btn-primary">
+          <i class="fas fa-edit me-1"></i>Đến trang chỉnh sửa
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
