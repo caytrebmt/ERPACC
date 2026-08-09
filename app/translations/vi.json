@@ -36,7 +36,7 @@
   "Source": "Nguồn",
   "Dashboard": "Bảng điều khiển",
   "Tiếng Việt": "Tiếng Việt",
-  "English": "English",
+  "English": "Tiếng Anh",
   "Đổi mật khẩu": "Đổi mật khẩu",
   "Quản lý users": "Quản lý users",
   "Đăng xuất": "Đăng xuất",
@@ -132,7 +132,7 @@
   "ui": {
     "dashboard": "Bảng điều khiển",
     "language_vi": "Tiếng Việt",
-    "language_en": "English",
+    "language_en": "Tiếng Anh",
     "change_password": "Đổi mật khẩu",
     "users_management": "Quản lý users",
     "logout": "Đăng xuất",

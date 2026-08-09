@@ -35,7 +35,7 @@
   "Cancelled": "Cancelled",
   "Source": "Source",
   "Dashboard": "Dashboard",
-  "Tiếng Việt": "Tiếng Việt",
+  "Tiếng Việt": "Vietnamese",
   "English": "English",
   "Đổi mật khẩu": "Change password",
   "Quản lý users": "Users management",
@@ -131,7 +131,7 @@
   },
   "ui": {
     "dashboard": "Dashboard",
-    "language_vi": "Tiếng Việt",
+    "language_vi": "Vietnamese",
     "language_en": "English",
     "change_password": "Change password",
     "users_management": "Users management",
