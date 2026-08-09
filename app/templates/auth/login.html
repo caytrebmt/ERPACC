@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng nhập | ERP-VIET</title>
+    <title>{{ t('Login') }} | ERP-VIET</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
@@ -21,7 +21,7 @@
       <div class="login-header">
         <i class="fas fa-chart-network" style="font-size: 40px"></i>
         <h4>ERP-VIET</h4>
-        <p class="mb-0 opacity-75 small">Quản trị doanh nghiệp</p>
+        <p class="mb-0 opacity-75 small">{{ t('Business Management') }}</p>
       </div>
       <div class="login-body">
         <form method="POST" novalidate>
@@ -41,8 +41,8 @@
                 required
                 autofocus
               />
-              <label>Tên đăng nhập</label>
-              <div class="invalid-feedback">Vui lòng nhập tên đăng nhập</div>
+              <label>{{ t('Username') }}</label>
+              <div class="invalid-feedback">{{ t('Please enter username') }}</div>
             </div>
           </div>
 
@@ -59,8 +59,8 @@
                 placeholder=" "
                 required
               />
-              <label>Mật khẩu</label>
-              <div class="invalid-feedback">Vui lòng nhập mật khẩu</div>
+              <label>{{ t('Password') }}</label>
+              <div class="invalid-feedback">{{ t('Please enter password') }}</div>
             </div>
           </div>
 
@@ -82,7 +82,7 @@
               id="remember"
             />
             <label class="form-check-label" for="remember"
-              >Ghi nhớ đăng nhập</label
+              >{{ t('Remember me') }}</label
             >
           </div>
 
@@ -90,7 +90,7 @@
             type="submit"
             class="btn btn-primary btn-login w-100 text-white"
           >
-            <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
+            <i class="fas fa-sign-in-alt me-2"></i>{{ t('Login') }}
           </button>
         </form>
         <p class="text-center text-muted mt-3 mb-0 small">

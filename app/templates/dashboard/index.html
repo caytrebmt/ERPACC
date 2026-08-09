@@ -1,5 +1,5 @@
-{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
-page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
+{% extends "base.html" %} {% block title %}{{ t('Dashboard') }}{% endblock %} {% block
+page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% endblock %}
 {% block content %}
 <!-- KPI Row -->
 <div class="row g-2 mb-2">
@@ -10,7 +10,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
     >
       <div class="d-flex justify-content-between align-items-start">
         <div>
-          <div class="kpi-label">Doanh thu tháng này</div>
+          <div class="kpi-label">{{ t('Monthly Revenue') }}</div>
           <div class="kpi-value">{{ revenue_month|currency }}</div>
         </div>
         <div class="kpi-icon"><i class="fas fa-chart-line"></i></div>
@@ -24,7 +24,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
     >
       <div class="d-flex justify-content-between align-items-start">
         <div>
-          <div class="kpi-label">Giá trị tồn kho</div>
+          <div class="kpi-label">{{ t('Inventory Value') }}</div>
           <div class="kpi-value">{{ inv_value|currency }}</div>
         </div>
         <div class="kpi-icon"><i class="fas fa-warehouse"></i></div>
@@ -42,7 +42,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
             href="{{ url_for('debt.summary') }} "
             class="text-decoration-none text-white"
           >
-            <div class="kpi-label">Công nợ phải thu</div>
+            <div class="kpi-label">{{ t('Accounts Receivable') }}</div>
             <div class="kpi-value">{{ receivable|currency }}</div>
           </a>
         </div>
@@ -61,7 +61,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
             href="{{ url_for('debt.summary') }} "
             class="text-decoration-none text-white"
           >
-            <div class="kpi-label">Công nợ phải trả</div>
+            <div class="kpi-label">{{ t('Accounts Payable') }}</div>
             <div class="kpi-value">{{ payable|currency }}</div>
           </a>
         </div>
@@ -79,7 +79,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
         <i class="fas fa-box"></i>
       </div>
       <div class="fw-bold fs-5">{{ total_products }}</div>
-      <div class="text-muted small">Hàng hóa</div>
+      <div class="text-muted small">{{ t('Products') }}</div>
     </div>
   </div>
   <div class="col-md-3">
@@ -88,7 +88,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
         <i class="fas fa-users"></i>
       </div>
       <div class="fw-bold fs-5">{{ total_customers }}</div>
-      <div class="text-muted small">Khách hàng</div>
+      <div class="text-muted small">{{ t('Customers') }}</div>
     </div>
   </div>
   <div class="col-md-3">
@@ -97,7 +97,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
         <i class="fas fa-truck"></i>
       </div>
       <div class="fw-bold fs-5">{{ total_suppliers }}</div>
-      <div class="text-muted small">Nhà cung cấp</div>
+      <div class="text-muted small">{{ t('Suppliers') }}</div>
     </div>
   </div>
   <div class="col-md-3">
@@ -109,7 +109,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
         <i class="fas fa-percent"></i>
       </div>
       <div class="fw-bold fs-5">{{ vat_net|currency }}</div>
-      <div class="text-muted small">VAT phải nộp</div>
+      <div class="text-muted small">{{ t('VAT Payable') }}</div>
     </div>
   </div>
 </div>
@@ -130,7 +130,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
             name="date_range"
             class="form-control js-erp-date-range"
             data-auto-submit="1"
-            placeholder="Chọn khoảng ngày dashboard"
+            placeholder="{{ t('Select date range') }}"
           />
           <input type="hidden" name="from_date" value="{{ chart_from_val }}" />
           <input type="hidden" name="to_date" value="{{ chart_to_val }}" />
@@ -146,21 +146,21 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
             class="btn btn-outline-secondary"
             data-range-preset="7"
           >
-            7 ngày
+            7 {{ t('days') }}
           </button>
           <button
             type="button"
             class="btn btn-outline-secondary"
             data-range-preset="30"
           >
-            30 ngày
+            30 {{ t('days') }}
           </button>
           <button
             type="button"
             class="btn btn-outline-secondary"
             data-range-preset="month"
           >
-            Tháng này
+            {{ t('This month') }}
           </button>
         </div>
       </div>
@@ -175,8 +175,8 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
         class="card-header d-flex justify-content-between align-items-center"
       >
 <span
-           ><i class="fas fa-chart-bar me-2"></i>Doanh thu thuần & Giá vốn hàng bán ({{
-           chart_from|dateformat }} - {{ chart_to|dateformat }})</span
+            ><i class="fas fa-chart-bar me-2"></i>{{ t('Net Revenue & COGS') }} ({{
+            chart_from|dateformat }} - {{ chart_to|dateformat }})</span
         >
       </div>
       <div class="card-body" style="height:400px">
@@ -288,18 +288,18 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
         <a
           href="{{ url_for('stock_out.index') }}"
           class="btn btn-sm btn-outline-primary"
-          >Xem tất cả</a
+          >Xem tất cả</a>
         >
       </div>
       <div class="card-body p-0">
         <table class="table table-sm table-hover mb-0">
           <thead>
             <tr class="table-light">
-              <th>Số phiếu</th>
-              <th>Ngày</th>
-              <th>Khách hàng</th>
-              <th class="text-end">Tổng tiền</th>
-              <th>TT</th>
+              <th>{{ t('Code') }}</th>
+              <th>{{ t('Date') }}</th>
+              <th>{{ t('Customer') }}</th>
+              <th class="text-end">{{ t('Total Amount') }}</th>
+              <th>{{ t('Status') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -377,7 +377,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
             labels: dashboardData.labels || [],
             datasets: [
                 {
-                    label: "Doanh thu thuần",
+                     label: "{{ t('Net Revenue') }}",
                     data: dashboardData.revenue || [],
                     fill: true,
                     backgroundColor: "rgba(59,130,246,0.12)",
@@ -388,7 +388,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
                     tension: 0.35,
                 },
 {
-                     label: "Giá vốn hàng bán",
+                      label: "{{ t('COGS') }}",
                      data: dashboardData.purchase || [],
                     fill: true,
                     backgroundColor: "rgba(16,185,129,0.10)",
@@ -399,7 +399,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>Dashboard{% endblock %}
                     tension: 0.35,
                 },
                 {
-                    label: "Lợi nhuận",
+                    label: "{{ t('Profit') }}",
                     data: dashboardData.profit || [],
                     fill: false,
                     borderColor: "#f59e0b",

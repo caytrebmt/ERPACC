@@ -20,6 +20,7 @@ from app.domains.finance.services.vat_service import VatService
 from app.shared.authz import require_permission
 from app.domains.inventory.services.unit_display import build_item_qty_display_map
 from app.shared.constants import DocStatus
+from app.services.i18n_service import t
 from decimal import Decimal, ROUND_HALF_UP
 def _dec(v): return Decimal(str(v or 0))
 def _money(v): return _dec(v).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
@@ -240,7 +241,7 @@ def detail(id):
 def edit(id):
     si = StockIn.query.get_or_404(id)
     if _is_confirmed(si.status):
-        flash('Không thể chỉnh sửa phiếu đã xác nhận!', 'danger')
+        flash(t('Cannot edit confirmed document!'), 'danger')
         return redirect(url_for('stock_in.detail', id=id))
 
     if request.method == 'POST':

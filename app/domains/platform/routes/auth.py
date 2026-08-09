@@ -7,6 +7,7 @@ from app.models.system import User
 from app.domains.platform.services.security_service import validate_password_strength
 from app.domains.ecommerce.models import WebCustomer
 from app.models.master import ERPUser
+from app.services.i18n_service import t
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -72,7 +73,7 @@ def login():
         fail_info = _get_fail_info(key)
         if fail_info[1] and datetime.utcnow() < fail_info[1]:
             left = int((fail_info[1] - datetime.utcnow()).total_seconds() // 60) + 1
-            flash(f'Tài khoản tạm khóa đăng nhập. Vui lòng thử lại sau {left} phút.', 'warning')
+            flash(t('Account locked. Please try again in %(minutes)d minutes.', minutes=left), 'warning')
             return render_template('auth/login.html')
         user = User.query.filter_by(username=username, is_active=True).first()
         if user and user.check_password(password):
@@ -83,7 +84,7 @@ def login():
             session.permanent = True
             login_user(user, remember=bool(remember))
             next_page = request.args.get('next')
-            flash(f'Chào mừng {user.full_name}!', 'success')
+            flash(t('Welcome %(name)s!', name=user.full_name), 'success')
             return redirect(next_page if _is_safe_redirect_url(next_page) else url_for('dashboard.index'))
         else:
             fail_count = int(fail_info[0]) + 1
@@ -92,7 +93,7 @@ def login():
                 lock_until = datetime.utcnow() + timedelta(minutes=_LOCK_MINUTES)
                 fail_count = 0
             _set_fail_info(key, [fail_count, lock_until])
-            flash('Tên đăng nhập hoặc mật khẩu không đúng!', 'danger')
+            flash(t('Invalid username or password!'), 'danger')
     return render_template('auth/login.html')
 
 
@@ -100,7 +101,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('Đã đăng xuất thành công.', 'info')
+    flash(t('Logged out successfully.'), 'info')
     return redirect(url_for('auth.login'))
 
 
@@ -112,9 +113,9 @@ def change_password():
         new_pw = request.form.get('new_password', '')
         confirm_pw = request.form.get('confirm_password', '')
         if not current_user.check_password(old_pw):
-            flash('Mật khẩu cũ không đúng!', 'danger')
+            flash(t('Old password is incorrect!'), 'danger')
         elif new_pw != confirm_pw:
-            flash('Mật khẩu mới không khớp!', 'danger')
+            flash(t('New password does not match!'), 'danger')
         else:
             ok, msg = validate_password_strength(new_pw)
             if not ok:
@@ -122,7 +123,7 @@ def change_password():
                 return render_template('auth/change_password.html')
             current_user.set_password(new_pw)
             db.session.commit()
-            flash('Đổi mật khẩu thành công!', 'success')
+            flash(t('Password changed successfully!'), 'success')
             return redirect(url_for('dashboard.index'))
     return render_template('auth/change_password.html')
 

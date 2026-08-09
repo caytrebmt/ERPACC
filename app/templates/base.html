@@ -113,7 +113,7 @@
           >
             <span class="nav-link-content">
               <i class="{{ menu.icon }} menu-icon"></i>
-              <span class="link-text">{{ _(menu.name) }}</span>
+              <span class="link-text">{{ menu_name(menu) }}</span>
             </span>
           </a>
         </div>
@@ -131,7 +131,7 @@
           >
             <span class="nav-link-content">
               <i class="{{ menu.icon }} menu-icon"></i>
-              <span class="link-text">{{ _(menu.name) }}</span>
+              <span class="link-text">{{ menu_name(menu) }}</span>
             </span>
             <i class="fas fa-chevron-down caret"></i>
           </button>
@@ -148,7 +148,7 @@
             >
               <span class="nav-link-content">
                 <i class="{{ child.icon }} menu-icon"></i>
-                <span class="link-text">{{ _(child.name) }}</span>
+                <span class="link-text">{{ menu_name(child) }}</span>
               </span>
             </a>
             {% endfor %}

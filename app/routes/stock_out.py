@@ -22,6 +22,7 @@ from app.shared.authz import require_permission
 from app.domains.accounting.services.account_mapping_service import get_account_code
 from app.domains.inventory.services.unit_display import build_item_qty_display_map
 from app.shared.constants import DocStatus
+from app.services.i18n_service import t
 from decimal import Decimal, ROUND_HALF_UP
 from weasyprint import HTML
 from flask import render_template, request
@@ -258,7 +259,7 @@ def detail(id):
 def edit(id):
     so = StockOut.query.get_or_404(id)
     if _is_confirmed(so.status):
-        flash('Không thể chỉnh sửa phiếu đã xác nhận!', 'danger')
+        flash(t('Cannot edit confirmed document!'), 'danger')
         return redirect(url_for('stock_out.detail', id=id))
 
     if request.method == 'POST':

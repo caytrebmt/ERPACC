@@ -314,6 +314,14 @@ def create_app(config_name=None):
         def t(key: str) -> str:
             return I18nService.translate(key)
 
+        def menu_name(menu):
+            if not getattr(menu, 'code', None):
+                return menu.name
+            translated = t(f'menu.{menu.code}')
+            if translated == f'menu.{menu.code}':
+                return menu.name
+            return translated
+
         def can(module: str, action: str = 'view') -> bool:
             try:
                 if not current_user.is_authenticated:
@@ -337,7 +345,7 @@ def create_app(config_name=None):
             except Exception:
                 db.session.rollback()
 
-        return dict(nav_menus=menus, app_name=company_name, t=t, can=can)
+        return dict(nav_menus=menus, app_name=company_name, t=t, menu_name=menu_name, can=can)
 
     try:
         from app.core.bootstrap import run_bootstrap
