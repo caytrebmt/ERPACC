@@ -355,4 +355,10 @@ def create_app(config_name=None):
     except Exception:
         pass
 
+    try:
+        from commands.translations import register_commands
+        register_commands(app)
+    except Exception:
+        pass
+
     return app

@@ -156,6 +156,61 @@ def delete_translation():
     return redirect(url_for('translations.list_translations', lang=lang))
 
 
+@translations_bp.route('/translations/export')
+@login_required
+@require_permission('settings', 'view')
+def export_translations():
+    if not _admin_only():
+        return redirect(url_for('dashboard.index'))
+    
+    lang = request.args.get('lang', 'vi')
+    if lang not in I18nService.SUPPORTED_LANGS:
+        lang = 'vi'
+    
+    I18nService.load_translations()
+    data = I18nService.get_all_translations(lang)
+    
+    from flask import Response
+    return Response(
+        json.dumps(data, ensure_ascii=False, indent=2),
+        mimetype='application/json',
+        headers={'Content-Disposition': f'attachment; filename={lang}_translations.json'}
+    )
+
+
+@translations_bp.route('/translations/import', methods=['POST'])
+@login_required
+@require_permission('settings', 'edit')
+def import_translations():
+    if not _admin_only():
+        return redirect(url_for('dashboard.index'))
+    
+    lang = request.form.get('lang', 'vi').strip()
+    file = request.files.get('file')
+    
+    if not file or lang not in I18nService.SUPPORTED_LANGS:
+        flash('Dữ liệu không hợp lệ.', 'danger')
+        return redirect(url_for('translations.list_translations', lang=lang))
+    
+    try:
+        data = json.loads(file.read().decode('utf-8'))
+    except Exception:
+        flash('File JSON không hợp lệ.', 'danger')
+        return redirect(url_for('translations.list_translations', lang=lang))
+    
+    if not isinstance(data, dict):
+        flash('File JSON phải là object.', 'danger')
+        return redirect(url_for('translations.list_translations', lang=lang))
+    
+    file_path = I18nService.TRANSLATIONS_DIR / f"{lang}.json"
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    I18nService._cache.clear()
+    flash(f'Đã nhập {len(data)} bản dịch cho [{lang}].', 'success')
+    return redirect(url_for('translations.list_translations', lang=lang))
+
+
 @translations_bp.route('/translations/scan-missing')
 @login_required
 @require_permission('settings', 'view')

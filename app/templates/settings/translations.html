@@ -22,6 +22,12 @@
       <a href="{{ url_for('settings.translations.scan_missing') }}" class="btn btn-sm btn-outline-warning">
         <i class="fas fa-search me-1"></i>Kiểm tra key thiếu
       </a>
+      <a href="{{ url_for('settings.translations.export_translations', lang=lang) }}" class="btn btn-sm btn-outline-info">
+        <i class="fas fa-download me-1"></i>Export {{ lang|upper }}
+      </a>
+      <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#importModal">
+        <i class="fas fa-upload me-1"></i>Import
+      </button>
       {% if side_by_side %}
       <a href="{{ url_for('settings.translations.list_translations', lang=lang, namespace=namespace, search=search, side_by_side='0') }}"
          class="btn btn-sm btn-outline-secondary">
@@ -147,6 +153,40 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-upload me-2"></i>Import bản dịch</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="POST" action="{{ url_for('settings.translations.import_translations') }}" enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Ngôn ngữ</label>
+            <select name="lang" class="form-select">
+              <option value="vi">Tiếng Việt</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">File JSON</label>
+            <input type="file" name="file" class="form-control" accept=".json" required>
+            <div class="form-text">File JSON phải có dạng {"key": "value", ...}</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-upload me-1"></i>Import
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}

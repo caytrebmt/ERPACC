@@ -46,7 +46,8 @@ class I18nService:
     @classmethod
     def translate(cls, key: str, lang: str = None) -> str:
         """
-        Translate a key. Format: "namespace.key" or "namespace.subkey.key"
+        Translate a key with fallback chain.
+        Priority: requested lang -> default lang (vi) -> raw key
         Example: "common.edit" or "reports.profit_by_customer"
         """
         if lang is None:
@@ -58,15 +59,31 @@ class I18nService:
         cls.load_translations()
         
         keys = key.split('.')
-        value = cls._cache.get(lang, {})
         
+        # Try requested language first
+        value = cls._get_nested_value(cls._cache.get(lang, {}), keys)
+        if value is not None:
+            return value
+        
+        # Fallback to default language (vi) if different from requested
+        if lang != cls.DEFAULT_LANG:
+            value = cls._get_nested_value(cls._cache.get(cls.DEFAULT_LANG, {}), keys)
+            if value is not None:
+                return value
+        
+        # Ultimate fallback: return the key itself
+        return key
+    
+    @classmethod
+    def _get_nested_value(cls, d: Dict, keys: list) -> Any:
+        """Safely get nested value from dict using key path."""
+        value = d
         for k in keys:
             if isinstance(value, dict):
                 value = value.get(k)
             else:
-                return key
-        
-        return value if value is not None else key
+                return None
+        return value
     
     @classmethod
     def get_all_translations(cls, lang: str = None) -> Dict[str, Any]:
