@@ -171,13 +171,13 @@ def scan_missing():
     en_flat = _flatten_dict(en_data)
 
     used_keys = _collect_template_keys()
-    missing_vi = {k: v for k, v in used_keys.items() if k not in vi_flat}
-    missing_en = {k: v for k, v in used_keys.items() if k not in en_flat}
+    missing_vi = sorted([k for k in used_keys if k not in vi_flat])
+    missing_en = sorted([k for k in used_keys if k not in en_flat])
 
     return render_template('settings/translations_scan.html',
-                           used_keys=sorted(used_keys.keys()),
-                           missing_vi=sorted(missing_vi.keys()),
-                           missing_en=sorted(missing_en.keys()),
+                           used_keys=sorted(used_keys),
+                           missing_vi=missing_vi,
+                           missing_en=missing_en,
                            total_used=len(used_keys),
                            total_vi=len(vi_flat),
                            total_en=len(en_flat))
