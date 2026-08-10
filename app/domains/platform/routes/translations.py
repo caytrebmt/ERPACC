@@ -27,25 +27,47 @@ def list_translations():
     lang = request.args.get('lang', 'vi')
     namespace = request.args.get('namespace', '')
     search = request.args.get('search', '').strip().lower()
+    side_by_side = request.args.get('side_by_side', '1') == '1'
 
     I18nService.load_translations()
-    data = I18nService.get_all_translations(lang)
+    vi_data = I18nService.get_all_translations('vi')
+    en_data = I18nService.get_all_translations('en')
 
-    flat_items = _flatten_dict(data)
-    if namespace:
-        prefix = namespace + '.'
-        flat_items = {k: v for k, v in flat_items.items() if k.startswith(prefix)}
-    if search:
-        flat_items = {k: v for k, v in flat_items.items()
-                      if search in k.lower() or search in str(v).lower()}
-
-    namespaces = sorted({k.split('.')[0] for k in _flatten_dict(data).keys() if '.' in k})
-    return render_template('settings/translations.html',
-                           items=flat_items,
-                           lang=lang,
-                           namespace=namespace,
-                           namespaces=namespaces,
-                           search=search)
+    if side_by_side:
+        vi_flat = _flatten_dict(vi_data)
+        en_flat = _flatten_dict(en_data)
+        all_keys = sorted(set(vi_flat.keys()) | set(en_flat.keys()))
+        if namespace:
+            prefix = namespace + '.'
+            all_keys = [k for k in all_keys if k.startswith(prefix)]
+        if search:
+            all_keys = [k for k in all_keys if search in k.lower() or search in str(vi_flat.get(k, '')).lower() or search in str(en_flat.get(k, '')).lower()]
+        namespaces = sorted({k.split('.')[0] for k in all_keys if '.' in k})
+        return render_template('settings/translations.html',
+                               side_by_side=True,
+                               all_keys=all_keys,
+                               vi_flat=vi_flat,
+                               en_flat=en_flat,
+                               lang=lang,
+                               namespace=namespace,
+                               namespaces=namespaces,
+                               search=search)
+    else:
+        data = I18nService.get_all_translations(lang)
+        flat_items = _flatten_dict(data)
+        if namespace:
+            prefix = namespace + '.'
+            flat_items = {k: v for k, v in flat_items.items() if k.startswith(prefix)}
+        if search:
+            flat_items = {k: v for k, v in flat_items.items()
+                          if search in k.lower() or search in str(v).lower()}
+        namespaces = sorted({k.split('.')[0] for k in _flatten_dict(data).keys() if '.' in k})
+        return render_template('settings/translations.html',
+                               items=flat_items,
+                               lang=lang,
+                               namespace=namespace,
+                               namespaces=namespaces,
+                               search=search)
 
 
 @translations_bp.route('/translations/save', methods=['POST'])
@@ -58,28 +80,35 @@ def save_translation():
     key = request.form.get('key', '').strip()
     lang = request.form.get('lang', 'vi').strip()
     value = request.form.get('value', '')
+    other_lang = request.form.get('other_lang', '').strip()
+    other_value = request.form.get('other_value', '').strip()
 
     if not key or lang not in I18nService.SUPPORTED_LANGS:
         flash('Dữ liệu không hợp lệ.', 'danger')
         return redirect(url_for('translations.list_translations', lang=lang))
 
-    file_path = I18nService.TRANSLATIONS_DIR / f"{lang}.json"
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-    except Exception:
-        data = {}
+    langs_to_save = [(lang, value)]
+    if other_lang and other_lang != lang and other_value is not None:
+        langs_to_save.append((other_lang, other_value))
 
-    keys = key.split('.')
-    target = data
-    for k in keys[:-1]:
-        if k not in target or not isinstance(target[k], dict):
-            target[k] = {}
-        target = target[k]
-    target[keys[-1]] = value
+    for save_lang, save_value in langs_to_save:
+        file_path = I18nService.TRANSLATIONS_DIR / f"{save_lang}.json"
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        except Exception:
+            data = {}
 
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        keys = key.split('.')
+        target = data
+        for k in keys[:-1]:
+            if k not in target or not isinstance(target[k], dict):
+                target[k] = {}
+            target = target[k]
+        target[keys[-1]] = save_value
+
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
 
     I18nService._cache.clear()
     flash(f'Đã lưu bản dịch [{lang}] {key}.', 'success')

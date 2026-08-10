@@ -22,10 +22,21 @@
       <a href="{{ url_for('settings.translations.scan_missing') }}" class="btn btn-sm btn-outline-warning">
         <i class="fas fa-search me-1"></i>Kiểm tra key thiếu
       </a>
+      {% if side_by_side %}
+      <a href="{{ url_for('settings.translations.list_translations', lang=lang, namespace=namespace, search=search, side_by_side='0') }}"
+         class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-columns me-1"></i>Xem 1 cột
+      </a>
+      {% else %}
+      <a href="{{ url_for('settings.translations.list_translations', lang=lang, namespace=namespace, search=search, side_by_side='1') }}"
+         class="btn btn-sm btn-outline-primary">
+        <i class="fas fa-columns me-1"></i>Xem song song VI/EN
+      </a>
+      {% endif %}
       <div class="btn-group">
-        <a href="{{ url_for('settings.translations.list_translations', lang='vi', namespace=namespace, search=search) }}"
+        <a href="{{ url_for('settings.translations.list_translations', lang='vi', namespace=namespace, search=search, side_by_side=side_by_side|string) }}"
            class="btn btn-sm {{ 'btn-primary' if lang=='vi' else 'btn-outline-primary' }}">Tiếng Việt</a>
-        <a href="{{ url_for('settings.translations.list_translations', lang='en', namespace=namespace, search=search) }}"
+        <a href="{{ url_for('settings.translations.list_translations', lang='en', namespace=namespace, search=search, side_by_side=side_by_side|string) }}"
            class="btn btn-sm {{ 'btn-primary' if lang=='en' else 'btn-outline-primary' }}">English</a>
       </div>
     </div>
@@ -37,52 +48,78 @@
         <thead>
           <tr>
             <th style="width:30%">Key</th>
+            {% if side_by_side %}
+            <th>Tiếng Việt</th>
+            <th>English</th>
+            {% else %}
             <th>Nội dung ({{ lang }})</th>
+            {% endif %}
             <th class="text-center no-print" style="width:160px">Thao tác</th>
           </tr>
         </thead>
         <tbody id="trans-table-body">
-          {% for key, value in items.items() %}
-          <tr data-key="{{ key|lower }}" data-value="{{ value|lower }}" data-ns="{{ key.split('.')[0]|lower }}">
-            <td><code class="user-select-all">{{ key }}</code></td>
-            <td>
-              <input type="text" class="form-control form-control-sm trans-value"
-                     data-key="{{ key }}" value="{{ value }}">
-            </td>
-            <td class="text-center no-print">
-              <button class="btn btn-sm btn-outline-success py-0 px-2 save-single"
-                      data-key="{{ key }}" title="Lưu">
-                <i class="fas fa-save"></i>
-              </button>
-              <form method="POST" action="{{ url_for('settings.translations.delete_translation') }}"
-                    class="d-inline"
-                    onsubmit="return confirm('Xóa bản dịh [{{ key }}]?')">
-                <input type="hidden" name="key" value="{{ key }}">
-                <input type="hidden" name="lang" value="{{ lang }}">
-                <button class="btn btn-sm btn-outline-danger py-0 px-2" title="Xóa">
-                  <i class="fas fa-trash"></i>
+          {% if side_by_side %}
+            {% for key in all_keys %}
+            <tr data-key="{{ key|lower }}" data-ns="{{ key.split('.')[0]|lower }}">
+              <td><code class="user-select-all">{{ key }}</code></td>
+              <td>
+                <input type="text" class="form-control form-control-sm trans-value"
+                       data-key="{{ key }}" data-lang="vi" value="{{ vi_flat.get(key, '') }}">
+              </td>
+              <td>
+                <input type="text" class="form-control form-control-sm trans-value"
+                       data-key="{{ key }}" data-lang="en" value="{{ en_flat.get(key, '') }}">
+              </td>
+              <td class="text-center no-print">
+                <button class="btn btn-sm btn-outline-success py-0 px-2 save-single"
+                        data-key="{{ key }}" title="Lưu">
+                  <i class="fas fa-save"></i>
                 </button>
-              </form>
-            </td>
-          </tr>
+                <form method="POST" action="{{ url_for('settings.translations.delete_translation') }}"
+                      class="d-inline"
+                      onsubmit="return confirm('Xóa bản dịh [{{ key }}]?')">
+                  <input type="hidden" name="key" value="{{ key }}">
+                  <input type="hidden" name="lang" value="vi">
+                  <button class="btn btn-sm btn-outline-danger py-0 px-2" title="Xóa">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
           {% else %}
-          <tr>
-            <td colspan="3" class="text-center text-muted py-4">
-              {% if search or namespace %}
-                Không tìm thấy bản dịch phù hợp.
-              {% else %}
-                Chưa có bản dịch nào.
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
+            {% for key, value in items.items() %}
+            <tr data-key="{{ key|lower }}" data-value="{{ value|lower }}" data-ns="{{ key.split('.')[0]|lower }}">
+              <td><code class="user-select-all">{{ key }}</code></td>
+              <td>
+                <input type="text" class="form-control form-control-sm trans-value"
+                       data-key="{{ key }}" value="{{ value }}">
+              </td>
+              <td class="text-center no-print">
+                <button class="btn btn-sm btn-outline-success py-0 px-2 save-single"
+                        data-key="{{ key }}" title="Lưu">
+                  <i class="fas fa-save"></i>
+                </button>
+                <form method="POST" action="{{ url_for('settings.translations.delete_translation') }}"
+                      class="d-inline"
+                      onsubmit="return confirm('Xóa bản dịh [{{ key }}]?')">
+                  <input type="hidden" name="key" value="{{ key }}">
+                  <input type="hidden" name="lang" value="{{ lang }}">
+                  <button class="btn btn-sm btn-outline-danger py-0 px-2" title="Xóa">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          {% endif %}
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="card-footer text-muted small d-flex gap-3">
-    <span>Tổng: {{ items|length }} bản dịch</span>
+    <span>Tổng: {{ all_keys|length if side_by_side else items|length }} bản dịch</span>
     <span class="ms-auto">Namespace: <b>{{ namespace or '(tất cả)' }}</b></span>
     <span>Lưu ý: key dạng <code>namespace.key</code></span>
   </div>
@@ -96,10 +133,14 @@
       <div class="col-md-3">
         <input type="text" name="key" class="form-control form-control-sm" placeholder="namespace.key" required>
       </div>
-      <div class="col-md-6">
-        <input type="text" name="value" class="form-control form-control-sm" placeholder="Nội dung bản dịch" required>
+      <div class="col-md-3">
+        <input type="text" name="value" class="form-control form-control-sm" placeholder="Tiếng Việt" required>
       </div>
-      <input type="hidden" name="lang" value="{{ lang }}">
+      <div class="col-md-3">
+        <input type="text" name="other_value" class="form-control form-control-sm" placeholder="English">
+      </div>
+      <input type="hidden" name="lang" value="vi">
+      <input type="hidden" name="other_lang" value="en">
       <div class="col-auto">
         <button type="submit" class="btn btn-sm btn-primary">
           <i class="fas fa-plus me-1"></i>Thêm
@@ -117,9 +158,9 @@ function filterTranslations() {
   const ns = (document.getElementById('nsFilter').value || '').toLowerCase();
   document.querySelectorAll('#trans-table-body tr').forEach(row => {
     const key = row.dataset.key || '';
-    const val = row.dataset.value || '';
+    const val = (row.querySelector('.trans-value[data-lang="vi"]')?.value || '') + ' ' + (row.querySelector('.trans-value[data-lang="en"]')?.value || '');
     const rowNs = row.dataset.ns || '';
-    const match = (!q || key.includes(q) || val.includes(q)) && (!ns || rowNs === ns);
+    const match = (!q || key.includes(q) || val.toLowerCase().includes(q)) && (!ns || rowNs === ns);
     row.style.display = match ? '' : 'none';
   });
 }
@@ -127,15 +168,19 @@ function filterTranslations() {
 document.querySelectorAll('.save-single').forEach(btn => {
   btn.addEventListener('click', function() {
     const key = this.dataset.key;
-    const input = document.querySelector(`.trans-value[data-key="${key}"]`);
-    if (!input) return;
+    const viInput = document.querySelector(`.trans-value[data-key="${key}"][data-lang="vi"]`);
+    const enInput = document.querySelector(`.trans-value[data-key="${key}"][data-lang="en"]`);
+    if (!viInput && !enInput) return;
+
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = '{{ url_for("settings.translations.save_translation") }}';
     const fields = [
       {name:'key', value: key},
-      {name:'value', value: input.value},
-      {name:'lang', value: '{{ lang }}'}
+      {name:'lang', value: 'vi'},
+      {name:'value', value: viInput ? viInput.value : ''},
+      {name:'other_lang', value: 'en'},
+      {name:'other_value', value: enInput ? enInput.value : ''}
     ];
     fields.forEach(f => {
       const inp = document.createElement('input');

@@ -107,6 +107,9 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
+    USE_PROXY_FIX = True
+    SESSION_COOKIE_SECURE = True
+    WTF_CSRF_SSL_STRICT = False
 
 config = {
     'development': DevelopmentConfig,
