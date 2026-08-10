@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from flask import Flask, request, session
+import os
+from pathlib import Path
+
+from flask import Flask, request, session, send_from_directory
 from flask_babel import Babel
 from flask_login import current_user, LoginManager
 from flask_caching import Cache
@@ -15,21 +18,15 @@ from app.domains.ecommerce.routes.shop import shop_bp
 
 def create_shop_app(config_name: str | None = None) -> Flask:
     """Tạo Flask app riêng cho Shop để tách cookie/session ERP <-> Shop."""
-    import os
     from datetime import timedelta
-    from pathlib import Path
-    import sys
 
     if config_name is None:
         config_name = os.getenv('FLASK_ENV', 'development')
 
-    # Lấy template/static đúng theo cấu trúc dự án
-    # shop_app.py nằm trong app/, nên templates/static nằm tại app/templates và app/static
     resource_base = Path(__file__).resolve().parent
     template_dir = resource_base / 'templates'
     static_dir = resource_base / 'static'
     translations_dir = resource_base.parent / 'translations'
-
 
     app = Flask(
         __name__,
@@ -40,11 +37,9 @@ def create_shop_app(config_name: str | None = None) -> Flask:
     app.config.from_object(config.get(config_name, config['default']))
     db.init_app(app)
 
-    # Tách cookie riêng cho shop để cô lập hoàn toàn với ERP
     app.config['SESSION_COOKIE_NAME'] = 'shop_session'
     app.config['REMEMBER_COOKIE_NAME'] = 'shop_remember'
 
-    # Tạo LoginManager riêng cho Shop để cô lập session/state khỏi ERP
     shop_login_manager = LoginManager()
     shop_login_manager.login_view = 'shop.login'
     shop_login_manager.login_message = 'Vui lòng đăng nhập để tiếp tục.'
@@ -58,7 +53,6 @@ def create_shop_app(config_name: str | None = None) -> Flask:
             user_id = user_id[4:]
         return db.session.get(WebCustomer, int(user_id))
 
-    # Tách cache/csrf/babel theo app shop (để không xung đột)
     cache = Cache()
     csrf = CSRFProtect()
     cache_config = {
@@ -82,11 +76,29 @@ def create_shop_app(config_name: str | None = None) -> Flask:
         if 'lang' not in session and request.cookies.get('lang'):
             session['lang'] = request.cookies.get('lang')
 
-    # Register filters
     register_filters(app)
 
-    # Register blueprint shop
+    # Register blueprint shop first so Flask matches these routes before React SPA
     app.register_blueprint(shop_bp)
+
+    # Serve React SPA build if available
+    react_dist = resource_base.parent / 'webshop' / 'dist'
+    if (react_dist / 'index.html').exists():
+        react_dist_path = str(react_dist)
+
+        @app.route('/static/<path:filename>')
+        def react_static(filename):
+            return send_from_directory(os.path.join(react_dist_path, 'static'), filename)
+
+        @app.route('/', defaults={'path': ''})
+        @app.route('/<path:path>')
+        def serve_react(path):
+            if path.startswith('api/') or path.startswith('shop/') or path.startswith('placeholder'):
+                return app.fallback(request.endpoint, request.view_args)
+            file_path = Path(react_dist_path) / path
+            if path and file_path.exists() and file_path.is_file():
+                return send_from_directory(react_dist_path, path)
+            return send_from_directory(react_dist_path, 'index.html')
 
     return app
 

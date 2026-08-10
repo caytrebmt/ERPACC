@@ -433,6 +433,14 @@ def catalog():
     for l in pagination.items:
         p = l.product
         stock = float(getattr(l, 'stock_cached', 0) or 0)
+        product_specs = ''
+        product_brand = ''
+        product_compare_at = None
+        if p:
+            specs_raw = getattr(p, 'specifications', None) or getattr(p, 'specs', None) or ''
+            product_specs = specs_raw if isinstance(specs_raw, str) else str(specs_raw)
+            product_brand = getattr(p, 'brand', '') or ''
+            product_compare_at = float(getattr(p, 'compare_at_price', 0) or getattr(l, 'compare_at_price', 0) or 0)
         products.append({
             'id': p.id if p else l.id,
             'listing_id': l.id,
@@ -450,6 +458,9 @@ def catalog():
             'categoryId': getattr(p, 'category_id', None) or None,
             'unit': getattr(p, 'unit', '') or '',
             'slug': l.slug,
+            'specs': product_specs,
+            'brand': product_brand,
+            'compareAtPrice': product_compare_at if product_compare_at > 0 else None,
         })
 
     return _json_ok({
@@ -484,6 +495,14 @@ def product_detail(product_id):
         return _json_err('Không tìm thấy sản phẩm.', 404)
     p = listing.product
     stock = float(getattr(listing, 'stock_cached', 0) or 0)
+    product_specs = ''
+    product_brand = ''
+    product_compare_at = None
+    if p:
+        specs_raw = getattr(p, 'specifications', None) or getattr(p, 'specs', None) or ''
+        product_specs = specs_raw if isinstance(specs_raw, str) else str(specs_raw)
+        product_brand = getattr(p, 'brand', '') or ''
+        product_compare_at = float(getattr(p, 'compare_at_price', 0) or getattr(listing, 'compare_at_price', 0) or 0)
     data = {
         'id': p.id if p else listing.id,
         'listing_id': listing.id,
@@ -497,6 +516,9 @@ def product_detail(product_id):
         'categoryId': getattr(p, 'category_id', None) or None,
         'unit': getattr(p, 'unit', '') or '',
         'slug': listing.slug,
+        'specs': product_specs,
+        'brand': product_brand,
+        'compareAtPrice': product_compare_at if product_compare_at > 0 else None,
     }
     return _json_ok(data)
 

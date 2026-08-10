@@ -23,6 +23,14 @@
     <form method="POST" id="checkoutForm" class="flex flex-col lg:flex-row gap-8">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         
+        <!-- Loading Overlay -->
+        <div id="checkoutLoadingOverlay" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+            <div class="bg-white rounded-2xl p-6 flex flex-col items-center gap-3 shadow-xl">
+                <div class="w-10 h-10 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-sm font-medium text-gray-700">Đang xử lý đơn hàng...</p>
+            </div>
+        </div>
+        
         <!-- LEFT: Forms -->
         <div class="flex-1 space-y-6">
             <!-- Delivery Info -->
@@ -252,6 +260,15 @@
                 option.classList.add('border-accent', 'bg-accent/5');
             }
         });
+    });
+
+    // Show loading on form submit
+    document.getElementById('checkoutForm')?.addEventListener('submit', function() {
+        const overlay = document.getElementById('checkoutLoadingOverlay');
+        if (overlay) {
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
     });
 </script>
 {% endblock %}

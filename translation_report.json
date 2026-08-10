@@ -1,0 +1,4530 @@
+{
+  "used_keys": [
+    "${p.sku}",
+    "%Y-%m-%d",
+    "+",
+    ",",
+    "-",
+    ".",
+    ".bg-gray-50",
+    ".product-image-item",
+    ".select2-container",
+    "/account/unlink/google",
+    "/auth/google",
+    "/auth/login",
+    "/auth/refresh",
+    "/auth/register",
+    "/cart",
+    "/cart/add/<int:listing_id>",
+    "/cart/items",
+    "/cart/items/<int:item_id>",
+    "/cart/remove/<int:item_id>",
+    "/cart/update",
+    "/catalog",
+    "/categories",
+    "/checkout-json",
+    "/customer/password",
+    "/customer/profile",
+    "/image/delete/<int:image_id>",
+    "/listings/<int:id>/toggle",
+    "/listings/ensure",
+    "/listings/publish/<int:product_id>",
+    "/orders",
+    "/orders/<code>",
+    "/orders/<int:id>/sync",
+    "/orders/<int:order_id>/cancel",
+    "/orders/<int:order_id>/reorder",
+    "/products/<product_id>",
+    "/promotions",
+    "/promotions/validate",
+    "/sync-inventory",
+    "0",
+    "2d",
+    "ALLOW_NEGATIVE_STOCK','1",
+    "Account locked. Please try again in %(minutes)d minutes.', minutes=left), 'warning",
+    "Accounts Payable",
+    "Accounts Receivable",
+    "Actions",
+    "All customers",
+    "All status",
+    "All suppliers",
+    "Auto",
+    "Back",
+    "Backup / Restore DB",
+    "Business Management",
+    "CACHE_REDIS_URL",
+    "CACHE_TYPE', 'SimpleCache",
+    "COGS",
+    "COMPANY_ADDRESS', '",
+    "COMPANY_EMAIL', '",
+    "COMPANY_FAX', '",
+    "COMPANY_NAME', 'ERPmini",
+    "COMPANY_PHONE', '",
+    "COMPANY_TAX_CODE', '",
+    "CURRENCY",
+    "Cancel",
+    "Cancelled",
+    "Cannot edit confirmed document!",
+    "Code",
+    "Confirmed",
+    "Create",
+    "Create menu",
+    "Create new menu",
+    "Customer",
+    "Customer tax code",
+    "Customers",
+    "Có lỗi xảy ra', 'error",
+    "Cảm ơn bạn đã đánh giá!', 'success",
+    "DD/MM/YYYY",
+    "DEFAULT_VAT','10",
+    "DEFAULT_WAREHOUSE','",
+    "Dashboard",
+    "Date",
+    "Display name",
+    "Draft",
+    "Edit",
+    "Edit menu: ",
+    "Email', '",
+    "English",
+    "Export Excel",
+    "Filter code or invoice",
+    "GOOGLE_OAUTH_CLIENT_ID",
+    "GOOGLE_OAUTH_CLIENT_ID', '",
+    "GOOGLE_OAUTH_CLIENT_SECRET",
+    "GOOGLE_OAUTH_REDIRECT_URI",
+    "General settings",
+    "Initialize sample data",
+    "Invalid username or password!",
+    "Inventory Value",
+    "Invoice no.",
+    "Không thể kết nối đến server', 'error",
+    "Không thể kết nối\", \"error",
+    "Không thể kết nối', 'error",
+    "Không thể sao chép tự động', 'error",
+    "Logged out successfully.",
+    "Login",
+    "Lỗi kết nối khi tạo hàng hóa.",
+    "Lỗi kết nối', 'error",
+    "Manual",
+    "Menu",
+    "Menu code",
+    "Menu list",
+    "Menu settings",
+    "Monthly Revenue",
+    "Mã KH', '",
+    "Mã NCC', '",
+    "Mã hàng', '",
+    "Mã số thuế', '",
+    "Net Revenue",
+    "Net Revenue & COGS",
+    "New password does not match!",
+    "Nhóm hàng', '",
+    "Nhập tay",
+    "No configuration found.",
+    "Notification templates",
+    "Old password is incorrect!",
+    "Password",
+    "Password changed successfully!",
+    "Please enter password",
+    "Please enter username",
+    "Print PDF",
+    "Products",
+    "Profit",
+    "ProgramFiles', r'C:\\Program Files",
+    "ProgramFiles(x86)', r'C:\\Program Files (x86)",
+    "Quản lý users",
+    "REDIS_URL",
+    "RGB",
+    "RGBA",
+    "Remember me",
+    "SECRET_KEY",
+    "SELECT 1",
+    "SELECT COUNT(*) FROM inventory",
+    "SELECT COUNT(*) FROM journal_entries",
+    "SELECT COUNT(*) FROM products",
+    "SELECT COUNT(*) FROM users",
+    "SESSION_PROTECTION', 'strong",
+    "SHOP_CORS_ORIGINS",
+    "Save configuration",
+    "Select date range",
+    "Source",
+    "Status",
+    "Stock-in detail",
+    "Stock-in list",
+    "Stock-out detail",
+    "Stock-out list",
+    "Subtotal",
+    "Supplier",
+    "Supplier invoice no.",
+    "Suppliers",
+    "System Configuration",
+    "This month",
+    "Tiếng Việt",
+    "Total",
+    "Total Amount",
+    "Tên hàng', '",
+    "Tên khách hàng', '",
+    "Tên nhà cung cấp', '",
+    "Tính năng đang phát triển', 'info",
+    "Tự động",
+    "UPLOAD_FOLDER', 'app/static/uploads",
+    "USE_PROXY_FIX",
+    "Update",
+    "Username",
+    "Users management",
+    "VAT",
+    "VAT Payable",
+    "Vui lòng nhập nội dung đánh giá', 'warning",
+    "Ví dụ: 1 Ram = 0.2 Thùng",
+    "Ví dụ: 1 Thùng = 5 Ram",
+    "Warehouse",
+    "Welcome %(name)s!', name=user.full_name), 'success",
+    "X-Forwarded-For', request.remote_addr) or 'unknown",
+    "X-Requested-With",
+    "account_type', '",
+    "account_type', 'asset",
+    "accounting', __name__, url_prefix='/accounting",
+    "add",
+    "address', '",
+    "allow_negative",
+    "amount",
+    "amount', '0",
+    "api', __name__, url_prefix='/api",
+    "auth', __name__, url_prefix='/auth",
+    "backup', __name__, url_prefix='",
+    "backup_format', 'plain",
+    "bank_account', '",
+    "bank_name', '",
+    "barcode', '",
+    "box_note[]",
+    "business_changes', __name__, url_prefix='",
+    "canvas",
+    "categories', __name__, url_prefix='/categories",
+    "category",
+    "category', '",
+    "category', p.category or '",
+    "category_id",
+    "change_type', 'update",
+    "code",
+    "code', '",
+    "common.import",
+    "company', __name__, url_prefix='/company",
+    "company_accountant', '",
+    "company_address', '",
+    "company_bank_account', '",
+    "company_bank_branch",
+    "company_bank_name",
+    "company_director', '",
+    "company_email', '",
+    "company_fax', '",
+    "company_name",
+    "company_name', '",
+    "company_name', 'ERP-VIET",
+    "company_name', 'ERPmini",
+    "company_name_en', '",
+    "company_phone', '",
+    "company_tax_code', '",
+    "company_website', '",
+    "confirm",
+    "confirm_inventory",
+    "confirm_password",
+    "confirm_password', '",
+    "contact_for_price",
+    "contact_person', '",
+    "conv_factor[]",
+    "conv_unit_id[]",
+    "conversion_factor",
+    "credit', 0)) if line.get('credit",
+    "currency', 'VND",
+    "current_password",
+    "current_password', '",
+    "customerEmail",
+    "customerName",
+    "customerPhone",
+    "customer_email",
+    "customer_id', '",
+    "customer_name",
+    "customer_phone",
+    "customer_type', 'retail",
+    "customers', __name__, url_prefix='/customers",
+    "date",
+    "date', '",
+    "date', date.today().isoformat()), '%Y-%m-%d",
+    "days",
+    "debit', 0)) if line.get('debit",
+    "debt', __name__, url_prefix='/debt",
+    "delete",
+    "description",
+    "description', '",
+    "div",
+    "ecommerce', __name__, url_prefix='/ecommerce",
+    "edit",
+    "email",
+    "email', '",
+    "end', '",
+    "entry_code', '",
+    "factor",
+    "factor_item[]",
+    "factor_mode', 'base_to_from",
+    "factor_mode', 'from_to_base",
+    "fax', '",
+    "file",
+    "first.",
+    "form",
+    "from_date', '",
+    "full_name', '",
+    "has_movement",
+    "icon', 'fas fa-circle",
+    "id', '",
+    "id_token",
+    "image_file",
+    "images",
+    "input",
+    "inventory', __name__, url_prefix='/inventory",
+    "invoice_date', '",
+    "invoice_no', '",
+    "invoice_series', '",
+    "is_active",
+    "is_detail",
+    "items",
+    "key', '",
+    "label', '",
+    "lang",
+    "lang', 'vi",
+    "lang','vi",
+    "last_seen_ts",
+    "listingId",
+    "listing_id",
+    "lock_until",
+    "low_stock', '",
+    "major_unit_name",
+    "manager', '",
+    "menu_override_ids",
+    "menus', __name__, url_prefix='",
+    "message_template', '",
+    "minor_unit_name",
+    "mode",
+    "module', '",
+    "name",
+    "name', '",
+    "name', 'ERPmini",
+    "name_en', '",
+    "namespace', '",
+    "new_password",
+    "new_password', '",
+    "next",
+    "normal_balance', 'debit",
+    "note",
+    "note', '",
+    "note[]",
+    "note_item[]",
+    "noti_type', 'info",
+    "notifications', __name__, url_prefix='",
+    "ntype', '",
+    "old_password', '",
+    "opening_stock', __name__, url_prefix='/opening-stock",
+    "option",
+    "other_lang', '",
+    "other_value', '",
+    "partner_type', 'customer",
+    "password",
+    "password', '",
+    "paymentMethod",
+    "paymentStatus",
+    "payment_method', 'cash",
+    "period_date', '",
+    "phone",
+    "phone', '",
+    "picture",
+    "prefix",
+    "price_max', max); else url.searchParams.delete('price_max",
+    "price_min', min); else url.searchParams.delete('price_min",
+    "productId",
+    "product_id",
+    "product_id', '",
+    "product_id','from_unit_id','to_unit_id', name='uq_unit_conv",
+    "product_id','warehouse_id', name='uq_inv_prod_wh",
+    "product_id[]",
+    "product_name[]",
+    "products', __name__, url_prefix='/products",
+    "products.import_excel', 'Import Excel",
+    "products.list",
+    "products.title",
+    "promotionCode",
+    "promotion_code",
+    "published', '",
+    "purchase_price",
+    "q', '",
+    "quantity",
+    "quantity[]",
+    "quotations', __name__, url_prefix='/quotations",
+    "recipient_address', '",
+    "recipient_email', '",
+    "recipient_name', '",
+    "recipient_phone', '",
+    "reference', '",
+    "remember",
+    "reports', __name__, url_prefix='/reports",
+    "running_credit_balance', 0)) if line.get('running_credit_balance",
+    "running_debit_balance', 0)) if line.get('running_debit_balance",
+    "sale_price",
+    "search', '",
+    "select",
+    "settings', __name__, url_prefix='/settings",
+    "shippingAddress",
+    "shippingFee",
+    "shipping_address",
+    "shipping_fee",
+    "shop', __name__, url_prefix='",
+    "shop_api', __name__, url_prefix='/api/shop",
+    "shop_session_key",
+    "short_name', '",
+    "side_by_side', '1",
+    "sort_column', '",
+    "sort_dir', 'asc",
+    "source', '",
+    "source', 'erp",
+    "sql_file",
+    "start', '",
+    "status', '",
+    "stock_in', __name__, url_prefix='/stock-in",
+    "stock_out', __name__, url_prefix='/stock-out",
+    "stocktaking', __name__, url_prefix='/inventory/stocktaking",
+    "suppliers', __name__, url_prefix='/suppliers",
+    "sync_status', '",
+    "system', __name__, url_prefix='",
+    "tax_code', '",
+    "terms', '",
+    "title', '",
+    "to_date', '",
+    "token",
+    "tr",
+    "translations', __name__, url_prefix='",
+    "type', '",
+    "unit', 'Cái",
+    "unitPrice",
+    "unit_cost[]",
+    "unit_id",
+    "unit_item_id[]",
+    "unit_price[]",
+    "units', __name__, url_prefix='/units",
+    "url', '",
+    "user_id', 'module', name='uq_user_module",
+    "username', '",
+    "users', __name__, url_prefix='",
+    "valid_until', '",
+    "value', '",
+    "vat', __name__, url_prefix='/vat",
+    "vat_manual",
+    "vat_mode', 'grouped",
+    "vat_mode', 'per_item",
+    "vat_rate",
+    "vat_rate[]",
+    "vat_type', 'output",
+    "vi-VN",
+    "view",
+    "warehouse_id",
+    "warehouse_id', '",
+    "warehouses', __name__, url_prefix='/warehouses",
+    "website', '",
+    "Điện thoại', '",
+    "Đã hủy đơn hàng', 'success",
+    "Đã sao chép mã đơn hàng: ' + code, 'success",
+    "Đã thêm tất cả vào giỏ hàng!', 'success",
+    "Đã thêm vào danh sách yêu thích', 'success",
+    "Đã thêm yêu thích', 'success",
+    "Đã xóa khỏi danh sách yêu thích', 'info",
+    "Đã xóa yêu thích', 'info",
+    "Đăng ký thành công!",
+    "Đăng nhập thành công!",
+    "Đăng xuất",
+    "Đơn vị', 'Cái",
+    "Địa chỉ', '",
+    "Đổi mật khẩu",
+    "đến"
+  ],
+  "missing_vi": [
+    "${p.sku}",
+    "%Y-%m-%d",
+    "+",
+    ",",
+    "-",
+    ".",
+    ".bg-gray-50",
+    ".product-image-item",
+    ".select2-container",
+    "/account/unlink/google",
+    "/auth/google",
+    "/auth/login",
+    "/auth/refresh",
+    "/auth/register",
+    "/cart",
+    "/cart/add/<int:listing_id>",
+    "/cart/items",
+    "/cart/items/<int:item_id>",
+    "/cart/remove/<int:item_id>",
+    "/cart/update",
+    "/catalog",
+    "/categories",
+    "/checkout-json",
+    "/customer/password",
+    "/customer/profile",
+    "/image/delete/<int:image_id>",
+    "/listings/<int:id>/toggle",
+    "/listings/ensure",
+    "/listings/publish/<int:product_id>",
+    "/orders",
+    "/orders/<code>",
+    "/orders/<int:id>/sync",
+    "/orders/<int:order_id>/cancel",
+    "/orders/<int:order_id>/reorder",
+    "/products/<product_id>",
+    "/promotions",
+    "/promotions/validate",
+    "/sync-inventory",
+    "0",
+    "2d",
+    "ALLOW_NEGATIVE_STOCK','1",
+    "Account locked. Please try again in %(minutes)d minutes.', minutes=left), 'warning",
+    "Accounts Payable",
+    "Accounts Receivable",
+    "Auto",
+    "Business Management",
+    "CACHE_REDIS_URL",
+    "CACHE_TYPE', 'SimpleCache",
+    "COGS",
+    "COMPANY_ADDRESS', '",
+    "COMPANY_EMAIL', '",
+    "COMPANY_FAX', '",
+    "COMPANY_NAME', 'ERPmini",
+    "COMPANY_PHONE', '",
+    "COMPANY_TAX_CODE', '",
+    "CURRENCY",
+    "Cannot edit confirmed document!",
+    "Create menu",
+    "Create new menu",
+    "Customers",
+    "Có lỗi xảy ra', 'error",
+    "Cảm ơn bạn đã đánh giá!', 'success",
+    "DD/MM/YYYY",
+    "DEFAULT_VAT','10",
+    "DEFAULT_WAREHOUSE','",
+    "Edit menu: ",
+    "Email', '",
+    "GOOGLE_OAUTH_CLIENT_ID",
+    "GOOGLE_OAUTH_CLIENT_ID', '",
+    "GOOGLE_OAUTH_CLIENT_SECRET",
+    "GOOGLE_OAUTH_REDIRECT_URI",
+    "Initialize sample data",
+    "Invalid username or password!",
+    "Inventory Value",
+    "Không thể kết nối đến server', 'error",
+    "Không thể kết nối\", \"error",
+    "Không thể kết nối', 'error",
+    "Không thể sao chép tự động', 'error",
+    "Logged out successfully.",
+    "Login",
+    "Lỗi kết nối khi tạo hàng hóa.",
+    "Lỗi kết nối', 'error",
+    "Manual",
+    "Menu",
+    "Menu list",
+    "Monthly Revenue",
+    "Mã KH', '",
+    "Mã NCC', '",
+    "Mã hàng', '",
+    "Mã số thuế', '",
+    "Net Revenue",
+    "Net Revenue & COGS",
+    "New password does not match!",
+    "Nhóm hàng', '",
+    "Nhập tay",
+    "No configuration found.",
+    "Old password is incorrect!",
+    "Password",
+    "Password changed successfully!",
+    "Please enter password",
+    "Please enter username",
+    "Products",
+    "Profit",
+    "ProgramFiles', r'C:\\Program Files",
+    "ProgramFiles(x86)', r'C:\\Program Files (x86)",
+    "REDIS_URL",
+    "RGB",
+    "RGBA",
+    "Remember me",
+    "SECRET_KEY",
+    "SELECT 1",
+    "SELECT COUNT(*) FROM inventory",
+    "SELECT COUNT(*) FROM journal_entries",
+    "SELECT COUNT(*) FROM products",
+    "SELECT COUNT(*) FROM users",
+    "SESSION_PROTECTION', 'strong",
+    "SHOP_CORS_ORIGINS",
+    "Save configuration",
+    "Select date range",
+    "Suppliers",
+    "System Configuration",
+    "This month",
+    "Total Amount",
+    "Tên hàng', '",
+    "Tên khách hàng', '",
+    "Tên nhà cung cấp', '",
+    "Tính năng đang phát triển', 'info",
+    "Tự động",
+    "UPLOAD_FOLDER', 'app/static/uploads",
+    "USE_PROXY_FIX",
+    "Update",
+    "Username",
+    "VAT Payable",
+    "Vui lòng nhập nội dung đánh giá', 'warning",
+    "Ví dụ: 1 Ram = 0.2 Thùng",
+    "Ví dụ: 1 Thùng = 5 Ram",
+    "Welcome %(name)s!', name=user.full_name), 'success",
+    "X-Forwarded-For', request.remote_addr) or 'unknown",
+    "X-Requested-With",
+    "account_type', '",
+    "account_type', 'asset",
+    "accounting', __name__, url_prefix='/accounting",
+    "add",
+    "address', '",
+    "allow_negative",
+    "amount",
+    "amount', '0",
+    "api', __name__, url_prefix='/api",
+    "auth', __name__, url_prefix='/auth",
+    "backup', __name__, url_prefix='",
+    "backup_format', 'plain",
+    "bank_account', '",
+    "bank_name', '",
+    "barcode', '",
+    "box_note[]",
+    "business_changes', __name__, url_prefix='",
+    "canvas",
+    "categories', __name__, url_prefix='/categories",
+    "category",
+    "category', '",
+    "category', p.category or '",
+    "category_id",
+    "change_type', 'update",
+    "code",
+    "code', '",
+    "company', __name__, url_prefix='/company",
+    "company_accountant', '",
+    "company_address', '",
+    "company_bank_account', '",
+    "company_bank_branch",
+    "company_bank_name",
+    "company_director', '",
+    "company_email', '",
+    "company_fax', '",
+    "company_name",
+    "company_name', '",
+    "company_name', 'ERP-VIET",
+    "company_name', 'ERPmini",
+    "company_name_en', '",
+    "company_phone', '",
+    "company_tax_code', '",
+    "company_website', '",
+    "confirm_inventory",
+    "confirm_password",
+    "confirm_password', '",
+    "contact_for_price",
+    "contact_person', '",
+    "conv_factor[]",
+    "conv_unit_id[]",
+    "conversion_factor",
+    "credit', 0)) if line.get('credit",
+    "currency', 'VND",
+    "current_password",
+    "current_password', '",
+    "customerEmail",
+    "customerName",
+    "customerPhone",
+    "customer_email",
+    "customer_id', '",
+    "customer_name",
+    "customer_phone",
+    "customer_type', 'retail",
+    "customers', __name__, url_prefix='/customers",
+    "date",
+    "date', '",
+    "date', date.today().isoformat()), '%Y-%m-%d",
+    "days",
+    "debit', 0)) if line.get('debit",
+    "debt', __name__, url_prefix='/debt",
+    "delete",
+    "description",
+    "description', '",
+    "div",
+    "ecommerce', __name__, url_prefix='/ecommerce",
+    "edit",
+    "email",
+    "email', '",
+    "end', '",
+    "entry_code', '",
+    "factor",
+    "factor_item[]",
+    "factor_mode', 'base_to_from",
+    "factor_mode', 'from_to_base",
+    "fax', '",
+    "file",
+    "first.",
+    "form",
+    "from_date', '",
+    "full_name', '",
+    "has_movement",
+    "icon', 'fas fa-circle",
+    "id', '",
+    "id_token",
+    "image_file",
+    "images",
+    "input",
+    "inventory', __name__, url_prefix='/inventory",
+    "invoice_date', '",
+    "invoice_no', '",
+    "invoice_series', '",
+    "is_active",
+    "is_detail",
+    "items",
+    "key', '",
+    "label', '",
+    "lang",
+    "lang', 'vi",
+    "lang','vi",
+    "last_seen_ts",
+    "listingId",
+    "listing_id",
+    "lock_until",
+    "low_stock', '",
+    "major_unit_name",
+    "manager', '",
+    "menu_override_ids",
+    "menus', __name__, url_prefix='",
+    "message_template', '",
+    "minor_unit_name",
+    "mode",
+    "module', '",
+    "name",
+    "name', '",
+    "name', 'ERPmini",
+    "name_en', '",
+    "namespace', '",
+    "new_password",
+    "new_password', '",
+    "next",
+    "normal_balance', 'debit",
+    "note",
+    "note', '",
+    "note[]",
+    "note_item[]",
+    "noti_type', 'info",
+    "notifications', __name__, url_prefix='",
+    "ntype', '",
+    "old_password', '",
+    "opening_stock', __name__, url_prefix='/opening-stock",
+    "option",
+    "other_lang', '",
+    "other_value', '",
+    "partner_type', 'customer",
+    "password",
+    "password', '",
+    "paymentMethod",
+    "paymentStatus",
+    "payment_method', 'cash",
+    "period_date', '",
+    "phone",
+    "phone', '",
+    "picture",
+    "prefix",
+    "price_max', max); else url.searchParams.delete('price_max",
+    "price_min', min); else url.searchParams.delete('price_min",
+    "productId",
+    "product_id",
+    "product_id', '",
+    "product_id','from_unit_id','to_unit_id', name='uq_unit_conv",
+    "product_id','warehouse_id', name='uq_inv_prod_wh",
+    "product_id[]",
+    "product_name[]",
+    "products', __name__, url_prefix='/products",
+    "products.import_excel', 'Import Excel",
+    "promotionCode",
+    "promotion_code",
+    "published', '",
+    "purchase_price",
+    "q', '",
+    "quantity",
+    "quantity[]",
+    "quotations', __name__, url_prefix='/quotations",
+    "recipient_address', '",
+    "recipient_email', '",
+    "recipient_name', '",
+    "recipient_phone', '",
+    "reference', '",
+    "remember",
+    "reports', __name__, url_prefix='/reports",
+    "running_credit_balance', 0)) if line.get('running_credit_balance",
+    "running_debit_balance', 0)) if line.get('running_debit_balance",
+    "sale_price",
+    "search', '",
+    "select",
+    "settings', __name__, url_prefix='/settings",
+    "shippingAddress",
+    "shippingFee",
+    "shipping_address",
+    "shipping_fee",
+    "shop', __name__, url_prefix='",
+    "shop_api', __name__, url_prefix='/api/shop",
+    "shop_session_key",
+    "short_name', '",
+    "side_by_side', '1",
+    "sort_column', '",
+    "sort_dir', 'asc",
+    "source', '",
+    "source', 'erp",
+    "sql_file",
+    "start', '",
+    "status', '",
+    "stock_in', __name__, url_prefix='/stock-in",
+    "stock_out', __name__, url_prefix='/stock-out",
+    "stocktaking', __name__, url_prefix='/inventory/stocktaking",
+    "suppliers', __name__, url_prefix='/suppliers",
+    "sync_status', '",
+    "system', __name__, url_prefix='",
+    "tax_code', '",
+    "terms', '",
+    "title', '",
+    "to_date', '",
+    "token",
+    "tr",
+    "translations', __name__, url_prefix='",
+    "type', '",
+    "unit', 'Cái",
+    "unitPrice",
+    "unit_cost[]",
+    "unit_id",
+    "unit_item_id[]",
+    "unit_price[]",
+    "units', __name__, url_prefix='/units",
+    "url', '",
+    "user_id', 'module', name='uq_user_module",
+    "username', '",
+    "users', __name__, url_prefix='",
+    "valid_until', '",
+    "value', '",
+    "vat', __name__, url_prefix='/vat",
+    "vat_manual",
+    "vat_mode', 'grouped",
+    "vat_mode', 'per_item",
+    "vat_rate",
+    "vat_rate[]",
+    "vat_type', 'output",
+    "vi-VN",
+    "view",
+    "warehouse_id",
+    "warehouse_id', '",
+    "warehouses', __name__, url_prefix='/warehouses",
+    "website', '",
+    "Điện thoại', '",
+    "Đã hủy đơn hàng', 'success",
+    "Đã sao chép mã đơn hàng: ' + code, 'success",
+    "Đã thêm tất cả vào giỏ hàng!', 'success",
+    "Đã thêm vào danh sách yêu thích', 'success",
+    "Đã thêm yêu thích', 'success",
+    "Đã xóa khỏi danh sách yêu thích', 'info",
+    "Đã xóa yêu thích', 'info",
+    "Đăng ký thành công!",
+    "Đăng nhập thành công!",
+    "Đơn vị', 'Cái",
+    "Địa chỉ', '",
+    "đến"
+  ],
+  "missing_en": [
+    "${p.sku}",
+    "%Y-%m-%d",
+    "+",
+    ",",
+    "-",
+    ".",
+    ".bg-gray-50",
+    ".product-image-item",
+    ".select2-container",
+    "/account/unlink/google",
+    "/auth/google",
+    "/auth/login",
+    "/auth/refresh",
+    "/auth/register",
+    "/cart",
+    "/cart/add/<int:listing_id>",
+    "/cart/items",
+    "/cart/items/<int:item_id>",
+    "/cart/remove/<int:item_id>",
+    "/cart/update",
+    "/catalog",
+    "/categories",
+    "/checkout-json",
+    "/customer/password",
+    "/customer/profile",
+    "/image/delete/<int:image_id>",
+    "/listings/<int:id>/toggle",
+    "/listings/ensure",
+    "/listings/publish/<int:product_id>",
+    "/orders",
+    "/orders/<code>",
+    "/orders/<int:id>/sync",
+    "/orders/<int:order_id>/cancel",
+    "/orders/<int:order_id>/reorder",
+    "/products/<product_id>",
+    "/promotions",
+    "/promotions/validate",
+    "/sync-inventory",
+    "0",
+    "2d",
+    "ALLOW_NEGATIVE_STOCK','1",
+    "Account locked. Please try again in %(minutes)d minutes.', minutes=left), 'warning",
+    "Accounts Payable",
+    "Accounts Receivable",
+    "Auto",
+    "Business Management",
+    "CACHE_REDIS_URL",
+    "CACHE_TYPE', 'SimpleCache",
+    "COGS",
+    "COMPANY_ADDRESS', '",
+    "COMPANY_EMAIL', '",
+    "COMPANY_FAX', '",
+    "COMPANY_NAME', 'ERPmini",
+    "COMPANY_PHONE', '",
+    "COMPANY_TAX_CODE', '",
+    "CURRENCY",
+    "Cannot edit confirmed document!",
+    "Create menu",
+    "Create new menu",
+    "Customers",
+    "Có lỗi xảy ra', 'error",
+    "Cảm ơn bạn đã đánh giá!', 'success",
+    "DD/MM/YYYY",
+    "DEFAULT_VAT','10",
+    "DEFAULT_WAREHOUSE','",
+    "Edit menu: ",
+    "Email', '",
+    "GOOGLE_OAUTH_CLIENT_ID",
+    "GOOGLE_OAUTH_CLIENT_ID', '",
+    "GOOGLE_OAUTH_CLIENT_SECRET",
+    "GOOGLE_OAUTH_REDIRECT_URI",
+    "Initialize sample data",
+    "Invalid username or password!",
+    "Inventory Value",
+    "Không thể kết nối đến server', 'error",
+    "Không thể kết nối\", \"error",
+    "Không thể kết nối', 'error",
+    "Không thể sao chép tự động', 'error",
+    "Logged out successfully.",
+    "Login",
+    "Lỗi kết nối khi tạo hàng hóa.",
+    "Lỗi kết nối', 'error",
+    "Manual",
+    "Menu",
+    "Menu list",
+    "Monthly Revenue",
+    "Mã KH', '",
+    "Mã NCC', '",
+    "Mã hàng', '",
+    "Mã số thuế', '",
+    "Net Revenue",
+    "Net Revenue & COGS",
+    "New password does not match!",
+    "Nhóm hàng', '",
+    "Nhập tay",
+    "No configuration found.",
+    "Old password is incorrect!",
+    "Password",
+    "Password changed successfully!",
+    "Please enter password",
+    "Please enter username",
+    "Products",
+    "Profit",
+    "ProgramFiles', r'C:\\Program Files",
+    "ProgramFiles(x86)', r'C:\\Program Files (x86)",
+    "REDIS_URL",
+    "RGB",
+    "RGBA",
+    "Remember me",
+    "SECRET_KEY",
+    "SELECT 1",
+    "SELECT COUNT(*) FROM inventory",
+    "SELECT COUNT(*) FROM journal_entries",
+    "SELECT COUNT(*) FROM products",
+    "SELECT COUNT(*) FROM users",
+    "SESSION_PROTECTION', 'strong",
+    "SHOP_CORS_ORIGINS",
+    "Save configuration",
+    "Select date range",
+    "Suppliers",
+    "System Configuration",
+    "This month",
+    "Total Amount",
+    "Tên hàng', '",
+    "Tên khách hàng', '",
+    "Tên nhà cung cấp', '",
+    "Tính năng đang phát triển', 'info",
+    "Tự động",
+    "UPLOAD_FOLDER', 'app/static/uploads",
+    "USE_PROXY_FIX",
+    "Update",
+    "Username",
+    "VAT Payable",
+    "Vui lòng nhập nội dung đánh giá', 'warning",
+    "Ví dụ: 1 Ram = 0.2 Thùng",
+    "Ví dụ: 1 Thùng = 5 Ram",
+    "Welcome %(name)s!', name=user.full_name), 'success",
+    "X-Forwarded-For', request.remote_addr) or 'unknown",
+    "X-Requested-With",
+    "account_type', '",
+    "account_type', 'asset",
+    "accounting', __name__, url_prefix='/accounting",
+    "add",
+    "address', '",
+    "allow_negative",
+    "amount",
+    "amount', '0",
+    "api', __name__, url_prefix='/api",
+    "auth', __name__, url_prefix='/auth",
+    "backup', __name__, url_prefix='",
+    "backup_format', 'plain",
+    "bank_account', '",
+    "bank_name', '",
+    "barcode', '",
+    "box_note[]",
+    "business_changes', __name__, url_prefix='",
+    "canvas",
+    "categories', __name__, url_prefix='/categories",
+    "category",
+    "category', '",
+    "category', p.category or '",
+    "category_id",
+    "change_type', 'update",
+    "code",
+    "code', '",
+    "company', __name__, url_prefix='/company",
+    "company_accountant', '",
+    "company_address', '",
+    "company_bank_account', '",
+    "company_bank_branch",
+    "company_bank_name",
+    "company_director', '",
+    "company_email', '",
+    "company_fax', '",
+    "company_name",
+    "company_name', '",
+    "company_name', 'ERP-VIET",
+    "company_name', 'ERPmini",
+    "company_name_en', '",
+    "company_phone', '",
+    "company_tax_code', '",
+    "company_website', '",
+    "confirm_inventory",
+    "confirm_password",
+    "confirm_password', '",
+    "contact_for_price",
+    "contact_person', '",
+    "conv_factor[]",
+    "conv_unit_id[]",
+    "conversion_factor",
+    "credit', 0)) if line.get('credit",
+    "currency', 'VND",
+    "current_password",
+    "current_password', '",
+    "customerEmail",
+    "customerName",
+    "customerPhone",
+    "customer_email",
+    "customer_id', '",
+    "customer_name",
+    "customer_phone",
+    "customer_type', 'retail",
+    "customers', __name__, url_prefix='/customers",
+    "date",
+    "date', '",
+    "date', date.today().isoformat()), '%Y-%m-%d",
+    "days",
+    "debit', 0)) if line.get('debit",
+    "debt', __name__, url_prefix='/debt",
+    "delete",
+    "description",
+    "description', '",
+    "div",
+    "ecommerce', __name__, url_prefix='/ecommerce",
+    "edit",
+    "email",
+    "email', '",
+    "end', '",
+    "entry_code', '",
+    "factor",
+    "factor_item[]",
+    "factor_mode', 'base_to_from",
+    "factor_mode', 'from_to_base",
+    "fax', '",
+    "file",
+    "first.",
+    "form",
+    "from_date', '",
+    "full_name', '",
+    "has_movement",
+    "icon', 'fas fa-circle",
+    "id', '",
+    "id_token",
+    "image_file",
+    "images",
+    "input",
+    "inventory', __name__, url_prefix='/inventory",
+    "invoice_date', '",
+    "invoice_no', '",
+    "invoice_series', '",
+    "is_active",
+    "is_detail",
+    "items",
+    "key', '",
+    "label', '",
+    "lang",
+    "lang', 'vi",
+    "lang','vi",
+    "last_seen_ts",
+    "listingId",
+    "listing_id",
+    "lock_until",
+    "low_stock', '",
+    "major_unit_name",
+    "manager', '",
+    "menu_override_ids",
+    "menus', __name__, url_prefix='",
+    "message_template', '",
+    "minor_unit_name",
+    "mode",
+    "module', '",
+    "name",
+    "name', '",
+    "name', 'ERPmini",
+    "name_en', '",
+    "namespace', '",
+    "new_password",
+    "new_password', '",
+    "next",
+    "normal_balance', 'debit",
+    "note",
+    "note', '",
+    "note[]",
+    "note_item[]",
+    "noti_type', 'info",
+    "notifications', __name__, url_prefix='",
+    "ntype', '",
+    "old_password', '",
+    "opening_stock', __name__, url_prefix='/opening-stock",
+    "option",
+    "other_lang', '",
+    "other_value', '",
+    "partner_type', 'customer",
+    "password",
+    "password', '",
+    "paymentMethod",
+    "paymentStatus",
+    "payment_method', 'cash",
+    "period_date', '",
+    "phone",
+    "phone', '",
+    "picture",
+    "prefix",
+    "price_max', max); else url.searchParams.delete('price_max",
+    "price_min', min); else url.searchParams.delete('price_min",
+    "productId",
+    "product_id",
+    "product_id', '",
+    "product_id','from_unit_id','to_unit_id', name='uq_unit_conv",
+    "product_id','warehouse_id', name='uq_inv_prod_wh",
+    "product_id[]",
+    "product_name[]",
+    "products', __name__, url_prefix='/products",
+    "products.import_excel', 'Import Excel",
+    "promotionCode",
+    "promotion_code",
+    "published', '",
+    "purchase_price",
+    "q', '",
+    "quantity",
+    "quantity[]",
+    "quotations', __name__, url_prefix='/quotations",
+    "recipient_address', '",
+    "recipient_email', '",
+    "recipient_name', '",
+    "recipient_phone', '",
+    "reference', '",
+    "remember",
+    "reports', __name__, url_prefix='/reports",
+    "running_credit_balance', 0)) if line.get('running_credit_balance",
+    "running_debit_balance', 0)) if line.get('running_debit_balance",
+    "sale_price",
+    "search', '",
+    "select",
+    "settings', __name__, url_prefix='/settings",
+    "shippingAddress",
+    "shippingFee",
+    "shipping_address",
+    "shipping_fee",
+    "shop', __name__, url_prefix='",
+    "shop_api', __name__, url_prefix='/api/shop",
+    "shop_session_key",
+    "short_name', '",
+    "side_by_side', '1",
+    "sort_column', '",
+    "sort_dir', 'asc",
+    "source', '",
+    "source', 'erp",
+    "sql_file",
+    "start', '",
+    "status', '",
+    "stock_in', __name__, url_prefix='/stock-in",
+    "stock_out', __name__, url_prefix='/stock-out",
+    "stocktaking', __name__, url_prefix='/inventory/stocktaking",
+    "suppliers', __name__, url_prefix='/suppliers",
+    "sync_status', '",
+    "system', __name__, url_prefix='",
+    "tax_code', '",
+    "terms', '",
+    "title', '",
+    "to_date', '",
+    "token",
+    "tr",
+    "translations', __name__, url_prefix='",
+    "type', '",
+    "unit', 'Cái",
+    "unitPrice",
+    "unit_cost[]",
+    "unit_id",
+    "unit_item_id[]",
+    "unit_price[]",
+    "units', __name__, url_prefix='/units",
+    "url', '",
+    "user_id', 'module', name='uq_user_module",
+    "username', '",
+    "users', __name__, url_prefix='",
+    "valid_until', '",
+    "value', '",
+    "vat', __name__, url_prefix='/vat",
+    "vat_manual",
+    "vat_mode', 'grouped",
+    "vat_mode', 'per_item",
+    "vat_rate",
+    "vat_rate[]",
+    "vat_type', 'output",
+    "vi-VN",
+    "view",
+    "warehouse_id",
+    "warehouse_id', '",
+    "warehouses', __name__, url_prefix='/warehouses",
+    "website', '",
+    "Điện thoại', '",
+    "Đã hủy đơn hàng', 'success",
+    "Đã sao chép mã đơn hàng: ' + code, 'success",
+    "Đã thêm tất cả vào giỏ hàng!', 'success",
+    "Đã thêm vào danh sách yêu thích', 'success",
+    "Đã thêm yêu thích', 'success",
+    "Đã xóa khỏi danh sách yêu thích', 'info",
+    "Đã xóa yêu thích', 'info",
+    "Đăng ký thành công!",
+    "Đăng nhập thành công!",
+    "Đơn vị', 'Cái",
+    "Địa chỉ', '",
+    "đến"
+  ],
+  "hardcoded": [
+    {
+      "file": "app\\templates\\base.html",
+      "line": 213,
+      "text": "title=\"Cửa Hàng\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 221,
+      "text": "title=\"Đổi theme\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 396,
+      "text": "el.classList.remove(\"show\"); // Fallback nếu chưa khởi tạo instance",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 492,
+      "text": "return `${ymdToDmy(fromVal)} đến ${ymdToDmy(toVal)}`;",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 533,
+      "text": "rangeSeparator: \" đến \",",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 540,
+      "text": "instance.altInput.placeholder = input.placeholder || \"Chọn khoảng ngày\";",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 555,
+      "text": "input.placeholder = \"YYYY-MM-DD đến YYYY-MM-DD\";",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 616,
+      "text": "input.getAttribute(\"placeholder\") || \"Tìm kiếm...\";",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 711,
+      "text": "hidden input vào mọi form POST chưa có csrf_token #} {# 2. Patch",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 712,
+      "text": "window.fetch để tự gắn X-CSRFToken header khi POST/PUT #}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\base.html",
+      "line": 724,
+      "text": "if (form.querySelector('input[name=\"csrf_token\"]')) return; // đã có rồi",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\accounts.html",
+      "line": 24,
+      "text": "placeholder=\"Tìm số hiệu, tên TK...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\accounts.html",
+      "line": 63,
+      "text": "'asset':'Tài sản',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\accounts.html",
+      "line": 64,
+      "text": "'liability':'Nợ phải trả',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\accounts.html",
+      "line": 65,
+      "text": "'equity':'Vốn CSH',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\accounts.html",
+      "line": 67,
+      "text": "'expense':'Chi phí',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\accounts.html",
+      "line": 68,
+      "text": "'cogs':'Giá vốn',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\accounts.html",
+      "line": 69,
+      "text": "'other_income':'Thu nhập khác',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\accounts.html",
+      "line": 70,
+      "text": "'other_expense':'Chi phí khác'",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\accounts.html",
+      "line": 76,
+      "text": "{{ 'Nợ' if acc.normal_balance=='debit' else 'Có' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\account_mapping.html",
+      "line": 26,
+      "text": "Cấu hình này dùng cho bút toán tự động (phiếu nhập/xuất, thu/chi công nợ). Hệ thống sẽ đọc theo mã b",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\index.html",
+      "line": 54,
+      "text": "Tổng số phát sinh kỳ: <strong>{{ total_debit|currency }} VND</strong>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\accounting\\index.html",
+      "line": 79,
+      "text": "{{ 'Đã ghi sổ' if e.status=='posted' else e.status }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\auth\\change_password.html",
+      "line": 2,
+      "text": "page_title %}<i class=\"fas fa-key me-2\"></i>Đổi mật khẩu{% endblock %} {% block",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\auth\\change_password.html",
+      "line": 17,
+      "text": "oninvalid=\"this.setCustomValidity('Vui lòng nhập mật khẩu cũ')\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\auth\\change_password.html",
+      "line": 29,
+      "text": "oninvalid=\"this.setCustomValidity('Mật khẩu mới phải có ít nhất 6 ký tự')",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\auth\\change_password.html",
+      "line": 48,
+      "text": ">Quay lại</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\categories\\form.html",
+      "line": 15,
+      "text": "placeholder=\"Để trống tự tạo mã\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\categories\\index.html",
+      "line": 2,
+      "text": "page_title %}<i class=\"fas fa-tags me-2\"></i>Bảng nhóm hàng hóa{% endblock %} {%",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\categories\\index.html",
+      "line": 54,
+      "text": "onsubmit=\"return confirm('Vô hiệu hóa nhóm {{ c.code }}?')\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\categories\\index.html",
+      "line": 65,
+      "text": "Chưa có nhóm hàng nào",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\customers\\index.html",
+      "line": 27,
+      "text": "placeholder=\"Tìm theo mã, tên, SĐT, MST...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\customers\\index.html",
+      "line": 82,
+      "text": "onsubmit=\"return confirm('Xóa khách hàng {{ c.code }}?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 191,
+      "text": "hết kho",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 224,
+      "text": "có hàng sắp hết",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 238,
+      "text": "><i class=\"fas fa-arrow-circle-down text-success me-2\"></i>Phiếu nhập",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 239,
+      "text": "gần đây</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 244,
+      "text": ">Xem tất cả</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 285,
+      "text": "><i class=\"fas fa-arrow-circle-up text-primary me-2\"></i>Phiếu xuất",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 286,
+      "text": "gần đây</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 291,
+      "text": ">Xem tất cả</a>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 355,
+      "text": "console.error(\"Lỗi parse dashboard data:\", err);",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\dashboard\\index.html",
+      "line": 448,
+      "text": "\" đ\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\debt\\pay.html",
+      "line": 53,
+      "text": "class=\"btn btn-outline-secondary\"><i class=\"fas fa-arrow-left me-1\"></i>Quay lại</a>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\debt\\summary.html",
+      "line": 10,
+      "text": "Phải thu (KH)",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\debt\\summary.html",
+      "line": 14,
+      "text": "Phải trả (NCC)",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\debt\\summary.html",
+      "line": 18,
+      "text": "Tổng: {{ summary_data|sum(attribute='balance')|round(0)|int|currency }} VND",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\ecommerce\\listings.html",
+      "line": 28,
+      "text": "placeholder=\"Tìm hàng hóa, sản phẩm...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\ecommerce\\listings.html",
+      "line": 113,
+      "text": "{{ 'Ẩn' if row.is_published else 'Bật' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\ecommerce\\listings.html",
+      "line": 121,
+      "text": "Chưa có listing web. Bấm \"Tạo listing từ ERP\" để ánh xạ sản phẩm ERP ra web.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\ecommerce\\orders.html",
+      "line": 16,
+      "text": "placeholder=\"Tìm mã đơn, tên khách, SĐT...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\ecommerce\\orders_detail.html",
+      "line": 4,
+      "text": "E-commerce - Chi tiết đơn online {% endblock %} {% block content %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\ecommerce\\orders_detail.html",
+      "line": 12,
+      "text": "Ngày: {{ order.created_at|dateformat }} | Khách: {{ order.customer_name",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\ecommerce\\orders_detail.html",
+      "line": 102,
+      "text": "Chưa có dòng hàng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\inventory\\index.html",
+      "line": 55,
+      "text": "placeholder=\"Tìm mã, tên hàng...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\edit.html",
+      "line": 10,
+      "text": "Sửa tồn đầu kỳ — {{ record.product.code if record.product else '' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\edit.html",
+      "line": 83,
+      "text": "value=\"{{ record.note or '' }}\" placeholder=\"Ghi chú (tùy chọn)\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\form.html",
+      "line": 2,
+      "text": "block page_title %}<i class=\"fas fa-boxes me-2\"></i>Nhập tồn đầu kỳ{% endblock",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\form.html",
+      "line": 13,
+      "text": ">Ngày đầu kỳ <span class=\"text-danger\">*</span></label",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\form.html",
+      "line": 45,
+      "text": "Nhập tồn đầu kỳ để thiết lập số dư ban đầu. Sau khi nhập, nhấn",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\form.html",
+      "line": 48,
+      "text": "hình theo từng sản phẩm).",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\form.html",
+      "line": 62,
+      "text": "><i class=\"fas fa-list me-2\"></i>Danh sách hàng hóa tồn đầu kỳ</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\form.html",
+      "line": 75,
+      "text": "Hàng hóa (chọn) <span class=\"text-danger\">*</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\form.html",
+      "line": 126,
+      "text": "-- Chọn hàng hóa (hoặc nhập tên ở cột bên cạnh) --",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\form.html",
+      "line": 144,
+      "text": "placeholder=\"Tên hàng (tự tạo SKU nếu chưa có)\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\form.html",
+      "line": 189,
+      "text": "placeholder=\"Ghi chú...\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\index.html",
+      "line": 16,
+      "text": "onsubmit=\"return confirm('Cập nhật TẤT CẢ tồn đầu kỳ CHƯA ĐƯỢC POST vào tồn kho?\\n\\nLưu ý: Sau khi c",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\index.html",
+      "line": 32,
+      "text": "placeholder=\"Tìm mã hàng, tên hàng...\" autocomplete=\"off\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\index.html",
+      "line": 85,
+      "text": "class=\"btn btn-sm btn-outline-primary py-0 px-2\" title=\"Sửa\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\index.html",
+      "line": 89,
+      "text": "onsubmit=\"return confirm('Cập nhật dòng này vào tồn kho?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\index.html",
+      "line": 95,
+      "text": "onsubmit=\"return confirm('Xóa dòng tồn đầu kỳ này?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\index.html",
+      "line": 108,
+      "text": "Chưa có tồn đầu kỳ. <a href=\"{{ url_for('opening_stock.create') }}\">Nhập ngay</a>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\opening_stock\\index.html",
+      "line": 139,
+      "text": "Cột bắt buộc: <strong>Mã hàng, Số lượng, Giá vốn</strong>.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note.html",
+      "line": 12,
+      "text": "Số: {{ stock_out.code }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note.html",
+      "line": 21,
+      "text": "Ngày: {{ stock_out.date.strftime('%d tháng %m năm %Y') if stock_out.date",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note.html",
+      "line": 29,
+      "text": "Khách hàng:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note.html",
+      "line": 38,
+      "text": "Địa chỉ: {{ stock_out.customer.address if stock_out.customer else '' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note.html",
+      "line": 102,
+      "text": "Thuế GTGT : {{ stock_out.vat_rate_grouped|number(0) }}%",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note.html",
+      "line": 174,
+      "text": "Số tiền bằng chữ: {{ stock_out.total_amount|so_thanh_chu }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note_browser.html",
+      "line": 12,
+      "text": "Số: {{ stock_out.code }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note_browser.html",
+      "line": 21,
+      "text": "Ngày: {{ stock_out.date.strftime('%d tháng %m năm %Y') if stock_out.date else '' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note_browser.html",
+      "line": 28,
+      "text": "Khách hàng:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note_browser.html",
+      "line": 34,
+      "text": "Địa chỉ: {{ stock_out.customer.address if stock_out.customer else '' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note_browser.html",
+      "line": 96,
+      "text": "Thuế GTGT : {{ stock_out.vat_rate_grouped|number(0) }}%",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\delivery_note_browser.html",
+      "line": 168,
+      "text": "Số tiền bằng chữ: {{ stock_out.total_amount|so_thanh_chu }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation.html",
+      "line": 8,
+      "text": "MST: {{ company.tax_code }}{% if company.phone %} | ĐT: {{ company.phone",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation.html",
+      "line": 13,
+      "text": "Số: <strong>{{ quotation.code }}</strong><br />",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation.html",
+      "line": 14,
+      "text": "Từ ngày: {{ quotation.date|dateformat }}<br />",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation.html",
+      "line": 15,
+      "text": "Đến ngày: {{ quotation.valid_until|dateformat if quotation.valid_until",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation.html",
+      "line": 28,
+      "text": "Kính gửi:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation.html",
+      "line": 31,
+      "text": "quotation.customer else 'Quý khách hàng') }}</strong",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation.html",
+      "line": 37,
+      "text": "Địa chỉ: {{ quotation.recipient_address or (quotation.customer.address if",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation.html",
+      "line": 107,
+      "text": "Thuế GTGT{% if quotation.vat_mode == 'grouped' %} ({{",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation_browser.html",
+      "line": 9,
+      "text": "MST: {{ company.tax_code }}{% if company.phone %} | ĐT: {{ company.phone }}{% endif %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation_browser.html",
+      "line": 13,
+      "text": "Số: <strong>{{ quotation.code }}</strong><br />",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation_browser.html",
+      "line": 14,
+      "text": "Từ ngày: {{ quotation.date|dateformat }}<br />",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation_browser.html",
+      "line": 15,
+      "text": "Đến ngày: {{ quotation.valid_until|dateformat if quotation.valid_until else '-' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation_browser.html",
+      "line": 27,
+      "text": "Kính gửi:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation_browser.html",
+      "line": 33,
+      "text": "Địa chỉ: {{ quotation.recipient_address or (quotation.customer.address if quotation.customer else ''",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\quotation_browser.html",
+      "line": 100,
+      "text": "Thuế GTGT{% if quotation.vat_mode == 'grouped' %} ({{",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\stock_in.html",
+      "line": 11,
+      "text": "Mẫu số: 01-VT<br>QĐ số 48/2006/QĐ-BTC",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\stock_in_browser.html",
+      "line": 11,
+      "text": "Mẫu số: 01-VT<br>QĐ số 48/2006/QĐ-BTC",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\stock_out.html",
+      "line": 44,
+      "text": "Ngày {{ stock_out.date.strftime('%d') if stock_out.date else '' }} tháng {{ stock_out.date.strftime(",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\stock_out.html",
+      "line": 128,
+      "text": "Ngày {{ stock_out.date.strftime('%d') if stock_out.date else '' }} tháng {{ stock_out.date.strftime(",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\stock_out_browser.html",
+      "line": 43,
+      "text": "Ngày {{ stock_out.date.strftime('%d') if stock_out.date else '' }} tháng {{ stock_out.date.strftime(",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\print\\stock_out_browser.html",
+      "line": 127,
+      "text": "Ngày {{ stock_out.date.strftime('%d') if stock_out.date else '' }} tháng {{ stock_out.date.strftime(",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 14,
+      "text": "Mã hàng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 22,
+      "text": "placeholder=\"Để trống để tự tạo mã\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 28,
+      "text": "Tên hàng hóa",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 143,
+      "text": "Hình sản phẩm",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 149,
+      "text": "Có thể chọn nhiều ảnh.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 202,
+      "text": "Cho phép xuất âm tồn kho",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 299,
+      "text": "const text = $(this).find('option:selected').data('name') || 'ĐVT gốc';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 409,
+      "text": "'<i class=\"fas fa-spinner fa-spin me-1\"></i>Đang nén ảnh...';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 470,
+      "text": "const baseUnitName = $('#unitSel').find('option:selected').data('name') || 'ĐVT gốc';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\form.html",
+      "line": 532,
+      "text": "if (!confirm('Xóa ảnh này?')) {",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\index.html",
+      "line": 43,
+      "text": "placeholder=\"Tìm theo mã, tên, mã vạch...\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\index.html",
+      "line": 140,
+      "text": ">Hoạt động</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\index.html",
+      "line": 155,
+      "text": "onsubmit=\"return confirm('Xóa hàng hóa {{ p.code }}?')\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\index.html",
+      "line": 166,
+      "text": "Không có dữ liệu",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\index.html",
+      "line": 177,
+      "text": ">Hiển thị {{ products.items|length }} / {{ products.total }} bản ghi</small>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\products\\index.html",
+      "line": 223,
+      "text": "để biết định dạng đúng.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\quotations\\detail.html",
+      "line": 104,
+      "text": "onsubmit=\"return confirm('Chuyển báo giá này thành phiếu xuất nháp?');\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\quotations\\form.html",
+      "line": 46,
+      "text": "placeholder=\"VD: Quý khách hàng, Công ty ABC...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\quotations\\index.html",
+      "line": 16,
+      "text": "placeholder=\"Tìm số báo giá, ghi chú...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\quotations\\index.html",
+      "line": 65,
+      "text": "{{ q.recipient_name or (q.customer.name if q.customer else 'Báo giá chung') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\quotations\\index.html",
+      "line": 79,
+      "text": "title=\"In báo giá\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\quotations\\index.html",
+      "line": 108,
+      "text": "$('#customerSel').select2({ theme: 'bootstrap-5', placeholder: '-- Tất cả khách hàng --', allowClear",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\balance_sheet.html",
+      "line": 10,
+      "text": ">Làm mới</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\customer_detail.html",
+      "line": 2,
+      "text": "endblock %} {% block page_title %}<i class=\"fas fa-user me-2\"></i>Chi tiết mua",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\customer_detail.html",
+      "line": 3,
+      "text": "hàng: {{ customer.name }}{% endblock %} {% block content %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\customer_detail.html",
+      "line": 82,
+      "text": "này)",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\customer_detail.html",
+      "line": 118,
+      "text": "><i class=\"fas fa-list me-2\"></i>Danh sách đơn hàng kỳ : {{ from_date }} →",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\customer_detail.html",
+      "line": 186,
+      "text": "Không có đơn hàng trong kỳ này",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\detail_ledger.html",
+      "line": 58,
+      "text": "{{ 'Khách hàng' if account_code == '131' else 'Nhà cung cấp' }}:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\general_ledger.html",
+      "line": 67,
+      "text": ">{{ opening_balance:,.0f }} ₫ (Nợ)</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\general_ledger.html",
+      "line": 71,
+      "text": ">{{ opening_balance:,.0f }} ₫ (Có)</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\general_ledger.html",
+      "line": 103,
+      "text": "title=\"Xem chi tiết chứng từ\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\general_ledger.html",
+      "line": 142,
+      "text": ">{{ closing_balance:,.0f }} ₫ (Nợ)</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\general_ledger.html",
+      "line": 156,
+      "text": ">Xem sổ cái tài khoản khác:</label",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\general_ledger.html",
+      "line": 163,
+      "text": "placeholder=\"Nhập mã TK (VD: 131, 331, 511...)\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\income_statement.html",
+      "line": 98,
+      "text": "99/2025/TT-BTC. Số liệu chỉ bao gồm các nghiệp vụ đã được",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\realtime_inventory.html",
+      "line": 83,
+      "text": "placeholder=\"Tìm mã, tên hàng...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\stock_movement.html",
+      "line": 58,
+      "text": "Tổng <strong>{{ total }}</strong> mặt hàng &mdash;",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\stock_movement.html",
+      "line": 60,
+      "text": "({{ per_page }} dòng/trang)",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\stock_movement.html",
+      "line": 157,
+      "text": "Không có dữ liệu xuất nhập trong kỳ này",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\stock_movement.html",
+      "line": 166,
+      "text": "Tổng cộng toàn kỳ",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\reports\\stock_movement.html",
+      "line": 187,
+      "text": "Hiển thị {{ (page - 1) * per_page + 1 }}–{{ [page * per_page, total]|min }} / {{ total }} mặt hàng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\business_changes.html",
+      "line": 68,
+      "text": "onsubmit=\"return confirm('Xóa thông báo [{{ c.title }}]?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\business_changes.html",
+      "line": 78,
+      "text": "Chưa có thông báo thay đổi nghiệp vụ nào.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\company.html",
+      "line": 149,
+      "text": "Cho phép xuất hàng âm tồn kho (mặc định cho tất cả SP mới)",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 3,
+      "text": "Dữ liệu{% endblock %} {% block content %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 51,
+      "text": "Sao lưu dữ liệu",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 55,
+      "text": "Thực hiện ngay một bản backup định dạng .sql hoặc .dump. File sẽ được lưu",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 56,
+      "text": "vào thư mục <code>backups/</code> cùng thư mục gốc web. Yêu cầu máy chủ đã cài",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 77,
+      "text": "Phục hồi dữ liệu",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 81,
+      "text": "Cảnh báo: phục hồi sẽ ghi đè dữ liệu hiện tại. Nên backup trước khi",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 82,
+      "text": "restore. Yêu cầu <code>psql</code> / <code>pg_restore</code> trong PATH.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 83,
+      "text": "Nhận file <code>.sql</code> hoặc <code>.dump</code>.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 102,
+      "text": "onclick=\"return confirm('Phục hồi sẽ ghi đè dữ liệu hiện tại. Tiếp tục?');\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 117,
+      "text": "Kiểm tra kết nối DB và khả năng đọc các bảng trọng yếu sau backup/restore.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\db_tools.html",
+      "line": 130,
+      "text": "Danh sách backup",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 58,
+      "text": "Module (nguồn quyết định hiển thị)",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 119,
+      "text": "Menu hiện khi user có quyền <b>Xem</b> module này",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 140,
+      "text": "class=\"btn btn-sm btn-outline-primary py-0 px-2 me-1\" title=\"Sửa\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 146,
+      "text": "onsubmit=\"return confirm('Xóa menu [{{ m.code }}] {{ m.name }}?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 153,
+      "text": "disabled title=\"{{ m.children|length }} menu con, không thể xóa\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 162,
+      "text": "Chưa có menu nào.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 177,
+      "text": "Hiển thị menu được tự động xác định bởi <b>Module</b> + quyền xem của từng user (Cài đặt → Quản lý u",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 190,
+      "text": "Xem trước menu mặc định — Chọn vai trò để xem menu mà vai trò đó <b>thấy theo quyền mặc định</b>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 191,
+      "text": "(quyền thực tế của từng user có thể khác, tùy chỉnh tại Quản lý users).",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 198,
+      "text": "'admin': 'Quản trị viên',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 199,
+      "text": "'accountant': 'Kế toán viên',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 200,
+      "text": "'warehouse': 'Thủ kho',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 201,
+      "text": "'user': 'Người dùng'",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 233,
+      "text": "Vai trò <strong id=\"previewRoleLabel\"></strong> sẽ thấy các menu sau:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 240,
+      "text": "Chọn một vai trò ở trên để xem trước menu",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 300,
+      "text": "admin: 'Quản trị viên (admin)',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 301,
+      "text": "accountant: 'Kế toán viên (accountant)',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 302,
+      "text": "warehouse: 'Thủ kho (warehouse)',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 303,
+      "text": "user: 'Người dùng (user)',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 340,
+      "text": ": `<div class=\"px-3 py-1 text-muted small fst-italic\">Không có menu con</div>`;",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menus.html",
+      "line": 359,
+      "text": "Vai trò này không thấy menu nào",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menu_form.html",
+      "line": 38,
+      "text": "required placeholder=\"VD: Hàng hóa, Phiếu nhập kho\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menu_form.html",
+      "line": 59,
+      "text": "Module chức năng <span class=\"text-danger\">*</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menu_form.html",
+      "line": 137,
+      "text": "Để ẩn/hiện menu riêng cho một user cụ thể, dùng mục <i>Menu hiển thị</i> trong",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menu_form.html",
+      "line": 149,
+      "text": "Hiển thị menu này trong thanh điều hướng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\menu_form.html",
+      "line": 163,
+      "text": "{{ 'Cập nhật menu' if menu else 'Tạo menu' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 9,
+      "text": "Mẫu thông báo — <small class=\"text-muted\">Chỉnh sửa nội dung thông báo mà không cần sửa code</small>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 21,
+      "text": "placeholder=\"Tìm mã, tên, nội dung...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 106,
+      "text": "data-id=\"{{ n.id }}\" title=\"Xem trước\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 110,
+      "text": "class=\"btn btn-sm btn-outline-primary py-0 px-2\" title=\"Sửa\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 116,
+      "text": "onsubmit=\"return confirm('Xóa mẫu thông báo [{{ n.code }}]?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 127,
+      "text": "Không tìm thấy mẫu thông báo phù hợp.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 129,
+      "text": "Chưa có mẫu thông báo nào.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 141,
+      "text": "Tổng: {{ notifications|length }} mẫu thông báo",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 142,
+      "text": "· Biến động: <code>{ten_bien}</code> sẽ được thay thế tự động khi hiển thị.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 143,
+      "text": "Ví dụ: <code>{name}</code>, <code>{code}</code>, <code>{amount}</code>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notifications.html",
+      "line": 177,
+      "text": "this.textContent = el.classList.contains('show') ? 'thu gọn' : 'xem đủ';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 5,
+      "text": "{{ 'Sửa: ' + notif.code if notif else 'Thêm mẫu thông báo mới' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 26,
+      "text": "Mã thông báo <span class=\"text-danger\">*</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 40,
+      "text": "('success', '✓ Success (thành công)', 'success'),",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 41,
+      "text": "('info',    'ℹ Info (thông tin)',     'info'),",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 42,
+      "text": "('warning', '⚠ Warning (cảnh báo)',  'warning'),",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 43,
+      "text": "('error',   '✗ Error (lỗi)',         'danger'),",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 67,
+      "text": "Tên thông báo <span class=\"text-danger\">*</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 71,
+      "text": "required placeholder=\"VD: Tạo phiếu nhập thành công\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 77,
+      "text": "Nội dung mẫu thông báo <span class=\"text-danger\">*</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 82,
+      "text": "placeholder=\"VD: Phiếu nhập {code} đã được tạo thành công!\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 85,
+      "text": "Dùng <code>{tên_biến}</code> cho các giá trị động.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 86,
+      "text": "Ví dụ: <code>{code}</code> <code>{name}</code> <code>{amount}</code>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 112,
+      "text": "Kích hoạt mẫu thông báo này",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 126,
+      "text": "{{ 'Cập nhật thông báo' if notif else 'Lưu mẫu thông báo' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 160,
+      "text": "Phiếu nhập <strong>{code}</strong> đã xác nhận!<br>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 161,
+      "text": "Tồn kho đã được cập nhật.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 164,
+      "text": "Cảnh báo: <strong>{name}</strong> còn<br>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 168,
+      "text": "Công nợ của <strong>{partner_name}</strong><br>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 169,
+      "text": "đã quá hạn <strong>{days}</strong> ngày!<br>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 170,
+      "text": "Số dư: <strong>{balance}</strong> VND",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\notification_form.html",
+      "line": 202,
+      "text": "pText.textContent = 'Nhập nội dung mẫu để xem trước...';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\system.html",
+      "line": 66,
+      "text": "('PREFIX_STOCK_IN',  'Phiếu nhập kho',  'NK'),",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\system.html",
+      "line": 67,
+      "text": "('PREFIX_STOCK_OUT', 'Phiếu xuất kho',  'XK'),",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\system.html",
+      "line": 68,
+      "text": "('PREFIX_PAYMENT',   'Phiếu thu',        'PT'),",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\system.html",
+      "line": 69,
+      "text": "('PREFIX_RECEIPT',   'Phiếu chi',        'PC'),",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\system.html",
+      "line": 70,
+      "text": "('PREFIX_JOURNAL',   'Bút toán',         'BT'),",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\translations.html",
+      "line": 44,
+      "text": "class=\"btn btn-sm {{ 'btn-primary' if lang=='vi' else 'btn-outline-primary' }}\">Tiếng Việt</a>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\translations.html",
+      "line": 81,
+      "text": "data-key=\"{{ key }}\" title=\"Lưu\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\translations.html",
+      "line": 86,
+      "text": "onsubmit=\"return confirm('Xóa bản dịh [{{ key }}]?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\translations.html",
+      "line": 106,
+      "text": "data-key=\"{{ key }}\" title=\"Lưu\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\translations.html",
+      "line": 111,
+      "text": "onsubmit=\"return confirm('Xóa bản dịh [{{ key }}]?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\translations_scan.html",
+      "line": 44,
+      "text": "Tất cả key đang dùng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\translations_scan.html",
+      "line": 49,
+      "text": "Thiếu tiếng Việt ({{ missing_vi|length }})",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\translations_scan.html",
+      "line": 54,
+      "text": "Thiếu tiếng Anh ({{ missing_en|length }})",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\unit_conversions.html",
+      "line": 61,
+      "text": "onsubmit=\"return confirm('Xóa quy đổi này?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\unit_conversion_form.html",
+      "line": 5,
+      "text": "{{ 'Sửa quy đổi đơn vị' if row else 'Thêm quy đổi đơn vị' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\unit_conversion_form.html",
+      "line": 59,
+      "text": "1 đơn vị gốc = N đơn vị quy đổi",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\unit_conversion_form.html",
+      "line": 62,
+      "text": "1 đơn vị quy đổi = N đơn vị gốc",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\unit_conversion_form.html",
+      "line": 74,
+      "text": "Công thức: 1 <strong>?</strong> = <strong>?</strong> <strong>?</strong>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\unit_conversion_form.html",
+      "line": 120,
+      "text": "$('#formulaHint').html('Công thức: 1 <strong>' + baseName + '</strong> = <strong>' + factor + '</str",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\unit_conversion_form.html",
+      "line": 123,
+      "text": "$('#formulaHint').html('Công thức: 1 <strong>' + fromName + '</strong> = <strong>' + factor + '</str",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\users.html",
+      "line": 2,
+      "text": "block page_title %}<i class=\"fas fa-users-cog me-2\"></i>Quản lý người dùng{%",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\users.html",
+      "line": 38,
+      "text": "{{ {'admin':'Quản trị','user':'Người dùng','accountant':'Kế",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\users.html",
+      "line": 48,
+      "text": ">Hoạt động</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\user_form.html",
+      "line": 29,
+      "text": "'admin':'Quản trị',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\user_form.html",
+      "line": 30,
+      "text": "'accountant':'Kế toán',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\user_form.html",
+      "line": 31,
+      "text": "'warehouse':'Thủ kho',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\user_form.html",
+      "line": 32,
+      "text": "'user':'Người dùng'",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\settings\\user_form.html",
+      "line": 45,
+      "text": "{{ 'required' if not user }} minlength=\"8\" placeholder=\"Tối thiểu 8 ký tự, có hoa/thường/số/ký tự đặ",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\account.html",
+      "line": 355,
+      "text": "const labels = ['Yếu', 'Trung bình', 'Khá', 'Mạnh'];",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\account.html",
+      "line": 370,
+      "text": "matchText.textContent = '✓ Mật khẩu khớp';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\account.html",
+      "line": 373,
+      "text": "matchText.textContent = '✗ Mật khẩu không khớp';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 94,
+      "text": "><i class=\"fas fa-truck-fast text-accent text-sm\"></i> Miễn phí vận",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 95,
+      "text": "chuyển đơn từ 500.000đ</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 98,
+      "text": "><i class=\"fas fa-file-invoice text-accent text-sm\"></i> Xuất hóa",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 99,
+      "text": "đơn VAT</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 102,
+      "text": "><i class=\"fas fa-clock text-accent text-sm\"></i> Giao hàng 24h nội",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 103,
+      "text": "thành</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 112,
+      "text": "current_user.name else 'Tài khoản' }}</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 117,
+      "text": "><i class=\"fas fa-sign-out-alt\"></i> Đăng xuất</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 123,
+      "text": "><i class=\"fas fa-user\"></i> Đăng nhập</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 128,
+      "text": ">Đăng ký</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 162,
+      "text": ">Văn phòng phẩm B2B</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 177,
+      "text": "placeholder=\"Tìm kiếm sản phẩm...\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 232,
+      "text": "placeholder=\"Tìm kiếm sản phẩm...\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 254,
+      "text": ">Trang chủ</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 266,
+      "text": ">Khuyến mãi</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 310,
+      "text": "{{ current_user.name or 'Khách hàng' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 322,
+      "text": "><span>Trang chủ</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 326,
+      "text": "Danh mục",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 343,
+      "text": "><span>Tài khoản</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 349,
+      "text": "><span>Đơn hàng</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 354,
+      "text": "><i class=\"fas fa-sign-out-alt w-5\"></i><span>Đăng xuất</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 361,
+      "text": "><span>Đăng nhập</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 367,
+      "text": "><span>Đăng ký</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 411,
+      "text": "Chuyên cung cấp văn phòng phẩm và thiết bị văn phòng chính hãng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 412,
+      "text": "cho doanh nghiệp.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 431,
+      "text": ">Văn phòng phẩm</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 436,
+      "text": ">Máy in & Mực</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 441,
+      "text": ">Thiết bị văn phòng</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 451,
+      "text": ">Chính sách vận chuyển</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 456,
+      "text": ">Đổi trả hàng</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 461,
+      "text": ">Xuất hóa đơn VAT</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 483,
+      "text": "© 2024 {{ app_name }}. Tất cả các quyền được bảo lưu.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\base.html",
+      "line": 544,
+      "text": "badge.classList.remove(\"hidden\"); // Hiện badge lên nếu trước đó giỏ hàng trống",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 18,
+      "text": "><span class=\"text-center\">Số lượng</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 19,
+      "text": "><span class=\"text-right\">Thành tiền</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 40,
+      "text": "Mã: {{ item.product.code if item.product else '' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 49,
+      "text": ">Đơn giá</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 57,
+      "text": ">Số lượng</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 87,
+      "text": ">Thành tiền</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 112,
+      "text": "><i class=\"fas fa-arrow-left mr-2\"></i>Tiếp tục mua sắm</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 137,
+      "text": "><span class=\"text-green-600\">Miễn phí</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 152,
+      "text": "><i class=\"fas fa-lock mr-2\"></i>Tiến hành thanh toán</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 156,
+      "text": "><span><i class=\"fas fa-file-invoice mr-1\"></i>Xuất VAT</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 157,
+      "text": "><span><i class=\"fas fa-undo mr-1\"></i>Đổi trả 7 ngày</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 187,
+      "text": "Hãy thêm sản phẩm vào giỏ để tiến hành đặt hàng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 192,
+      "text": "><i class=\"fas fa-store\"></i>Mua sắm ngay</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\cart.html",
+      "line": 252,
+      "text": "if (confirm(\"Xóa sản phẩm khỏi giỏ hàng?\")) {",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 15,
+      "text": "{{ checkout_step(done=True, active=False, num=1, label='Giỏ hàng', icon='fa-shopping-cart') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 17,
+      "text": "{{ checkout_step(done=False, active=True, num=2, label='Thông tin', icon='fa-user') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 19,
+      "text": "{{ checkout_step(done=False, active=False, num=3, label='Hoàn tất', icon='fa-check-circle') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 40,
+      "text": "value=\"{{ current_user.name if is_web_customer() else '' }}\" placeholder=\"Nguyễn Văn A\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 55,
+      "text": "value=\"{{ current_user.company_name if is_web_customer() else '' }}\" placeholder=\"Công ty TNHH...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 60,
+      "text": "placeholder=\"Số nhà, đường, phường, quận, tỉnh/thành...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 203,
+      "text": "{{ trust_badge('fa-truck-fast', '#d4a373', 'Giao 24h', 'Nội thành HCM/HN') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 204,
+      "text": "{{ trust_badge('fa-undo', '#f59e0b', 'Đổi trả 7 ngày', 'Lỗi sản xuất') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 205,
+      "text": "{{ trust_badge('fa-file-invoice', '#0f3b2c', 'Xuất VAT', 'Theo yêu cầu DN') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 206,
+      "text": "{{ trust_badge('fa-headset', '#7b1fa2', 'Hỗ trợ B2B', 'Báo giá, hợp đồng') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\checkout.html",
+      "line": 231,
+      "text": "shippingDisplay.textContent = 'Miễn phí';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\login.html",
+      "line": 72,
+      "text": "Chưa có tài khoản?",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_detail.html",
+      "line": 3,
+      "text": "erp_badge %} {% block title %}Chi tiết đơn hàng #{{ order.code }}{% endblock %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_detail.html",
+      "line": 11,
+      "text": ">Trang chủ</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_detail.html",
+      "line": 15,
+      "text": ">Đơn hàng của tôi</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_detail.html",
+      "line": 53,
+      "text": "'processing' %}Đang xử lý {% elif order.status == 'shipping'",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_detail.html",
+      "line": 54,
+      "text": "%}Đang giao {% elif order.status == 'completed' %}Hoàn thành {%",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_detail.html",
+      "line": 55,
+      "text": "else %}Đã hủy{% endif %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_detail.html",
+      "line": 134,
+      "text": "{{ item.product_name_snapshot or 'Sản phẩm' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_history.html",
+      "line": 15,
+      "text": "Tất cả",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_history.html",
+      "line": 210,
+      "text": "if (!confirm('Bạn có chắc muốn hủy đơn hàng này?')) return;",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\order_success.html",
+      "line": 91,
+      "text": "Phiếu xuất kho sẽ được tạo. Bạn sẽ nhận email xác nhận sớm.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 11,
+      "text": ">Trang chủ</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 15,
+      "text": ">Sản phẩm</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 88,
+      "text": "><i class=\"fas fa-exclamation-triangle mr-1\"></i>Sắp hết</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 93,
+      "text": "><i class=\"fas fa-times-circle mr-1\"></i>Hết hàng</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 98,
+      "text": "><i class=\"fas fa-check-circle mr-1\"></i>Chính hãng</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 110,
+      "text": ">Mã: {{ listing.product.code if listing.product else 'N/A' }}</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 123,
+      "text": "Vui lòng liên hệ để được báo giá tốt nhất",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 157,
+      "text": ">({{ listing.stock_cached }} sản phẩm)</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 168,
+      "text": ">Số lượng</label",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 198,
+      "text": "Thêm vào giỏ hàng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 220,
+      "text": "{{ trust_badge('fa-truck-fast', '#d4a373', 'Giao hàng 24h', 'Nội thành",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 221,
+      "text": "HCM/HN') }} {{ trust_badge('fa-file-invoice', '#0f3b2c', 'Xuất VAT',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 222,
+      "text": "'Theo yêu cầu doanh nghiệp') }} {{ trust_badge('fa-undo-alt', '#f59e0b',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 223,
+      "text": "'Đổi trả 7 ngày', 'Lỗi sản xuất') }} {{ trust_badge('fa-shield-alt',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 224,
+      "text": "'#10b981', 'Bảo hành', '12 tháng chính hãng') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 239,
+      "text": "Mô tả sản phẩm",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 246,
+      "text": "Thông số kỹ thuật",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 253,
+      "text": "Đánh giá ({{ reviews|length if reviews else 0 }})",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 260,
+      "text": "Chính sách & Vận chuyển",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 267,
+      "text": "{{ listing.web_description or listing.product.description or 'Chưa có mô",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 268,
+      "text": "tả chi tiết cho sản phẩm này.'|safe }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 295,
+      "text": "listing.product else 'Cái') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 302,
+      "text": "listing.product.origin else 'Việt Nam' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 312,
+      "text": "{{ listing.stock_cached }} sản phẩm",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 342,
+      "text": "Viết đánh giá của bạn",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 361,
+      "text": "placeholder=\"Chia sẻ cảm nhận của bạn về sản phẩm...\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 367,
+      "text": "Gửi đánh giá",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 375,
+      "text": "Vui lòng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 379,
+      "text": ">đăng nhập</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 381,
+      "text": "để viết đánh giá",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 396,
+      "text": ">{{ review.customer_name or 'Khách hàng' }}</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 408,
+      "text": "else 'Vừa xong' }}</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 417,
+      "text": "Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá sản phẩm này!",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 431,
+      "text": "Miễn phí giao hàng cho đơn từ 500.000đ. Giao hàng trong 24h tại nội",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 432,
+      "text": "thành TP.HCM và Hà Nội. Các tỉnh khác nhận hàng sau 2-3 ngày.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 439,
+      "text": "Đổi trả miễn phí trong vòng 7 ngày nếu sản phẩm có lỗi từ nhà sản",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 440,
+      "text": "xuất. Sản phẩm phải còn nguyên tem mác, chưa qua sử dụng.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 447,
+      "text": "Xuất hóa đơn GTGT theo yêu cầu. Vui lòng cung cấp thông tin công ty",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 448,
+      "text": "(MST, địa chỉ) khi đặt hàng. Hóa đơn được gửi cùng hàng hoặc email",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 456,
+      "text": "Liên hệ hotline <strong class=\"text-primary\">1800 1234</strong> hoặc",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 457,
+      "text": "email <strong class=\"text-primary\">kinhdoanh@vpp.vn</strong> để được",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 458,
+      "text": "báo giá theo số lượng và ký hợp đồng khung.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\product_detail.html",
+      "line": 654,
+      "text": "submitBtn.innerHTML = '<i class=\"fas fa-spinner fa-spin mr-2\"></i>Đang gửi...';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\register.html",
+      "line": 72,
+      "text": "Đã có tài khoản?",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\register.html",
+      "line": 106,
+      "text": "const labels = ['Yếu', 'Trung bình', 'Khá', 'Mạnh'];",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\register.html",
+      "line": 123,
+      "text": "matchText.textContent = '✓ Mật khẩu khớp';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\register.html",
+      "line": 126,
+      "text": "matchText.textContent = '✗ Mật khẩu không khớp';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\spa_test.html",
+      "line": 87,
+      "text": "Xin chào, <strong id=\"user-name\"></strong>!",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\spa_test.html",
+      "line": 158,
+      "text": "return { ok: false, message: 'Lỗi kết nối' };",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\spa_test.html",
+      "line": 280,
+      "text": "grid.innerHTML = '<p style=\"color: #666;\">Không có sản phẩm nào</p>';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\spa_test.html",
+      "line": 342,
+      "text": "totalDiv.innerHTML = `Tổng cộng: <span style=\"color: #0f3b2c;\">${formatPrice(data.data.subtotal)}</s",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\spa_test.html",
+      "line": 367,
+      "text": "list.innerHTML = '<p style=\"color: #666;\">Vui lòng đăng nhập để xem đơn hàng</p>';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\spa_test.html",
+      "line": 379,
+      "text": "list.innerHTML = '<p style=\"color: #666;\">Chưa có đơn hàng nào</p>';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\track_order.html",
+      "line": 149,
+      "text": "placeholder=\"Dán link tra cứu hoặc mã đơn hàng\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\detail.html",
+      "line": 5,
+      "text": ">Phiếu nhập: {{ stock_in.code }}{% endblock %} {% block content %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\detail.html",
+      "line": 27,
+      "text": "'Xác nhận nhập kho? Thao tác này không thể hoàn tác!',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\detail.html",
+      "line": 39,
+      "text": "onsubmit=\"return confirm('Hủy phiếu này?');\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\form.html",
+      "line": 5,
+      "text": "{{ 'Cập nhật: ' + stock_in.code if stock_in else 'Tạo phiếu nhập kho' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\form.html",
+      "line": 180,
+      "text": "Có <span class=\"conv-count\">0</span> dòng chưa có quy đổi đơn vị. Vui lòng khai báo tại Cài đặt > Qu",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\form.html",
+      "line": 464,
+      "text": "if (missingConv) $unitSel.attr('title', 'Thiếu quy đổi đơn vị');",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\form.html",
+      "line": 471,
+      "text": "const label = baseUnit ? `Gốc: ${baseUnit}` : 'Gốc';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\form.html",
+      "line": 486,
+      "text": "$priceInput.attr('title', 'Giá nhập chưa khai báo trong danh mục sản phẩm. Vui lòng nhập giá thủ côn",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\form.html",
+      "line": 487,
+      "text": "$priceInput.attr('placeholder', 'Nhập giá...');",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\index.html",
+      "line": 46,
+      "text": "placeholder=\"Chọn khoảng ngày\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_in\\index.html",
+      "line": 96,
+      "text": "title=\"In phiếu\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\detail.html",
+      "line": 5,
+      "text": ">Phiếu xuất: {{ stock_out.code }}{% endblock %} {% block content %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\detail.html",
+      "line": 21,
+      "text": "onsubmit=\"return confirm('Xác nhận xuất kho? Không thể hoàn tác!');\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\detail.html",
+      "line": 31,
+      "text": "onsubmit=\"return confirm('Hủy phiếu này?');\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\detail.html",
+      "line": 88,
+      "text": ">VAT gộp ({{ stock_out.vat_rate_grouped }}%)</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\detail.html",
+      "line": 174,
+      "text": "Thuế GTGT ({{ stock_out.vat_rate_grouped }}%):",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\detail.html",
+      "line": 182,
+      "text": "TỔNG THANH TOÁN:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 5,
+      "text": "{{ 'Cập nhật: ' + stock_out.code if stock_out else 'Tạo phiếu xuất kho' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 55,
+      "text": "placeholder=\"Số HĐ\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 58,
+      "text": "placeholder=\"Ký hiệu\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 65,
+      "text": "placeholder=\"Ghi chú cho phiếu xuất...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 192,
+      "text": "Có <span class=\"conv-count\">0</span> dòng chưa có quy đổi đơn vị. Vui lòng khai báo tại Cài đặt > Qu",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 277,
+      "text": "Mã hàng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 283,
+      "text": "placeholder=\"Để trống để tự tạo mã\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 289,
+      "text": "Tên hàng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 297,
+      "text": "placeholder=\"Tên sản phẩm\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 398,
+      "text": "placeholder: \"-- Chọn khách hàng --\",",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 406,
+      "text": "placeholder: \"-- Chọn kho --\",",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 498,
+      "text": "errBox.innerHTML = 'Vui lòng nhập tên hàng hóa';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 510,
+      "text": "'<span class=\"spinner-border spinner-border-sm me-1\"></span>Đang lưu...';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 533,
+      "text": "data.message || 'Không thể tạo hàng hóa';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\form.html",
+      "line": 594,
+      "text": "'<i class=\"fas fa-save me-1\"></i>Lưu hàng hóa';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\index.html",
+      "line": 54,
+      "text": "placeholder=\"Chọn khoảng ngày\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\index.html",
+      "line": 110,
+      "text": "title=\"Phiếu giao hàng\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\index.html",
+      "line": 117,
+      "text": "title=\"In phiếu\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\index.html",
+      "line": 158,
+      "text": "placeholder: \"-- Chọn khách hàng --\",",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\print.html",
+      "line": 60,
+      "text": "Số phiếu: <b>{{ so.code }}</b> | Ngày:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\print.html",
+      "line": 108,
+      "text": "Tổng cộng:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\print.html",
+      "line": 120,
+      "text": "Thuế GTGT ({{ so.vat_rate_grouped }}%):",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\print.html",
+      "line": 129,
+      "text": "Tổng cộng:",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\stock_out\\print.html",
+      "line": 140,
+      "text": "Số tiền bằng chữ: <b>{{ so.total_amount | so_thanh_chu }}</b>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\suppliers\\index.html",
+      "line": 27,
+      "text": "placeholder=\"Tìm theo mã, tên, SĐT, MST...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\suppliers\\index.html",
+      "line": 67,
+      "text": "onsubmit=\"return confirm('Xóa NCC {{ s.code }}?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\suppliers\\index.html",
+      "line": 104,
+      "text": "Tải <a href=\"{{ url_for('suppliers.download_template') }}\">file mẫu</a> để biết định dạng đúng.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\units\\form.html",
+      "line": 19,
+      "text": "value=\"{{ unit.name if unit else '' }}\" required placeholder=\"VD: Cái, Hộp, Kilogram\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\units\\index.html",
+      "line": 38,
+      "text": "onsubmit=\"return confirm('Xóa ĐVT {{ u.code }}?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\vat\\index.html",
+      "line": 115,
+      "text": "Không có dữ liệu VAT {{ 'đầu ra' if vat_type=='output' else 'đầu vào' }} tháng {{ month }}/{{ year }",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\account.html",
+      "line": 355,
+      "text": "const labels = ['Yếu', 'Trung bình', 'Khá', 'Mạnh'];",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\account.html",
+      "line": 370,
+      "text": "matchText.textContent = '✓ Mật khẩu khớp';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\account.html",
+      "line": 373,
+      "text": "matchText.textContent = '✗ Mật khẩu không khớp';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 94,
+      "text": "><i class=\"fas fa-truck-fast text-accent text-sm\"></i> Miễn phí vận",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 95,
+      "text": "chuyển đơn từ 500.000đ</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 98,
+      "text": "><i class=\"fas fa-file-invoice text-accent text-sm\"></i> Xuất hóa",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 99,
+      "text": "đơn VAT</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 102,
+      "text": "><i class=\"fas fa-clock text-accent text-sm\"></i> Giao hàng 24h nội",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 103,
+      "text": "thành</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 112,
+      "text": "current_user.name else 'Tài khoản' }}</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 117,
+      "text": "><i class=\"fas fa-sign-out-alt\"></i> Đăng xuất</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 123,
+      "text": "><i class=\"fas fa-user\"></i> Đăng nhập</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 128,
+      "text": ">Đăng ký</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 162,
+      "text": ">Văn phòng phẩm B2B</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 177,
+      "text": "placeholder=\"Tìm kiếm sản phẩm...\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 232,
+      "text": "placeholder=\"Tìm kiếm sản phẩm...\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 254,
+      "text": ">Trang chủ</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 266,
+      "text": ">Khuyến mãi</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 310,
+      "text": "{{ current_user.name or 'Khách hàng' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 322,
+      "text": "><span>Trang chủ</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 326,
+      "text": "Danh mục",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 343,
+      "text": "><span>Tài khoản</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 349,
+      "text": "><span>Đơn hàng</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 354,
+      "text": "><i class=\"fas fa-sign-out-alt w-5\"></i><span>Đăng xuất</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 361,
+      "text": "><span>Đăng nhập</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 367,
+      "text": "><span>Đăng ký</span></a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 411,
+      "text": "Chuyên cung cấp văn phòng phẩm và thiết bị văn phòng chính hãng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 412,
+      "text": "cho doanh nghiệp.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 431,
+      "text": ">Văn phòng phẩm</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 436,
+      "text": ">Máy in & Mực</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 441,
+      "text": ">Thiết bị văn phòng</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 451,
+      "text": ">Chính sách vận chuyển</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 456,
+      "text": ">Đổi trả hàng</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 461,
+      "text": ">Xuất hóa đơn VAT</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 483,
+      "text": "© 2024 {{ app_name }}. Tất cả các quyền được bảo lưu.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\base.html",
+      "line": 544,
+      "text": "badge.classList.remove(\"hidden\"); // Hiện badge lên nếu trước đó giỏ hàng trống",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 18,
+      "text": "><span class=\"text-center\">Số lượng</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 19,
+      "text": "><span class=\"text-right\">Thành tiền</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 40,
+      "text": "Mã: {{ item.product.code if item.product else '' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 49,
+      "text": ">Đơn giá</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 57,
+      "text": ">Số lượng</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 87,
+      "text": ">Thành tiền</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 112,
+      "text": "><i class=\"fas fa-arrow-left mr-2\"></i>Tiếp tục mua sắm</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 137,
+      "text": "><span class=\"text-green-600\">Miễn phí</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 152,
+      "text": "><i class=\"fas fa-lock mr-2\"></i>Tiến hành thanh toán</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 156,
+      "text": "><span><i class=\"fas fa-file-invoice mr-1\"></i>Xuất VAT</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 157,
+      "text": "><span><i class=\"fas fa-undo mr-1\"></i>Đổi trả 7 ngày</span>",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 187,
+      "text": "Hãy thêm sản phẩm vào giỏ để tiến hành đặt hàng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 192,
+      "text": "><i class=\"fas fa-store\"></i>Mua sắm ngay</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\cart.html",
+      "line": 252,
+      "text": "if (confirm(\"Xóa sản phẩm khỏi giỏ hàng?\")) {",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 15,
+      "text": "{{ checkout_step(done=True, active=False, num=1, label='Giỏ hàng', icon='fa-shopping-cart') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 17,
+      "text": "{{ checkout_step(done=False, active=True, num=2, label='Thông tin', icon='fa-user') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 19,
+      "text": "{{ checkout_step(done=False, active=False, num=3, label='Hoàn tất', icon='fa-check-circle') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 40,
+      "text": "value=\"{{ current_user.name if is_web_customer() else '' }}\" placeholder=\"Nguyễn Văn A\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 55,
+      "text": "value=\"{{ current_user.company_name if is_web_customer() else '' }}\" placeholder=\"Công ty TNHH...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 60,
+      "text": "placeholder=\"Số nhà, đường, phường, quận, tỉnh/thành...\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 203,
+      "text": "{{ trust_badge('fa-truck-fast', '#d4a373', 'Giao 24h', 'Nội thành HCM/HN') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 204,
+      "text": "{{ trust_badge('fa-undo', '#f59e0b', 'Đổi trả 7 ngày', 'Lỗi sản xuất') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 205,
+      "text": "{{ trust_badge('fa-file-invoice', '#0f3b2c', 'Xuất VAT', 'Theo yêu cầu DN') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 206,
+      "text": "{{ trust_badge('fa-headset', '#7b1fa2', 'Hỗ trợ B2B', 'Báo giá, hợp đồng') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\checkout.html",
+      "line": 231,
+      "text": "shippingDisplay.textContent = 'Miễn phí';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\login.html",
+      "line": 72,
+      "text": "Chưa có tài khoản?",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_detail.html",
+      "line": 3,
+      "text": "erp_badge %} {% block title %}Chi tiết đơn hàng #{{ order.code }}{% endblock %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_detail.html",
+      "line": 11,
+      "text": ">Trang chủ</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_detail.html",
+      "line": 15,
+      "text": ">Đơn hàng của tôi</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_detail.html",
+      "line": 53,
+      "text": "'processing' %}Đang xử lý {% elif order.status == 'shipping'",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_detail.html",
+      "line": 54,
+      "text": "%}Đang giao {% elif order.status == 'completed' %}Hoàn thành {%",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_detail.html",
+      "line": 55,
+      "text": "else %}Đã hủy{% endif %}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_detail.html",
+      "line": 134,
+      "text": "{{ item.product_name_snapshot or 'Sản phẩm' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_history.html",
+      "line": 15,
+      "text": "Tất cả",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_history.html",
+      "line": 210,
+      "text": "if (!confirm('Bạn có chắc muốn hủy đơn hàng này?')) return;",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\order_success.html",
+      "line": 91,
+      "text": "Phiếu xuất kho sẽ được tạo. Bạn sẽ nhận email xác nhận sớm.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 11,
+      "text": ">Trang chủ</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 15,
+      "text": ">Sản phẩm</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 88,
+      "text": "><i class=\"fas fa-exclamation-triangle mr-1\"></i>Sắp hết</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 93,
+      "text": "><i class=\"fas fa-times-circle mr-1\"></i>Hết hàng</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 98,
+      "text": "><i class=\"fas fa-check-circle mr-1\"></i>Chính hãng</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 110,
+      "text": ">Mã: {{ listing.product.code if listing.product else 'N/A' }}</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 123,
+      "text": "Vui lòng liên hệ để được báo giá tốt nhất",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 157,
+      "text": ">({{ listing.stock_cached }} sản phẩm)</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 168,
+      "text": ">Số lượng</label",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 198,
+      "text": "Thêm vào giỏ hàng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 220,
+      "text": "{{ trust_badge('fa-truck-fast', '#d4a373', 'Giao hàng 24h', 'Nội thành",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 221,
+      "text": "HCM/HN') }} {{ trust_badge('fa-file-invoice', '#0f3b2c', 'Xuất VAT',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 222,
+      "text": "'Theo yêu cầu doanh nghiệp') }} {{ trust_badge('fa-undo-alt', '#f59e0b',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 223,
+      "text": "'Đổi trả 7 ngày', 'Lỗi sản xuất') }} {{ trust_badge('fa-shield-alt',",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 224,
+      "text": "'#10b981', 'Bảo hành', '12 tháng chính hãng') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 239,
+      "text": "Mô tả sản phẩm",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 246,
+      "text": "Thông số kỹ thuật",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 253,
+      "text": "Đánh giá ({{ reviews|length if reviews else 0 }})",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 260,
+      "text": "Chính sách & Vận chuyển",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 267,
+      "text": "{{ listing.web_description or listing.product.description or 'Chưa có mô",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 268,
+      "text": "tả chi tiết cho sản phẩm này.'|safe }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 295,
+      "text": "listing.product else 'Cái') }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 302,
+      "text": "listing.product.origin else 'Việt Nam' }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 312,
+      "text": "{{ listing.stock_cached }} sản phẩm",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 342,
+      "text": "Viết đánh giá của bạn",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 361,
+      "text": "placeholder=\"Chia sẻ cảm nhận của bạn về sản phẩm...\"",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 367,
+      "text": "Gửi đánh giá",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 375,
+      "text": "Vui lòng",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 379,
+      "text": ">đăng nhập</a",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 381,
+      "text": "để viết đánh giá",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 396,
+      "text": ">{{ review.customer_name or 'Khách hàng' }}</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 408,
+      "text": "else 'Vừa xong' }}</span",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 417,
+      "text": "Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá sản phẩm này!",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 431,
+      "text": "Miễn phí giao hàng cho đơn từ 500.000đ. Giao hàng trong 24h tại nội",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 432,
+      "text": "thành TP.HCM và Hà Nội. Các tỉnh khác nhận hàng sau 2-3 ngày.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 439,
+      "text": "Đổi trả miễn phí trong vòng 7 ngày nếu sản phẩm có lỗi từ nhà sản",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 440,
+      "text": "xuất. Sản phẩm phải còn nguyên tem mác, chưa qua sử dụng.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 447,
+      "text": "Xuất hóa đơn GTGT theo yêu cầu. Vui lòng cung cấp thông tin công ty",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 448,
+      "text": "(MST, địa chỉ) khi đặt hàng. Hóa đơn được gửi cùng hàng hoặc email",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 456,
+      "text": "Liên hệ hotline <strong class=\"text-primary\">1800 1234</strong> hoặc",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 457,
+      "text": "email <strong class=\"text-primary\">kinhdoanh@vpp.vn</strong> để được",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 458,
+      "text": "báo giá theo số lượng và ký hợp đồng khung.",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\product_detail.html",
+      "line": 654,
+      "text": "submitBtn.innerHTML = '<i class=\"fas fa-spinner fa-spin mr-2\"></i>Đang gửi...';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\register.html",
+      "line": 72,
+      "text": "Đã có tài khoản?",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\register.html",
+      "line": 106,
+      "text": "const labels = ['Yếu', 'Trung bình', 'Khá', 'Mạnh'];",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\register.html",
+      "line": 123,
+      "text": "matchText.textContent = '✓ Mật khẩu khớp';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\shop\\17-06-2026shop\\register.html",
+      "line": 126,
+      "text": "matchText.textContent = '✗ Mật khẩu không khớp';",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\inventory\\stocktaking\\detail.html",
+      "line": 5,
+      "text": "Phiếu kiểm kê #{{ '%06d' % session.id }} - {{ session.warehouse.name }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\inventory\\stocktaking\\detail.html",
+      "line": 12,
+      "text": "{{ 'Nháp' if session.status=='draft' else 'Hoàn thành' if session.status=='completed' else 'Đã hủy' ",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\inventory\\stocktaking\\detail.html",
+      "line": 19,
+      "text": "onsubmit=\"return confirm('Hoàn thành phiếu sẽ điều chỉnh tồn kho. Bạn chắc chắn?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\inventory\\stocktaking\\detail.html",
+      "line": 25,
+      "text": "onsubmit=\"return confirm('Hủy phiếu kiểm kê?')\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\inventory\\stocktaking\\detail.html",
+      "line": 50,
+      "text": "Sổ {{ d.book_qty }} → Thực tế {{ d.actual_qty }}",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\inventory\\stocktaking\\detail.html",
+      "line": 51,
+      "text": "(Chênh: {{ d.difference|abs }} {{ 'thiếu' if d.difference < 0 else 'thừa' }})",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\inventory\\stocktaking\\detail.html",
+      "line": 106,
+      "text": "style=\"width: 100px\" value=\"{{ item.actual_quantity or '' }}\" placeholder=\"Thực tế\">",
+      "type": "hardcoded_vi"
+    },
+    {
+      "file": "app\\templates\\inventory\\stocktaking\\detail.html",
+      "line": 108,
+      "text": "style=\"width: 120px\" value=\"{{ item.note or '' }}\" placeholder=\"Ghi chú\">",
+      "type": "hardcoded_vi"
+    }
+  ],
+  "vi_count": 426,
+  "en_count": 412
+}
