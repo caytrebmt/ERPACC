@@ -11,6 +11,11 @@ class I18nService:
     _cache: Dict[str, Dict] = {}
     
     @classmethod
+    def ensure_translations_dir(cls) -> None:
+        """Ensure translations directory exists"""
+        cls.TRANSLATIONS_DIR.mkdir(parents=True, exist_ok=True)
+    
+    @classmethod
     def load_translations(cls) -> None:
         """Load all translation files into cache"""
         if cls._cache:

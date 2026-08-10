@@ -94,6 +94,7 @@ def save_translation():
     for save_lang, save_value in langs_to_save:
         file_path = I18nService.TRANSLATIONS_DIR / f"{save_lang}.json"
         try:
+            I18nService.ensure_translations_dir()
             with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
         except Exception:
@@ -107,8 +108,12 @@ def save_translation():
             target = target[k]
         target[keys[-1]] = save_value
 
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        try:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            flash(f'Lỗi ghi file {file_path}: {e}', 'danger')
+            return redirect(url_for('translations.list_translations', lang=lang))
 
     I18nService._cache.clear()
     flash(f'Đã lưu bản dịch [{lang}] {key}.', 'success')
@@ -146,8 +151,13 @@ def delete_translation():
 
     if keys[-1] in target:
         del target[keys[-1]]
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        try:
+            I18nService.ensure_translations_dir()
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            flash(f'Lỗi ghi file {file_path}: {e}', 'danger')
+            return redirect(url_for('translations.list_translations', lang=lang))
         I18nService._cache.clear()
         flash(f'Đã xóa bản dịch [{lang}] {key}.', 'success')
     else:
@@ -203,8 +213,13 @@ def import_translations():
         return redirect(url_for('translations.list_translations', lang=lang))
     
     file_path = I18nService.TRANSLATIONS_DIR / f"{lang}.json"
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    try:
+        I18nService.ensure_translations_dir()
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        flash(f'Lỗi ghi file {file_path}: {e}', 'danger')
+        return redirect(url_for('translations.list_translations', lang=lang))
     
     I18nService._cache.clear()
     flash(f'Đã nhập {len(data)} bản dịch cho [{lang}].', 'success')
