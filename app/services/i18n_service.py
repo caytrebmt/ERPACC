@@ -108,9 +108,15 @@ class I18nService:
         return cls.get_current_lang()
 
 # Shortcut function
-def t(key: str) -> str:
+def t(key: str, **kwargs) -> str:
     """Translate function for use in templates"""
-    return I18nService.translate(key)
+    translated = I18nService.translate(key)
+    if kwargs:
+        try:
+            return translated % kwargs
+        except Exception:
+            return translated
+    return translated
 
 def get_lang() -> str:
     """Get current language"""
