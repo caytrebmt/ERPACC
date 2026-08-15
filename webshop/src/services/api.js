@@ -52,6 +52,7 @@ export const shopCustomersApi = {
   update: (id, data) => client.put(`/erp/shop-customers/${id}`, data),
   remove: (id) => client.delete(`/erp/shop-customers/${id}`),
   toggle: (id) => client.put(`/erp/shop-customers/${id}/toggle`),
+  resetPassword: (id) => client.post(`/erp/shop-customers/${id}/reset-password`),
 };
 
 export const notificationsApi = {

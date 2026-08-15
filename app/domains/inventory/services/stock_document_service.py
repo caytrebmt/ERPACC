@@ -319,7 +319,7 @@ def _post_journal_for_stock_out(so):
     acc_revenue = get_account_code('acc_revenue')
     acc_vat_out = get_account_code('acc_vat_out')
     acc_cogs = get_account_code('acc_cogs')
-    acc_inventory = account_mapping_service.get_account_code('acc_inventory')
+    acc_inventory = get_account_code('acc_inventory')
     lines = [
         {'account_code': acc_ar, 'debit': total, 'credit': 0},
         {'account_code': acc_revenue, 'debit': 0, 'credit': revenue},

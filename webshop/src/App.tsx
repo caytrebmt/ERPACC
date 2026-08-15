@@ -6,7 +6,7 @@ import { ToastProvider } from "./contexts/ToastContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ERPAuthProvider } from "./contexts/ERPAuthContext";
 import { CartProvider } from "./contexts/CartContext";
-import { ThemeProvider } from "./contexts/ThemeProvider";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
 
 // Components

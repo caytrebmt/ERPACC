@@ -126,3 +126,23 @@ def toggle_shop_customer(customer_id):
     c.is_active = not c.is_active
     db.session.commit()
     return jsonify({'ok': True, 'data': _serialize_customer(c), 'message': 'Cap nhat trang thai thanh cong.'})
+
+
+@shop_customers_bp.post('/<int:customer_id>/reset-password')
+@login_required
+@require_permission('ecommerce', 'edit')
+def reset_shop_customer_password(customer_id):
+    c = WebCustomer.query.get_or_404(customer_id)
+    new_password = __import__('secrets').choice(
+        'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%'
+    ) + ''.join(__import__('secrets').choice(
+        'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%'
+    ) for _ in range(7))
+    c.set_password(new_password, store_plain=True)
+    db.session.commit()
+    return jsonify({
+        'ok': True,
+        'data': _serialize_customer(c),
+        'new_password': new_password,
+        'message': 'Da tao mat khau moi. Vui long copy va gui cho khach hang.'
+    })
