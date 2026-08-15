@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, request
 from flask_login import login_required, current_user
+from app.core.extensions import csrf
 import json
 import queue
 import threading
@@ -8,6 +9,7 @@ import time
 from app.domains.ecommerce.routes.ecommerce import _broadcast
 
 erp_events_bp = Blueprint('erp_events', __name__, url_prefix='/api/erp/events')
+csrf.exempt(erp_events_bp)
 
 _clients = []
 _client_lock = threading.Lock()

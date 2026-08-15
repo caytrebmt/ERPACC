@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
+from app.core.extensions import csrf
 from app.database import db
 from app.domains.platform.models import NotificationInstance
 
 erp_notifications_bp = Blueprint('erp_notifications', __name__, url_prefix='/api/erp/notifications')
+csrf.exempt(erp_notifications_bp)
 
 
 def _serialize_notification(n):

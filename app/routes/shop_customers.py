@@ -1,10 +1,12 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
+from app.core.extensions import csrf
 from app.database import db
 from app.domains.ecommerce.models import WebCustomer
 from app.shared.authz import require_permission
 
 shop_customers_bp = Blueprint('shop_customers', __name__, url_prefix='/api/erp/shop-customers')
+csrf.exempt(shop_customers_bp)
 
 
 def _serialize_customer(c):
