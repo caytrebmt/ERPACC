@@ -250,7 +250,7 @@ def auth_register():
     email = (payload.get('email') or '').strip().lower()
     phone = (payload.get('phone') or '').strip()
     password = payload.get('password') or ''
-    confirm = payload.get('confirm_password') or ''
+    confirm = payload.get('confirmPassword') or payload.get('confirm_password') or ''
     ip = (request.headers.get('X-Forwarded-For', request.remote_addr) or 'unknown').split(',')[0].strip()
 
     is_locked, fail_info = _shop_check_lock(ip, email)
