@@ -132,6 +132,11 @@
                             <i class="fas fa-redo"></i> Đặt lại
                         </button>
                         {% endif %}
+                        {% if order.tracking_token %}
+                        <button onclick="copyTracking('{{ order.tracking_token }}')" class="px-3 py-1.5 text-sm border border-blue-200 text-blue-600 rounded-lg hover:bg-blue-50 transition" title="Copy mã vận đơn">
+                            <i class="fas fa-truck"></i> Theo dõi
+                        </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -230,6 +235,24 @@
             btn.innerHTML = originalHtml;
             btn.disabled = false;
         }
+    }
+    
+    function copyTracking(token) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(token).then(() => {
+          showToast('Đã copy mã vận đơn', 'success');
+        }).catch(() => {
+          showToast('Không thể copy', 'error');
+        });
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = token;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast('Đã copy mã vận đơn', 'success');
+      }
     }
 </script>
 {% endblock %}

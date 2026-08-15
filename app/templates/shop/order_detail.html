@@ -107,6 +107,32 @@ erp_badge %} {% block title %}Chi tiết đơn hàng #{{ order.code }}{% endbloc
         </div>
       </div>
       {% endif %}
+
+      {% if order.tracking_token %}
+      <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+        <div class="p-5 border-b border-gray-100 flex items-center gap-2">
+          <i class="fas fa-shipping-fast text-accent"></i>
+          <h3 class="font-semibold text-gray-800">Theo dõi đơn hàng</h3>
+        </div>
+        <div class="p-5">
+          <div class="flex items-center gap-3 p-4 bg-blue-50 rounded-xl">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-truck text-blue-600"></i>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-800">Mã vận đơn</p>
+              <p class="text-xs text-gray-500 font-mono">{{ order.tracking_token }}</p>
+            </div>
+            <button onclick="copyTracking('{{ order.tracking_token }}')" class="px-3 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+              <i class="fas fa-copy mr-1"></i>Copy
+            </button>
+          </div>
+          <div class="mt-3 p-3 bg-gray-50 rounded-lg text-sm text-gray-600">
+            <p><i class="fas fa-info-circle mr-1 text-blue-500"></i> Sử dụng mã vận đơn để tra cứu tình trạng giao hàng với đơn vị vận chuyển.</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
 
     <!-- Right Column -->
@@ -190,4 +216,24 @@ erp_badge %} {% block title %}Chi tiết đơn hàng #{{ order.code }}{% endbloc
     </div>
   </div>
 </div>
+
+<script>
+function copyTracking(token) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(token).then(() => {
+      showToast('Đã copy mã vận đơn', 'success');
+    }).catch(() => {
+      showToast('Không thể copy', 'error');
+    });
+  } else {
+    const textarea = document.createElement('textarea');
+    textarea.value = token;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    showToast('Đã copy mã vận đơn', 'success');
+  }
+}
+</script>
 {% endblock %}

@@ -160,12 +160,14 @@ def _cart_context():
 @shop_bp.context_processor
 def inject_shop_globals():
     total_qty = 0
+    cart_items = []
     key = session.get('shop_session_key')
     if key:
         customer_session = CustomerSession.query.filter_by(session_key=key).first()
         cart = Cart.query.filter_by(session_id=customer_session.id, status='active').first() if customer_session else None
         if cart:
             total_qty = sum(float(i.quantity or 0) for i in cart.items)
+            cart_items = cart.items.all()[:5]
     categories = []
     try:
         from app.domains.master.models import Category
@@ -181,6 +183,7 @@ def inject_shop_globals():
 
     return {
         'shop_cart_qty': total_qty,
+        'shop_cart_items': cart_items,
         'is_web_customer': _is_web_customer,
         'order_count': order_count,
         'categories': categories,
@@ -196,6 +199,20 @@ def catalog():
         page=page, per_page=24, error_out=False
     )
     return render_template('shop/catalog.html', listings=listings, search=search)
+
+
+@shop_bp.route('/wishlist')
+@login_required
+def wishlist_page():
+    wishlist = getattr(current_user, 'wishlist_listings', [])
+    return render_template('shop/wishlist.html', wishlist=wishlist)
+
+
+@shop_bp.route('/quick-view/<int:listing_id>')
+def quick_view(listing_id):
+    listing = ProductListing.query.get_or_404(listing_id)
+    product = listing.product
+    return render_template('shop/quick_view.html', listing=listing, product=product)
 
 
 @shop_bp.route('/spa-test')

@@ -1,0 +1,114 @@
+<!-- templates/shop/quick_view.html -->
+{% extends "shop/base.html" %}
+
+{% block title %}Quick View - {{ listing.display_name() }}{% endblock %}
+
+{% block content %}
+<div id="quickViewModal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
+  <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+        <h3 class="font-semibold text-gray-800">Quick View</h3>
+        <button onclick="closeQuickView()" class="p-2 hover:bg-gray-100 rounded-lg transition">
+          <i class="fas fa-times text-gray-500"></i>
+        </button>
+      </div>
+      <div class="p-6">
+        <div class="flex flex-col md:flex-row gap-8">
+          <!-- Image -->
+          <div class="md:w-1/2">
+            <div class="bg-gray-50 rounded-xl overflow-hidden">
+              <img src="{{ listing.display_image or (product.main_image if product else None) or url_for('shop.product_placeholder', code=product.code if product else 'ERP', name=listing.display_name()) }}" 
+                   alt="{{ listing.display_name() }}" 
+                   class="w-full h-[400px] object-contain p-4">
+            </div>
+          </div>
+          
+          <!-- Info -->
+          <div class="md:w-1/2">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ listing.display_name() }}</h2>
+            <p class="text-sm text-gray-500 mb-4">Mã: {{ product.code if product else 'N/A' }}</p>
+            
+            <!-- Price -->
+            <div class="mb-6">
+              {% if listing.contact_for_price %}
+              <div class="text-2xl font-bold text-accent">Liên hệ</div>
+              {% else %}
+              <div class="flex items-baseline gap-3">
+                <span class="text-3xl font-bold text-primary">{{ listing.display_retail_price()|currency }}</span>
+                {% if listing.compare_at_price and listing.compare_at_price > listing.display_retail_price() %}
+                <span class="text-gray-400 line-through">{{ listing.compare_at_price|currency }}</span>
+                <span class="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">-{{ ((listing.compare_at_price - listing.display_retail_price()) / listing.compare_at_price * 100)|int }}%</span>
+                {% endif %}
+              </div>
+              {% endif %}
+            </div>
+
+            <!-- Stock -->
+            <div class="flex items-center gap-2 mb-6 p-3 bg-gray-50 rounded-xl">
+              <i class="fas fa-{% if listing.stock_cached > 0 %}check-circle text-green-500{% else %}times-circle text-red-500{% endif %}"></i>
+              <span class="text-sm">
+                {% if listing.stock_cached > 0 %}
+                <span class="text-green-600 font-medium">Còn hàng</span>
+                <span class="text-gray-500 ml-2">({{ listing.stock_cached }} sản phẩm)</span>
+                {% else %}
+                <span class="text-red-600 font-medium">Hết hàng</span>
+                {% endif %}
+              </span>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-3">
+              <button onclick="addToCartFromQuickView({{ listing.id }})" 
+                      class="flex-1 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primaryDark transition flex items-center justify-center gap-2 {% if listing.stock_cached == 0 %}opacity-50 cursor-not-allowed{% endif %}"
+                      {% if listing.stock_cached == 0 %}disabled{% endif %}>
+                <i class="fas fa-cart-plus"></i>
+                Thêm vào giỏ
+              </button>
+              <a href="{{ url_for('shop.product_detail', slug=listing.slug) }}" class="px-6 py-3 border border-gray-200 rounded-xl font-medium hover:bg-gray-50 transition">
+                Xem chi tiết
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openQuickView() {
+  document.getElementById('quickViewModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQuickView() {
+  document.getElementById('quickViewModal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function addToCartFromQuickView(listingId) {
+  fetch(`/shop/cart/add/${listingId}`, {
+    method: 'POST',
+    headers: { 'X-CSRFToken': getCsrf() }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.ok) {
+      showToast('Đã thêm vào giỏ hàng', 'success');
+      closeQuickView();
+      updateCartCount();
+    } else {
+      showToast(data.message || 'Lỗi', 'error');
+    }
+  })
+  .catch(() => showToast('Lỗi kết nối', 'error'));
+}
+
+// Close on ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeQuickView();
+});
+</script>
+{% endblock %}
