@@ -60,8 +60,8 @@ const LoginPage: React.FC = () => {
         {/* Credentials guide panel */}
         <div className="bg-indigo-50/70 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40 rounded-xl p-4 text-[11px] leading-relaxed text-indigo-850 dark:text-indigo-300 flex flex-col gap-1">
           <span className="font-bold">Tài khoản demo có sẵn:</span>
-          <p className="m-0">Email: <strong className="select-all">test@example.com</strong></p>
-          <p className="m-0">Mật khẩu: <strong className="select-all">password123</strong></p>
+          <p className="m-0">Email: <strong className="select-all">nguyenvanb@gmail.com</strong></p>
+          <p className="m-0">Mật khẩu: <strong className="select-all">abc123</strong></p>
         </div>
 
         {/* Login form */}

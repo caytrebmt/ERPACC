@@ -3,6 +3,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 from flask_login import UserMixin
+from sqlalchemy.orm import deferred
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.domains.master.models import ProductImage
 from app.database import db
@@ -16,7 +17,7 @@ class WebCustomer(UserMixin, db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password_hash = db.Column(db.String(255), nullable=False)
-    plain_password = db.Column(db.String(255), nullable=True, comment='Mat khau plaintext chi hien thi cho quan tri vien')
+    plain_password = deferred(db.Column(db.String(255), nullable=True, comment='Mat khau plaintext chi hien thi cho quan tri vien'))
     name = db.Column(db.String(200), nullable=False)
     phone = db.Column(db.String(50), nullable=True)
     role = db.Column(db.String(50), default='web_customer')
