@@ -89,6 +89,41 @@ class Notification(db.Model):
             return self.message_template
 
 
+class NotificationInstance(db.Model):
+    """Bảng thong bao thuc te gan voi tung user"""
+    __tablename__ = 'notification_instances'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
+    title = db.Column(db.String(200), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    noti_type = db.Column(db.String(20), default='info', comment='Loai: success/error/warning/info')
+    module = db.Column(db.String(50), nullable=True, comment='Module ap dung')
+    reference_id = db.Column(db.Integer, nullable=True, comment='ID ban ghi lien quan')
+    reference_type = db.Column(db.String(50), nullable=True, comment='Loai ban ghi lien quan')
+    is_read = db.Column(db.Boolean, default=False, index=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+
+    user = db.relationship('User', foreign_keys=[user_id])
+
+    def __repr__(self):
+        return f'<NotificationInstance {self.id} user={self.user_id}>'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'title': self.title,
+            'message': self.message,
+            'noti_type': self.noti_type,
+            'module': self.module,
+            'reference_id': self.reference_id,
+            'reference_type': self.reference_type,
+            'is_read': bool(self.is_read),
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+        }
+
+
 class SystemConfig(db.Model):
     """Cấu hình hệ thống dạng key-value"""
     __tablename__ = 'system_configs'

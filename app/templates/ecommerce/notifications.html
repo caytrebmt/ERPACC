@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Thong bao{% endblock %}
+{% block page_title %}<i class="fas fa-bell me-2 text-primary"></i>E-commerce - Thong bao{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <span>Thong bao he thong</span>
+      {% if only_unread %}
+      <a href="{{ url_for('ecommerce.notifications') }}" class="btn btn-sm btn-outline-secondary">Tat ca</a>
+      {% else %}
+      <a href="{{ url_for('ecommerce.notifications', unread=1) }}" class="btn btn-sm btn-outline-warning">Chua doc</a>
+      {% endif %}
+    </div>
+    {% if not only_unread %}
+    <form method="POST" action="{{ url_for('ecommerce.notifications_mark_all_read') }}" class="d-inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-sm btn-outline-success">
+        <i class="fas fa-check-double me-1"></i>Doc tat ca
+      </button>
+    </form>
+    {% endif %}
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-erp table-hover mb-0">
+        <thead>
+          <tr>
+            <th>Trang thai</th>
+            <th>Tieu de</th>
+            <th>Noi dung</th>
+            <th>Loai</th>
+            <th>Module</th>
+            <th>Thoi gian</th>
+            <th class="text-center no-print">Thao tac</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for n in notifications.items %}
+          <tr class="{{ '' if n.is_read else 'table-warning' }}">
+            <td class="text-center">
+              {% if n.is_read %}
+              <span class="badge bg-secondary">Da doc</span>
+              {% else %}
+              <span class="badge bg-danger">Chua doc</span>
+              {% endif %}
+            </td>
+            <td class="fw-semibold">{{ n.title }}</td>
+            <td>{{ n.message }}</td>
+            <td>
+              {% if n.noti_type == 'success' %}
+              <span class="badge bg-success">Thanh cong</span>
+              {% elif n.noti_type == 'warning' %}
+              <span class="badge bg-warning text-dark">Canh bao</span>
+              {% elif n.noti_type == 'error' %}
+              <span class="badge bg-danger">Loi</span>
+              {% else %}
+              <span class="badge bg-info text-dark">Thong tin</span>
+              {% endif %}
+            </td>
+            <td>{{ n.module or '-' }}</td>
+            <td>{{ n.created_at|dateformat }}</td>
+            <td class="text-center no-print">
+              {% if not n.is_read %}
+              <form method="POST" action="{{ url_for('ecommerce.notifications_mark_read', id=n.id) }}" class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-sm btn-outline-success py-0 px-2" title="Danh dau da doc">
+                  <i class="fas fa-check"></i>
+                </button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7" class="text-center text-muted py-4">Khong co thong bao</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if notifications.pages > 1 %}
+    <div class="d-flex justify-content-between align-items-center px-3 py-2">
+      <small class="text-muted">{{ notifications.total }} thong bao</small>
+      <nav><ul class="pagination pagination-sm mb-0">
+        {% for page in notifications.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
+          {% if page %}<li class="page-item {% if page==notifications.page %}active{% endif %}">
+            <a class="page-link" href="{{ url_for('ecommerce.notifications', page=page, unread=only_unread and 1 or '') }}">{{ page }}</a>
+          </li>{% else %}<li class="page-item disabled"><span class="page-link">...</span></li>{% endif %}
+        {% endfor %}
+      </ul></nav>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

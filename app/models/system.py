@@ -153,6 +153,7 @@ from app.domains.platform.models import (
     Menu,
     MenuRole,
     Notification,
+    NotificationInstance,
     SystemConfig,
     UserMenuOverride,
 )
@@ -163,6 +164,7 @@ __all__ = [
     'Menu',
     'MenuRole',
     'Notification',
+    'NotificationInstance',
     'SystemConfig',
     'UserMenuOverride',
 ]

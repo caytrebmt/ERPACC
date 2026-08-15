@@ -505,6 +505,8 @@ def _ensure_ecommerce_module():
     children = [
         ('ECOMMERCE_LISTINGS', 'Sản phẩm web', '/ecommerce/listings', 'fas fa-tags', 1),
         ('ECOMMERCE_ORDERS', 'Đơn online', '/ecommerce/orders', 'fas fa-receipt', 2),
+        ('ECOMMERCE_SHOP_CUSTOMERS', 'KH Webshop', '/ecommerce/shop-customers', 'fas fa-users', 3),
+        ('ECOMMERCE_NOTIFICATIONS', 'Thông báo', '/ecommerce/notifications', 'fas fa-bell', 4),
     ]
     for code, name, url, icon, order_no in children:
         menu = Menu.query.filter_by(code=code).first()

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Them khach hang' if not customer else 'Chinh sua khach hang' }}{% endblock %}
+{% block page_title %}<i class="fas fa-user-circle me-2 text-primary"></i>{% if customer %}Chinh sua khach hang{% else %}Them khach hang moi{% endif %}{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <form method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Ten</label>
+          <input type="text" name="name" required value="{{ customer.name if customer else '' }}" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" required value="{{ customer.email if customer else '' }}" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Dien thoai</label>
+          <input type="text" name="phone" value="{{ customer.phone if customer else '' }}" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">
+            {{ 'Mat khau moi (de trong neu khong doi)' if customer else 'Mat khau' }}
+          </label>
+          <input type="text" name="password" {% if not customer %}required{% endif %} value="{{ customer.plain_password if customer else '' }}" class="form-control">
+          {% if customer %}<small class="text-muted">De trong neu khong doi mat khau.</small>{% endif %}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Trang thai</label>
+          <select name="is_active" class="form-select">
+            <option value="on" {% if not customer or customer.is_active %}selected{% endif %}>Hoat dong</option>
+            <option value="off" {% if customer and not customer.is_active %}selected{% endif %}>Khoa</option>
+          </select>
+        </div>
+      </div>
+      <div class="mt-4 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save me-1"></i>{{ 'Cap nhat' if customer else 'Tao moi' }}
+        </button>
+        <a href="{{ url_for('ecommerce.shop_customers') }}" class="btn btn-outline-secondary">Quay lai</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

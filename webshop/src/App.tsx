@@ -4,12 +4,15 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // Providers Contexts
 import { ToastProvider } from "./contexts/ToastContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ERPAuthProvider } from "./contexts/ERPAuthContext";
 import { CartProvider } from "./contexts/CartContext";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import { ThemeProvider } from "./contexts/ThemeProvider";
+import { NotificationProvider } from "./contexts/NotificationContext";
 
 // Components
 import ProtectedRoute from "./components/ProtectedRoute";
 import ShopLayout from "./layouts/ShopLayout";
+import ERPAppLayout from "./layouts/ERPAppLayout";
 
 // Pages
 import CatalogPage from "./pages/CatalogPage";
@@ -23,6 +26,12 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import GoogleCallbackPage from "./pages/GoogleCallbackPage";
 import AccountPage from "./pages/AccountPage";
+
+// ERP Pages
+import ERPLoginPage from "./pages/erp/LoginPage";
+import DashboardPage from "./pages/erp/DashboardPage";
+import InvoicesPage from "./pages/erp/InvoicesPage";
+import ShopCustomersPage from "./pages/erp/ShopCustomersPage";
 
 export default function App() {
   return (
@@ -72,6 +81,15 @@ export default function App() {
                       </ProtectedRoute>
                     }
                   />
+
+                  {/* ERP Routes (with ERPAppLayout) */}
+                  <Route element={<ERPAuthProvider><NotificationProvider><ERPAppLayout /></NotificationProvider></ERPAuthProvider>}>
+                    <Route path="/erp/login" element={<ERPLoginPage />} />
+                    <Route path="/erp/dashboard" element={<DashboardPage />} />
+                    <Route path="/erp/invoices" element={<InvoicesPage />} />
+                    <Route path="/erp/shop-customers" element={<ShopCustomersPage />} />
+                    <Route path="/erp/*" element={<Navigate to="/erp/dashboard" replace />} />
+                  </Route>
 
                   {/* Fallback Catch-All Route */}
                   <Route path="*" element={<Navigate to="/" replace />} />

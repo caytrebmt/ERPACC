@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}KH Webshop{% endblock %}
+{% block page_title %}<i class="fas fa-user-circle me-2 text-primary"></i>E-commerce - Khach hang webshop{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <span>Tai khoan khach hang webshop</span>
+    <a href="{{ url_for('ecommerce.shop_customers_create') }}" class="btn btn-sm btn-primary">
+      <i class="fas fa-plus me-1"></i>Them moi
+    </a>
+  </div>
+  <div class="card-body pb-0">
+    <form method="GET" class="row g-2 mb-3">
+      <div class="col-md-6">
+        <input type="text" name="search" value="{{ search }}" class="form-control form-control-sm"
+               placeholder="Tim kiem theo email, ten, so dien thoai...">
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>Tim</button>
+        <a href="{{ url_for('ecommerce.shop_customers') }}" class="btn btn-sm btn-outline-secondary ms-1">Reset</a>
+      </div>
+    </form>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-erp table-hover mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ten</th>
+            <th>Email</th>
+            <th>Dien thoai</th>
+            <th>Mat khau</th>
+            <th>Trang thai</th>
+            <th>Ngay tao</th>
+            <th class="text-center no-print">Thao tac</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in customers.items %}
+          <tr>
+            <td>{{ c.id }}</td>
+            <td class="fw-semibold">{{ c.name }}</td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.phone or '-' }}</td>
+            <td>
+              <code class="user-select-all">{{ c.plain_password or '-' }}</code>
+            </td>
+            <td>
+              {% if c.is_active %}
+              <span class="badge bg-success">Hoat dong</span>
+              {% else %}
+              <span class="badge bg-danger">Khoa</span>
+              {% endif %}
+            </td>
+            <td>{{ c.created_at|dateformat }}</td>
+            <td class="text-center no-print">
+              <div class="d-flex gap-1 justify-content-center">
+                <a href="{{ url_for('ecommerce.shop_customer_detail', id=c.id) }}" class="btn btn-sm btn-outline-info py-0 px-2" title="Don hang">
+                  <i class="fas fa-receipt"></i>
+                </a>
+                <a href="{{ url_for('ecommerce.shop_customers_edit', id=c.id) }}" class="btn btn-sm btn-outline-primary py-0 px-2" title="Sua">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <form method="POST" action="{{ url_for('ecommerce.shop_customers_toggle', id=c.id) }}" class="d-inline">
+                  <button class="btn btn-sm btn-outline-warning py-0 px-2" title="{{ 'Khoa' if c.is_active else 'Mo khoa' }}">
+                    <i class="fas fa-{{ 'lock' if c.is_active else 'lock-open' }}"></i>
+                  </button>
+                </form>
+                <form method="POST" action="{{ url_for('ecommerce.shop_customers_delete', id=c.id) }}" class="d-inline" onsubmit="return confirm('Ban co chac muon xoa?')">
+                  <button class="btn btn-sm btn-outline-danger py-0 px-2" title="Xoa">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8" class="text-center text-muted py-4">Chua co tai khoan khach hang</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if customers.pages > 1 %}
+    <div class="d-flex justify-content-between align-items-center px-3 py-2">
+      <small class="text-muted">{{ customers.total }} tai khoan</small>
+      <nav><ul class="pagination pagination-sm mb-0">
+        {% for page in customers.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
+          {% if page %}<li class="page-item {% if page==customers.page %}active{% endif %}">
+            <a class="page-link" href="{{ url_for('ecommerce.shop_customers', page=page, search=search) }}">{{ page }}</a>
+          </li>{% else %}<li class="page-item disabled"><span class="page-link">...</span></li>{% endif %}
+        {% endfor %}
+      </ul></nav>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -18,18 +18,11 @@ from app.domains.ecommerce.models import (
 )
 from app.domains.master.models import Customer, Product
 from app.domains.ecommerce.services.ecommerce_sync_service import (
-<<<<<<< HEAD
-    _ensure_erp_customer_for_web,
-=======
->>>>>>> 6782d54 (fix: import _ensure_erp_customer_for_web from correct module)
     generate_online_order_code,
     generate_tracking_token,
     listing_query,
 )
-<<<<<<< HEAD
-=======
 from app.domains.ecommerce.routes.shop_api import _ensure_erp_customer_for_web
->>>>>>> 6782d54 (fix: import _ensure_erp_customer_for_web from correct module)
 from app.domains.ecommerce.middleware.role_middleware import web_customer_only
 from zoneinfo import ZoneInfo
 

@@ -215,6 +215,32 @@
             <i class="fas fa-shopping-cart"></i>
           </button>
 
+          <div class="dropdown" id="backendNotificationDropdown">
+            <button
+              class="btn btn-sm btn-outline-secondary position-relative"
+              data-bs-toggle="dropdown"
+              title="Thông báo"
+              id="backendNotifBtn"
+            >
+              <i class="fas fa-bell"></i>
+              <span id="backendNotifBadge" class="position-absolute top-0 start-100 translate-middle p-0 border border-light rounded-circle d-none" style="font-size: 10px; min-width: 16px; height: 16px; display: none;">
+                <span id="backendNotifBadgeText" class="d-flex align-items-center justify-content-center w-100 h-100">0</span>
+              </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" style="min-width: 320px; max-height: 400px; overflow-y: auto;">
+              <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                <strong class="small">Thông báo</strong>
+                <button class="btn btn-sm btn-link p-0 text-decoration-none" id="backendNotifMarkAll" style="font-size: 12px;">Đọc tất cả</button>
+              </div>
+              <div id="backendNotifList" class="small">
+                <div class="text-center text-muted py-3">Đang tải...</div>
+              </div>
+              <div class="border-top px-3 py-2 text-center">
+                <a href="{{ url_for('ecommerce.notifications') }}" class="btn btn-sm btn-link p-0 text-decoration-none">Xem tất cả</a>
+              </div>
+            </div>
+          </div>
+
           <button
             id="themeToggle"
             class="btn btn-sm btn-outline-secondary"
@@ -802,6 +828,77 @@
       document.getElementById('shopRedirect')?.addEventListener('click', function() {
         window.open(`http://${window.location.hostname}:3000/`, '_blank');
       });
+    </script>
+    <script>
+      (function() {
+        const notifListEl = document.getElementById('backendNotifList');
+        const badgeEl = document.getElementById('backendNotifBadge');
+        const badgeTextEl = document.getElementById('backendNotifBadgeText');
+        const markAllBtn = document.getElementById('backendNotifMarkAll');
+        if (!notifListEl) return;
+
+        function updateBadge(count) {
+          if (!badgeEl || !badgeTextEl) return;
+          if (count > 0) {
+            badgeEl.style.display = 'flex';
+            badgeTextEl.textContent = count > 99 ? '99+' : count;
+          } else {
+            badgeEl.style.display = 'none';
+          }
+        }
+
+        async function loadNotifications() {
+          try {
+            const res = await fetch('{{ url_for("ecommerce.notifications_recent") }}');
+            const data = await res.json();
+            const items = data.ok ? (data.items || []) : [];
+            let html = '';
+            if (items.length === 0) {
+              html = '<div class="text-center text-muted py-3">Không có thông báo</div>';
+            } else {
+              items.forEach(function(n) {
+                const typeClass = n.noti_type === 'success' ? 'text-success' : n.noti_type === 'warning' ? 'text-warning' : n.noti_type === 'error' ? 'text-danger' : 'text-primary';
+                const readClass = n.is_read ? 'text-muted' : 'fw-semibold';
+                html += '<div class="px-3 py-2 border-bottom ' + readClass + '" style="font-size: 12px;">' +
+                  '<div class="d-flex justify-content-between align-items-start gap-2">' +
+                    '<div>' +
+                      '<div class="' + typeClass + '">' + (n.title || '') + '</div>' +
+                      '<div class="text-muted" style="font-size: 11px;">' + (n.message || '') + '</div>' +
+                      '<div class="text-muted" style="font-size: 10px;">' + (n.created_at || '') + '</div>' +
+                    '</div>' +
+                    (n.is_read ? '' : '<button class="btn btn-sm btn-link p-0 text-decoration-none mark-read-btn" data-id="' + n.id + '" style="font-size: 11px;">Đọc</button>') +
+                  '</div>' +
+                '</div>';
+              });
+            }
+            notifListEl.innerHTML = html;
+
+            const unread = items.filter(function(n) { return !n.is_read; }).length;
+            updateBadge(unread);
+
+            notifListEl.querySelectorAll('.mark-read-btn').forEach(function(btn) {
+              btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                fetch('{{ url_for("ecommerce.notifications_mark_read_json", id=0) }}'.replace('/0', '/' + id), { method: 'POST', headers: {'X-CSRFToken': '{{ csrf_token() }}'} }).then(function() {
+                  loadNotifications();
+                });
+              });
+            });
+          } catch (e) {
+            notifListEl.innerHTML = '<div class="text-center text-muted py-3">Không thể tải thông báo</div>';
+          }
+        }
+
+        if (markAllBtn) {
+          markAllBtn.addEventListener('click', function() {
+            fetch('{{ url_for("ecommerce.notifications_mark_all_read") }}', { method: 'POST', headers: {'X-CSRFToken': '{{ csrf_token() }}'} }).then(function() {
+              loadNotifications();
+            });
+          });
+        }
+
+        loadNotifications();
+      })();
     </script>
     {% block scripts %}{% endblock %}
 

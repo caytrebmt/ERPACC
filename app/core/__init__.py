@@ -85,12 +85,42 @@ def create_app(config_name=None):
                 CREATE UNIQUE INDEX IF NOT EXISTS ix_online_orders_tracking_token 
                 ON online_orders (tracking_token)
             """))
+            db.session.execute(text("""
+                ALTER TABLE customer_accounts 
+                ADD COLUMN IF NOT EXISTS plain_password VARCHAR(255) NULL
+            """))
+            db.session.execute(text("""
+                CREATE TABLE IF NOT EXISTS notification_instances (
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER NOT NULL REFERENCES users(id),
+                    title VARCHAR(200) NOT NULL,
+                    message TEXT NOT NULL,
+                    noti_type VARCHAR(20) DEFAULT 'info',
+                    module VARCHAR(50) NULL,
+                    reference_id INTEGER NULL,
+                    reference_type VARCHAR(50) NULL,
+                    is_read BOOLEAN DEFAULT FALSE,
+                    created_at TIMESTAMP DEFAULT NOW()
+                )
+            """))
+            db.session.execute(text("""
+                CREATE INDEX IF NOT EXISTS ix_notification_instances_user_id 
+                ON notification_instances (user_id)
+            """))
+            db.session.execute(text("""
+                CREATE INDEX IF NOT EXISTS ix_notification_instances_created_at 
+                ON notification_instances (created_at)
+            """))
+            db.session.execute(text("""
+                CREATE INDEX IF NOT EXISTS ix_notification_instances_is_read 
+                ON notification_instances (is_read)
+            """))
             db.session.commit()
     except Exception as e:
         with app.app_context():
             if db.session.is_active:
                 db.session.rollback()
-        app.logger.warning(f"Tracking token migration skipped/failed: {e}")
+        app.logger.warning(f"Auto-migration skipped/failed: {e}")
 
     login_manager.init_app(app)
     login_manager.session_protection = app.config.get('SESSION_PROTECTION', 'strong')
@@ -201,12 +231,15 @@ def create_app(config_name=None):
     from app.routes.company import company_bp
     from app.routes.api import api_bp
     from app.domains.ecommerce.routes.shop_api import shop_api_bp
+    from app.routes.shop_customers import shop_customers_bp
+    from app.routes.notifications_api import erp_notifications_bp
+    from app.routes.erp_events import erp_events_bp
 
     for bp in [auth_bp, dashboard_bp, products_bp, suppliers_bp, customers_bp,
                warehouses_bp, units_bp, categories_bp,
                stock_in_bp, stock_out_bp, quotations_bp, ecommerce_bp, inventory_bp, opening_stock_bp, stocktaking_bp,
                accounting_bp, debt_bp, vat_bp, reports_bp,
-               settings_bp, company_bp, api_bp, shop_api_bp]:
+               settings_bp, company_bp, api_bp, shop_api_bp, shop_customers_bp, erp_notifications_bp, erp_events_bp]:
         app.register_blueprint(bp)
 
     @app.before_request

@@ -29,6 +29,7 @@ from app.domains.ecommerce.services.ecommerce_sync_service import (
     generate_tracking_token,
     listing_query,
 )
+from app.domains.ecommerce.routes.ecommerce import _broadcast
 
 shop_api_bp = Blueprint('shop_api', __name__, url_prefix='/api/shop')
 csrf.exempt(shop_api_bp)
@@ -98,6 +99,26 @@ def _json_ok(data=None, message='', status=200):
 
 def _json_err(message, status=400):
     return jsonify({'ok': False, 'message': message}), status
+
+
+def _notify_admins(title, message, noti_type='info', module='ecommerce', reference_id=None, reference_type=None):
+    try:
+        from app.models.system import User
+        admins = User.query.filter_by(role='admin', is_active=True).all()
+        for admin in admins:
+            n = NotificationInstance(
+                user_id=admin.id,
+                title=title,
+                message=message,
+                noti_type=noti_type,
+                module=module,
+                reference_id=reference_id,
+                reference_type=reference_type,
+            )
+            db.session.add(n)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
 
 
 def _ensure_erp_customer_for_web(web_customer: WebCustomer) -> Customer:
@@ -279,7 +300,7 @@ def auth_register():
         name=name,
         phone=phone,
     )
-    web_customer.set_password(password)
+    web_customer.set_password(password, store_plain=True)
     db.session.add(web_customer)
     db.session.commit()
     _ensure_erp_customer_for_web(web_customer)
@@ -811,7 +832,38 @@ def create_order():
         ))
     cart.status = 'ordered'
     db.session.commit()
-    return _json_ok({'order': _serialize_order(order)}, message='Đặt hàng thành công.')
+    _notify_admins(
+        title=f'Don hang moi {order.code}',
+        message=f'Khach hang {customer_name} dat hang moi tu website. Tong tien: {total:,.0f}d.',
+        noti_type='success',
+        module='ecommerce',
+        reference_id=order.id,
+        reference_type='online_order',
+    )
+    try:
+        _broadcast('new_order', {
+            'order_id': order.id,
+            'code': order.code,
+            'customer_name': customer_name,
+            'total_amount': float(total),
+            'status': order.status,
+            'created_at': order.created_at.isoformat() if order.created_at else None,
+        })
+    except Exception:
+        pass
+    try:
+        from app.routes.erp_events import broadcast_to_erp
+        broadcast_to_erp('new_order', {
+            'order_id': order.id,
+            'code': order.code,
+            'customer_name': customer_name,
+            'total_amount': float(total),
+            'status': order.status,
+            'created_at': order.created_at.isoformat() if order.created_at else None,
+        })
+    except Exception:
+        pass
+    return _json_ok({'order': _serialize_order(order)}, message='Dat hang thanh cong.')
 
 
 @shop_api_bp.post('/orders/<int:order_id>/reorder')
@@ -857,7 +909,60 @@ def cancel_order(order_id):
     if order.stock_out_id or order.erp_status:
         return _json_err('Đơn hàng đã được đồng bộ với phiếu xuất kho, không thể hủy.', 400)
     order.status = 'cancelled'
+    if order.stock_out_id:
+        from app.domains.inventory.services.inventory_service import InventoryService
+        stock_out = order.stock_out
+        if stock_out and stock_out.status != 'cancelled':
+            if stock_out.status == 'confirmed':
+                for item in stock_out.items.all():
+                    if item.product_id and item.quantity:
+                        try:
+                            InventoryService.stock_in(
+                                item.product_id,
+                                stock_out.warehouse_id,
+                                float(item.quantity),
+                                float(item.cost_price or 0),
+                                reference_code=f'Huy don {order.code}',
+                                note=f'Hoan tra hang tu don hang online {order.code}',
+                            )
+                        except Exception as e:
+                            db.session.rollback()
+                            return _json_err(f'Loi khi hoan tra ton kho cho san pham #{item.product_id}: {str(e)}', 500)
+            stock_out.status = 'cancelled'
+            order.erp_status = 'Da huy'
+            order.erp_note = f'Don hang bi huy boi khach hang. Phieu xuat {stock_out.code} da duoc huy va ton kho da duoc hoan tra.'
     db.session.commit()
+    _notify_admins(
+        title=f'Khach hang huy don {order.code}',
+        message=f'Don hang {order.code} cua khach {order.customer_name} da bi huy boi khach hang.',
+        noti_type='warning',
+        module='ecommerce',
+        reference_id=order.id,
+        reference_type='online_order',
+    )
+    try:
+        _broadcast('order_cancelled', {
+            'order_id': order.id,
+            'code': order.code,
+            'customer_name': order.customer_name,
+            'status': order.status,
+            'erp_status': order.erp_status,
+            'created_at': order.created_at.isoformat() if order.created_at else None,
+        })
+    except Exception:
+        pass
+    try:
+        from app.routes.erp_events import broadcast_to_erp
+        broadcast_to_erp('order_cancelled', {
+            'order_id': order.id,
+            'code': order.code,
+            'customer_name': order.customer_name,
+            'status': order.status,
+            'erp_status': order.erp_status,
+            'created_at': order.created_at.isoformat() if order.created_at else None,
+        })
+    except Exception:
+        pass
     return _json_ok({'order': _serialize_order(order)})
 
 
@@ -922,9 +1027,9 @@ def change_password():
         return _json_err('Mật khẩu xác nhận không khớp.', 400)
     if len(new_password) < 8:
         return _json_err('Mật khẩu mới tối thiểu 8 ký tự.', 400)
-    web_customer.set_password(new_password)
+    web_customer.set_password(new_password, store_plain=True)
     db.session.commit()
-    return _json_ok(message='Đổi mật khẩu thành công.')
+    return _json_ok(message='Doi mat khau thanh cong.')
 
 
 # ===================== PROMOTIONS =====================

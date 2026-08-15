@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Chi tiet KH Webshop{% endblock %}
+{% block page_title %}<i class="fas fa-user-circle me-2 text-primary"></i>E-commerce - Chi tiet khach hang{% endblock %}
+{% block content %}
+<div class="mb-3">
+  <a href="{{ url_for('ecommerce.shop_customers') }}" class="btn btn-sm btn-outline-secondary">
+    <i class="fas fa-arrow-left me-1"></i>Quay lai danh sach
+  </a>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-header"><strong>Thong tin tai khoan</strong></div>
+      <div class="card-body">
+        <p class="mb-1"><strong>ID:</strong> {{ customer.id }}</p>
+        <p class="mb-1"><strong>Ten:</strong> {{ customer.name }}</p>
+        <p class="mb-1"><strong>Email:</strong> {{ customer.email }}</p>
+        <p class="mb-1"><strong>Dien thoai:</strong> {{ customer.phone or '-' }}</p>
+        <p class="mb-1"><strong>Mat khau:</strong> <code class="user-select-all">{{ customer.plain_password or '-' }}</code></p>
+        <p class="mb-1"><strong>Trang thai:</strong>
+          {% if customer.is_active %}
+          <span class="badge bg-success">Hoat dong</span>
+          {% else %}
+          <span class="badge bg-danger">Khoa</span>
+          {% endif %}
+        </p>
+        <p class="mb-0"><strong>Ngay tao:</strong> {{ customer.created_at|dateformat }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card h-100">
+      <div class="card-header"><strong>Thong tin ERP Customer</strong></div>
+      <div class="card-body">
+        {% if customer.customer %}
+        <p class="mb-1"><strong>Ma KH ERP:</strong> {{ customer.customer.customer_code or customer.customer.id }}</p>
+        <p class="mb-1"><strong>Ten:</strong> {{ customer.customer.name }}</p>
+        <p class="mb-1"><strong>Dien thoai:</strong> {{ customer.customer.phone or '-' }}</p>
+        <p class="mb-1"><strong>Email:</strong> {{ customer.customer.email or '-' }}</p>
+        <p class="mb-1"><strong>Dia chi:</strong> {{ customer.customer.address or '-' }}</p>
+        <p class="mb-0"><strong>Cong no:</strong> {{ customer.customer.debt_balance if customer.customer.debt_balance is not none else 0 }}</p>
+        {% else %}
+        <p class="text-muted mb-0">Chua lien ket voi khach hang ERP.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <span>Lich su don hang</span>
+  </div>
+  <div class="card-body pb-0">
+    <form method="GET" class="row g-2 mb-3">
+      <div class="col-md-3">
+        <select name="status" class="form-select form-select-sm">
+          <option value="">-- Tat ca trang thai --</option>
+          <option value="new" {{ 'selected' if status=='new' }}>Moi</option>
+          <option value="ordered" {{ 'selected' if status=='ordered' }}>Da dat</option>
+          <option value="cancelled" {{ 'selected' if status=='cancelled' }}>Da huy</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <input type="date" name="from_date" value="{{ from_date }}" class="form-control form-control-sm" placeholder="Tu ngay">
+      </div>
+      <div class="col-md-3">
+        <input type="date" name="to_date" value="{{ to_date }}" class="form-control form-control-sm" placeholder="Den ngay">
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>Loc</button>
+        <a href="{{ url_for('ecommerce.shop_customer_detail', id=customer.id) }}" class="btn btn-sm btn-outline-secondary ms-1">Reset</a>
+      </div>
+    </form>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-erp table-hover mb-0">
+        <thead>
+          <tr>
+            <th>Ma don</th>
+            <th>Ngay</th>
+            <th class="text-end">Tong cong</th>
+            <th class="text-center">Trang thai</th>
+            <th>Sync</th>
+            <th>Phieu xuat</th>
+            <th>Ghi chu</th>
+            <th class="text-center no-print">Thao tac</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders.items %}
+          <tr>
+            <td class="fw-semibold">
+              <a href="{{ url_for('ecommerce.order_detail', id=order.id) }}">{{ order.code }}</a>
+            </td>
+            <td>{{ order.created_at|dateformat }}</td>
+            <td class="text-end fw-semibold">{{ order.total_amount|currency }}</td>
+            <td class="text-center">
+              {% if order.status == 'new' %}
+              <span class="badge bg-warning text-dark">Moi</span>
+              {% elif order.status == 'ordered' %}
+              <span class="badge bg-info text-dark">Da dat</span>
+              {% elif order.status == 'cancelled' %}
+              <span class="badge bg-danger">Da huy</span>
+              {% else %}
+              <span class="badge bg-secondary">{{ order.status }}</span>
+              {% endif %}
+            </td>
+            <td class="text-center">
+              {% if order.sync_status == 'synced' %}
+              <span class="badge bg-success">Da sync</span>
+              {% elif order.sync_status == 'failed' %}
+              <span class="badge bg-danger">Loi</span>
+              {% else %}
+              <span class="badge bg-warning text-dark">Cho</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if order.stock_out %}
+              <a href="{{ url_for('stock_out.detail', id=order.stock_out.id) }}">{{ order.stock_out.code }}</a>
+              {% else %}
+              <span class="text-muted">-</span>
+              {% endif %}
+            </td>
+            <td class="small text-muted">{{ order.erp_note or '-' }}</td>
+            <td class="text-center no-print">
+              <a href="{{ url_for('ecommerce.order_detail', id=order.id) }}" class="btn btn-sm btn-outline-secondary py-0 px-2" title="Chi tiet">
+                <i class="fas fa-eye"></i>
+              </a>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8" class="text-center text-muted py-4">Chua co don hang</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if orders.pages > 1 %}
+    <div class="d-flex justify-content-between align-items-center px-3 py-2">
+      <small class="text-muted">{{ orders.total }} don</small>
+      <nav><ul class="pagination pagination-sm mb-0">
+        {% for page in orders.iter_pages(left_edge=1,right_edge=1,left_current=2,right_current=2) %}
+          {% if page %}<li class="page-item {% if page==orders.page %}active{% endif %}">
+            <a class="page-link" href="{{ url_for('ecommerce.shop_customer_detail', id=customer.id, page=page, status=status, from_date=from_date, to_date=to_date) }}">{{ page }}</a>
+          </li>{% else %}<li class="page-item disabled"><span class="page-link">...</span></li>{% endif %}
+        {% endfor %}
+      </ul></nav>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
