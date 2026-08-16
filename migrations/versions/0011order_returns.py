@@ -10,7 +10,7 @@ from alembic import op
 import sqlalchemy as sa
 
 revision = '0011order_returns'
-down_revision = '51c6e6a1fb16'
+down_revision = '0010tracking'
 branch_labels = None
 depends_on = None
 

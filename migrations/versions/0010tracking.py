@@ -4,13 +4,13 @@ Allows guest order tracking via unguessable token instead of
 sequential order code.
 
 Revision ID: 0010tracking
-Revises: 0009onlinecols
+Revises: 51c6e6a1fb16
 """
 from alembic import op
 import sqlalchemy as sa
 
 revision = '0010tracking'
-down_revision = '0009onlinecols'
+down_revision = '51c6e6a1fb16'
 branch_labels = None
 depends_on = None
 
