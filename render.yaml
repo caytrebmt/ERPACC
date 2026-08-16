@@ -1,15 +1,22 @@
 services:
   - type: web
-    name: erpacc-webshop
+    name: erpacc
+    runtime: python
+    rootDir: .
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT server:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.13"
+      - key: FLASK_ENV
+        value: production
+
+  - type: web
+    name: webshop
     runtime: node
-    plan: free
     rootDir: webshop
     buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
-      - key: ERPACC_BACKEND_URL
-        value: https://erpacc-production.up.railway.app
-      - key: PORT
-        value: 3000
