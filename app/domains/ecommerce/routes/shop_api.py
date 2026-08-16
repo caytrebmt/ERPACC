@@ -23,7 +23,8 @@ from app.domains.ecommerce.models import (
     Promotion,
     WebCustomer,
 )
-from app.domains.master.models import Category, Product, Customer
+from app.domains.master.models import Category, Customer, Product
+from app.domains.platform.models import NotificationInstance
 from app.domains.ecommerce.services.ecommerce_sync_service import (
     generate_online_order_code,
     generate_tracking_token,
@@ -105,6 +106,9 @@ def _notify_admins(title, message, noti_type='info', module='ecommerce', referen
     try:
         from app.models.system import User
         admins = User.query.filter_by(role='admin', is_active=True).all()
+        if not admins:
+            current_app.logger.warning('_notify_admins: no active admin users found')
+            return
         for admin in admins:
             n = NotificationInstance(
                 user_id=admin.id,
@@ -119,6 +123,7 @@ def _notify_admins(title, message, noti_type='info', module='ecommerce', referen
         db.session.commit()
     except Exception:
         db.session.rollback()
+        current_app.logger.exception('_notify_admins failed')
 
 
 def _ensure_erp_customer_for_web(web_customer: WebCustomer) -> Customer:
@@ -669,9 +674,17 @@ def _get_orders_query_for_current_user():
         conditions = [OnlineOrder.web_customer_id == web_customer.id]
         if web_customer.customer_id is not None:
             conditions.append(OnlineOrder.customer_id == web_customer.customer_id)
+        session_ids = set()
         cs = _get_or_create_customer_session_for_web_customer(web_customer)
-        session_ids = [cs.id]
-        conditions.append(OnlineOrder.session_id.in_(session_ids))
+        session_ids.add(cs.id)
+        if web_customer.email:
+            by_email = CustomerSession.query.filter_by(email=web_customer.email).with_entities(CustomerSession.id).all()
+            session_ids.update(r.id for r in by_email)
+        if web_customer.customer_id is not None:
+            by_cid = CustomerSession.query.filter_by(customer_id=web_customer.customer_id).with_entities(CustomerSession.id).all()
+            session_ids.update(r.id for r in by_cid)
+        if session_ids:
+            conditions.append(OnlineOrder.session_id.in_(list(session_ids)))
         return OnlineOrder.query.filter(db.or_(*conditions))
     cs = _get_or_create_shop_customer_session()
     return OnlineOrder.query.filter(OnlineOrder.session_id == cs.id)
@@ -702,6 +715,11 @@ def _serialize_order(order):
         'updatedAt': order.updated_at.isoformat() if order.updated_at else None,
         'erp_status': order.erp_status,
         'erp_note': order.erp_note,
+        'return_status': order.return_status,
+        'return_requested_at': order.return_requested_at.isoformat() if order.return_requested_at else None,
+        'return_processed_at': order.return_processed_at.isoformat() if order.return_processed_at else None,
+        'return_note': order.return_note,
+        'returned_at': order.returned_at.isoformat() if order.returned_at else None,
         'items': [
             {
                 'id': it.id,
@@ -738,6 +756,13 @@ def list_orders():
             dirty.append(o)
     if dirty:
         db.session.commit()
+    if not items:
+        current_app.logger.info(
+            'Shop orders list empty: web_customer=%s, session=%s, total=%s',
+            _get_web_customer_from_jwt().id if _get_web_customer_from_jwt() else None,
+            request.cookies.get('shop_session'),
+            pagination.total,
+        )
     return _json_ok({
         'items': [_serialize_order(o) for o in items],
         'total': pagination.total,
@@ -786,7 +811,7 @@ def create_order():
     subtotal = sum(float(i.quantity or 0) * float(i.unit_price or 0) for i in items)
     if promotion:
         discount_amount = promotion.calculate_discount(subtotal)
-    vat_amount = round(subtotal * 0.1)
+    vat_amount = 0
     total = subtotal - discount_amount + shipping_fee + vat_amount
     web_customer = _get_web_customer_from_jwt()
     customer_id = None
@@ -966,6 +991,78 @@ def cancel_order(order_id):
     return _json_ok({'order': _serialize_order(order)})
 
 
+@shop_api_bp.post('/orders/<int:order_id>/request-return')
+def request_return(order_id):
+    web_customer = _get_web_customer_from_jwt()
+    if not web_customer:
+        return _json_err('Vui lòng đăng nhập.', 401)
+    q = _get_orders_query_for_current_user()
+    order = q.filter_by(id=order_id).first()
+    if not order:
+        return _json_err('Không tìm thấy đơn hàng.', 404)
+    if order.return_status == 'requested':
+        return _json_err('Bạn đã gửi yêu cầu trả hàng cho đơn này rồi.', 400)
+    if order.return_status in ('approved', 'completed'):
+        return _json_err('Đơn hàng đang trong quá trình xử lý trả hàng.', 400)
+    if order.status == 'cancelled':
+        return _json_err('Đơn hàng đã bị hủy, không thể yêu cầu trả hàng.', 400)
+    order.return_status = 'requested'
+    order.return_requested_at = datetime.utcnow()
+    order.return_note = None
+    db.session.commit()
+    try:
+        _notify_admins(
+            title=f'Khách hàng yêu cầu trả hàng {order.code}',
+            message=f'Khách {order.customer_name} vừa gửi yêu cầu trả hàng cho đơn {order.code}.',
+            noti_type='warning',
+            module='ecommerce',
+            reference_id=order.id,
+            reference_type='online_order',
+        )
+    except Exception:
+        pass
+    return _json_ok({'order': _serialize_order(order)})
+
+
+@shop_api_bp.post('/orders/<int:order_id>/cancel-return')
+def cancel_return_request(order_id):
+    web_customer = _get_web_customer_from_jwt()
+    if not web_customer:
+        return _json_err('Vui lòng đăng nhập.', 401)
+    q = _get_orders_query_for_current_user()
+    order = q.filter_by(id=order_id).first()
+    if not order:
+        return _json_err('Không tìm thấy đơn hàng.', 404)
+    if order.return_status != 'requested':
+        return _json_err('Đơn hàng không có yêu cầu trả hàng đang chờ xử lý.', 400)
+    order.return_status = 'none'
+    order.return_requested_at = None
+    order.return_note = None
+    db.session.commit()
+    return _json_ok({'order': _serialize_order(order)})
+
+
+@shop_api_bp.delete('/orders/<int:order_id>')
+def delete_order(order_id):
+    web_customer = _get_web_customer_from_jwt()
+    if not web_customer:
+        return _json_err('Vui lòng đăng nhập.', 401)
+    q = _get_orders_query_for_current_user()
+    order = q.filter_by(id=order_id).first()
+    if not order:
+        return _json_err('Không tìm thấy đơn hàng.', 404)
+    if order.status != 'new':
+        return _json_err('Chỉ có thể xóa đơn hàng ở trạng thái Mới.', 400)
+    if order.stock_out_id or order.erp_status:
+        return _json_err('Đơn hàng đã được đồng bộ với phiếu xuất kho, không thể xóa.', 400)
+    order_code = order.code
+    OnlineOrderItem.query.filter_by(online_order_id=order.id).delete(synchronize_session=False)
+    db.session.delete(order)
+    db.session.commit()
+    current_app.logger.info(f'Shop customer {web_customer.id} deleted online order {order_code}')
+    return _json_ok(message='Da xoa don hang thanh cong.')
+
+
 # ===================== CUSTOMER =====================
 
 @shop_api_bp.get('/customer/profile')
@@ -1104,7 +1201,7 @@ def checkout_json_legacy():
     payment_status = payload.get('paymentStatus') or ('Paid' if payment_method == 'VietQR' else 'Unpaid')
     note = payload.get('note') or ''
     subtotal = sum(_num(it.get('unitPrice')) * _num(it.get('quantity')) for it in items)
-    tax_amount = round(subtotal * 0.1)
+    tax_amount = 0
     total = subtotal + tax_amount
     order_code = generate_online_order_code()
     customer_id = None

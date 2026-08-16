@@ -6,6 +6,7 @@ from app.domains.master.models import Supplier
 from app.shared.export.excel_exporter import ExcelExporter
 from app.shared.export.excel_importer import ExcelImporter
 from app.shared.authz import require_permission
+from app.shared.filters import SupplierFilters
 import io
 
 suppliers_bp = Blueprint('suppliers', __name__, url_prefix='/suppliers')
@@ -27,6 +28,7 @@ def index():
         )
     q = q.order_by(Supplier.code)
     suppliers = q.paginate(page=page, per_page=20, error_out=False)
+    SupplierFilters.save(search=search, page=page)
     return render_template('suppliers/index.html', suppliers=suppliers, search=search)
 
 
@@ -62,9 +64,9 @@ def create():
         db.session.add(s)
         db.session.commit()
         flash(f'Thêm nhà cung cấp {code} thành công!', 'success')
-        return redirect(url_for('suppliers.index'))
-    return render_template('suppliers/form.html', supplier=None)
+        return SupplierFilters.redirect('suppliers.index', search='', page=1)
 
+    return render_template('suppliers/form.html', supplier=None)
 
 @suppliers_bp.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -89,7 +91,7 @@ def edit(id):
         s.is_active = request.form.get('is_active') == 'on'
         db.session.commit()
         flash(f'Cập nhật nhà cung cấp {s.code} thành công!', 'success')
-        return redirect(url_for('suppliers.index'))
+        return SupplierFilters.redirect('suppliers.index', search='', page=1)
     return render_template('suppliers/form.html', supplier=s)
 
 
@@ -107,7 +109,7 @@ def delete(id):
         db.session.delete(s)
         db.session.commit()
         flash(f'Xóa nhà cung cấp {s.code} thành công!', 'success')
-    return redirect(url_for('suppliers.index'))
+    return SupplierFilters.redirect('suppliers.index', search='', page=1)
 
 
 @suppliers_bp.route('/export/excel')
@@ -127,13 +129,13 @@ def export_excel():
 def import_excel():
     if 'file' not in request.files:
         flash('Vui lòng chọn file!', 'danger')
-        return redirect(url_for('suppliers.index'))
+        return SupplierFilters.redirect('suppliers.index', search='', page=1)
     file = request.files['file']
     imported, updated, errors = ExcelImporter.import_suppliers(file)
     flash(f'Import thành công: {imported} mới, {updated} cập nhật.', 'success')
     for err in errors[:5]:
         flash(f'Lỗi: {err}', 'warning')
-    return redirect(url_for('suppliers.index'))
+    return SupplierFilters.redirect('suppliers.index', search='', page=1)
 
 
 @suppliers_bp.route('/template/excel')

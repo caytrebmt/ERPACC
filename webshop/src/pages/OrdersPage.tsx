@@ -8,17 +8,20 @@ import { formatPrice, formatDate } from "../utils/format";
 const OrdersPage: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadOrders() {
       try {
         setLoading(true);
+        setError(null);
         const res = await client.get("/api/shop/orders");
         if (res.data && res.data.ok) {
           setOrders(res.data.data.items || []);
         }
       } catch (err) {
         console.error("Error loading customer orders history", err);
+        setError("Khong tai duoc lich su don hang. Vui long thu lai sau.");
       } finally {
         setLoading(false);
       }
@@ -37,6 +40,24 @@ const OrdersPage: React.FC = () => {
     }, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-[50vh] flex flex-col items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-600 mb-2" />
+        <p className="text-xs text-gray-500 dark:text-gray-400">Đang tải lịch sử đơn hàng của bạn...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-[50vh] flex flex-col items-center justify-center">
+        <p className="text-xs text-red-500 mb-4">{error}</p>
+        <button onClick={() => window.location.reload()} className="bg-indigo-600 text-white text-xs font-bold px-4 py-2 rounded-full">Thu lai</button>
+      </div>
+    );
+  }
 
   const getStatusBadgeClass = (status: string) => {
     switch (status.toLowerCase()) {

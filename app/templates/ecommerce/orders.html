@@ -87,6 +87,11 @@
                 </label>
                 <button class="btn btn-sm btn-primary py-0 px-2">Sync ERP</button>
               </form>
+              <form method="POST" action="{{ url_for('ecommerce.delete_order', id=order.id) }}" class="d-inline ms-1" onsubmit="return confirm('Ban co chac muon xoa don hang nay?')">
+                <button class="btn btn-sm btn-outline-danger py-0 px-2" title="Xoa don">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </form>
               {% else %}
               <span class="text-muted small">Đã xử lý</span>
               {% endif %}

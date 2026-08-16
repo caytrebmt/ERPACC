@@ -73,10 +73,15 @@ export interface Order {
   promo_code: string | null;
   promo_desc: string;
   total_amount: number;
-  status: "new" | "pending" | "confirmed" | "cancelled" | string;
+  status: "new" | "pending" | "confirmed" | "cancelled" | "returned" | string;
   createdAt: string;
   erp_status?: string | null;
   erp_note?: string | null;
+  return_status?: "none" | "requested" | "approved" | "rejected" | "completed" | string | null;
+  return_requested_at?: string | null;
+  return_processed_at?: string | null;
+  return_note?: string | null;
+  returned_at?: string | null;
 }
 
 export interface Promotion {

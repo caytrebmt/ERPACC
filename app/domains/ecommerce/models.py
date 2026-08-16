@@ -308,12 +308,19 @@ class OnlineOrder(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     synced_at = db.Column(db.DateTime, nullable=True)
+    return_status = db.Column(db.String(20), default='none', nullable=False)
+    return_requested_at = db.Column(db.DateTime, nullable=True)
+    return_processed_at = db.Column(db.DateTime, nullable=True)
+    return_note = db.Column(db.Text, nullable=True)
+    stock_in_id = db.Column(db.Integer, db.ForeignKey('stock_ins.id'), nullable=True)
+    returned_at = db.Column(db.DateTime, nullable=True)
 
     customer = db.relationship('Customer', foreign_keys=[customer_id])
     web_customer = db.relationship('WebCustomer', foreign_keys=[web_customer_id], backref='orders')
     session = db.relationship('CustomerSession', foreign_keys=[session_id])
     promotion = db.relationship('Promotion', foreign_keys=[promotion_id])
     stock_out = db.relationship('StockOut', foreign_keys=[stock_out_id])
+    stock_in = db.relationship('StockIn', foreign_keys=[stock_in_id])
     items = db.relationship('OnlineOrderItem', backref='online_order', lazy='dynamic', cascade='all, delete-orphan')
 
     def calculate_totals(self):

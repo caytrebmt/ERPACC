@@ -6,6 +6,7 @@ from app.domains.master.models import Customer
 from app.shared.export.excel_exporter import ExcelExporter
 from app.shared.export.excel_importer import ExcelImporter
 from app.shared.authz import require_permission
+from app.shared.filters import CustomerFilters
 import io
 import math
 import unicodedata
@@ -89,6 +90,7 @@ def index():
             total=len(matched),
         )
 
+    CustomerFilters.save(search=search, ctype=ctype, page=page)
     return render_template('customers/index.html', customers=customers,
                            search=search, ctype=ctype)
 
@@ -125,9 +127,9 @@ def create():
         db.session.add(c)
         db.session.commit()
         flash(f'Thêm khách hàng {code} thành công!', 'success')
-        return redirect(url_for('customers.index'))
-    return render_template('customers/form.html', customer=None)
+        return CustomerFilters.redirect('customers.index', search='', ctype='', page=1)
 
+    return render_template('customers/form.html', customer=None)
 
 @customers_bp.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -152,7 +154,7 @@ def edit(id):
         c.is_active = request.form.get('is_active') == 'on'
         db.session.commit()
         flash(f'Cập nhật khách hàng {c.code} thành công!', 'success')
-        return redirect(url_for('customers.index'))
+        return CustomerFilters.redirect('customers.index', search='', ctype='', page=1)
     return render_template('customers/form.html', customer=c)
 
 
@@ -170,7 +172,7 @@ def delete(id):
         db.session.delete(c)
         db.session.commit()
         flash(f'Xóa khách hàng {c.code} thành công!', 'success')
-    return redirect(url_for('customers.index'))
+    return CustomerFilters.redirect('customers.index', search='', ctype='', page=1)
 
 
 @customers_bp.route('/export/excel')
@@ -190,7 +192,7 @@ def export_excel():
 def import_excel():
     if 'file' not in request.files:
         flash('Vui lòng chọn file!', 'danger')
-        return redirect(url_for('customers.index'))
+        return CustomerFilters.redirect('customers.index', search='', ctype='', page=1)
 
     file = request.files['file']
 
@@ -206,7 +208,7 @@ def import_excel():
         traceback.print_exc()
         flash(f'Lỗi import: {str(e)}', 'danger')
 
-    return redirect(url_for('customers.index'))
+    return CustomerFilters.redirect('customers.index', search='', ctype='', page=1)
 
 
 @customers_bp.route('/template/excel')

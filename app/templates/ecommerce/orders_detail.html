@@ -43,6 +43,14 @@ E-commerce - Chi tiết đơn online {% endblock %} {% block content %}
         <i class="fas fa-truck me-1"></i>Phiếu xuất: {{ order.stock_out.code }}
       </a>
       {% endif %}
+      {% if order.stock_in %}
+      <a
+        href="{{ url_for('stock_in.detail', id=order.stock_in.id) }}"
+        class="btn btn-sm btn-success"
+      >
+        <i class="fas fa-undo me-1"></i>Phiếu nhập trả: {{ order.stock_in.code }}
+      </a>
+      {% endif %}
     </div>
   </div>
 
@@ -106,6 +114,46 @@ E-commerce - Chi tiết đơn online {% endblock %} {% block content %}
         </tbody>
       </table>
     </div>
+    {% if order.return_status and order.return_status != 'none' %}
+    <div class="alert alert-info">
+      <strong>Trạng thái trả hàng:</strong>
+      {% if order.return_status == 'requested' %}Đang yêu cầu trả hàng{% endif %}
+      {% if order.return_status == 'approved' %}Đã duyệt trả hàng{% endif %}
+      {% if order.return_status == 'rejected' %}Từ chối trả hàng{% endif %}
+      {% if order.return_status == 'completed' %}Đã hoàn tất trả hàng{% endif %}
+      {% if order.return_note %}<br><em>Ghi chú: {{ order.return_note }}</em>{% endif %}
+      {% if order.returned_at %}<br><em>Thời gian hoàn tất: {{ order.returned_at|dateformat }}</em>{% endif %}
+    </div>
+    {% endif %}
+    {% if order.return_status == 'requested' %}
+    <div class="card mt-3">
+      <div class="card-header fw-semibold">Xử lý yêu cầu trả hàng</div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('ecommerce.approve_return', id=order.id) }}" class="row g-2 align-items-end">
+          <div class="col-md-6">
+            <label class="form-label">Kho nhận trả hàng</label>
+            <select name="warehouse_id" class="form-select">
+              {% for wh in warehouses %}
+              <option value="{{ wh.id }}" {{ 'selected' if order.stock_out and order.stock_out.warehouse_id == wh.id }}>{{ wh.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Ghi chú xử lý</label>
+            <input type="text" name="return_note" class="form-control" placeholder="VD: Hàng còn nguyên seal, chưa sử dụng">
+          </div>
+          <div class="col-12 d-flex gap-2 mt-2">
+            <button type="submit" class="btn btn-sm btn-success">
+              <i class="fas fa-check me-1"></i>Duyệt trả hàng (Nhập kho)
+            </button>
+            <button type="submit" formaction="{{ url_for('ecommerce.reject_return', id=order.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Từ chối yêu cầu trả hàng?')">
+              <i class="fas fa-times me-1"></i>Từ chối
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

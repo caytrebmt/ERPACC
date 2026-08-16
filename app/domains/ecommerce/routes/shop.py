@@ -22,7 +22,7 @@ from app.domains.ecommerce.services.ecommerce_sync_service import (
     generate_tracking_token,
     listing_query,
 )
-from app.domains.ecommerce.routes.shop_api import _ensure_erp_customer_for_web
+from app.domains.ecommerce.routes.shop_api import _ensure_erp_customer_for_web, _notify_admins
 from app.domains.ecommerce.middleware.role_middleware import web_customer_only
 from zoneinfo import ZoneInfo
 
@@ -434,6 +434,15 @@ def checkout():
         cart.status = 'ordered'
         db.session.commit()
 
+        _notify_admins(
+            title=f'Don hang moi {order.code}',
+            message=f'Khach hang {order.customer_name} dat hang moi tu website. Tong tien: {float(order.total_amount or 0):,.0f}d.',
+            noti_type='success',
+            module='ecommerce',
+            reference_id=order.id,
+            reference_type='online_order',
+        )
+
         if not _is_web_customer() and order.customer_email:
             pass
 
@@ -705,6 +714,25 @@ def cancel_order(order_id):
     order.status = 'cancelled'
     db.session.commit()
     return jsonify({'ok': True})
+
+
+@shop_bp.post('/orders/<int:order_id>/delete')
+@login_required
+@web_customer_only
+def delete_order(order_id):
+    base_q = _user_orders_query()
+    order = base_q.filter_by(id=order_id).first() if base_q is not None else None
+    if not order:
+        return jsonify({'ok': False, 'message': 'Không tìm thấy đơn hàng.'}), 404
+    if order.status != 'new':
+        return jsonify({'ok': False, 'message': 'Chỉ có thể xóa đơn hàng ở trạng thái Mới.'}), 400
+    if order.stock_out_id or order.erp_status:
+        return jsonify({'ok': False, 'message': 'Đơn hàng đã được đồng bộ với phiếu xuất kho, không thể xóa.'}), 400
+    order_code = order.code
+    OnlineOrderItem.query.filter_by(online_order_id=order.id).delete(synchronize_session=False)
+    db.session.delete(order)
+    db.session.commit()
+    return jsonify({'ok': True, 'message': f'Đã xóa đơn hàng {order_code}.'})
 
 
 @shop_bp.route('/auth/google/login')

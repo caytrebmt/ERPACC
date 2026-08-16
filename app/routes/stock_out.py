@@ -23,6 +23,7 @@ from app.domains.accounting.services.account_mapping_service import get_account_
 from app.domains.inventory.services.unit_display import build_item_qty_display_map
 from app.shared.constants import DocStatus
 from app.services.i18n_service import t
+from app.shared.filters import StockOutFilters
 from decimal import Decimal, ROUND_HALF_UP
 from weasyprint import HTML
 from flask import render_template, request
@@ -121,12 +122,13 @@ def index():
             if so_id is not None and code:
                 shop_synced_map[int(so_id)] = code
 
+    StockOutFilters.save(search=search, status=status, customer_id=customer_id,
+                         from_date=from_date, to_date=to_date, page=page)
     return render_template('stock_out/index.html',
                            stock_outs=stock_outs, search=search,
                            status=status, customers=customers,
                            customer_id=customer_id, from_date=from_date, to_date=to_date,
                            shop_synced_map=shop_synced_map)
-
 
 
 @stock_out_bp.route('/create', methods=['GET', 'POST'])
@@ -375,7 +377,7 @@ def cancel(id):
         flash(_('Cancelled stock-out %(code)s.', code=result.code), 'warning')
     else:
         flash(result.error or _('Error cancelling'), 'danger')
-    return redirect(url_for('stock_out.index'))
+    return StockOutFilters.redirect('stock_out.index', search='', status='', customer_id='', from_date='', to_date='', page=1)
 
 
 @stock_out_bp.route('/print/<int:id>')

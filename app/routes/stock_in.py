@@ -21,6 +21,7 @@ from app.shared.authz import require_permission
 from app.domains.inventory.services.unit_display import build_item_qty_display_map
 from app.shared.constants import DocStatus
 from app.services.i18n_service import t
+from app.shared.filters import StockInFilters
 from decimal import Decimal, ROUND_HALF_UP
 def _dec(v): return Decimal(str(v or 0))
 def _money(v): return _dec(v).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
@@ -111,6 +112,8 @@ def index():
     suppliers = Supplier.query.filter_by(
         is_active=True).order_by(Supplier.name).all()
 
+    StockInFilters.save(search=search, status=status, supplier_id=supplier_id,
+                        from_date=from_date, to_date=to_date, page=page)
     return render_template('stock_in/index.html',
                            stock_ins=stock_ins, search=search,
                            status=status, suppliers=suppliers,
@@ -347,7 +350,7 @@ def cancel(id):
         flash(_('Cancelled stock-in %(code)s.', code=result.code), 'warning')
     else:
         flash(result.error or _('Error cancelling'), 'danger')
-    return redirect(url_for('stock_in.index'))
+    return StockInFilters.redirect('stock_in.index', search='', status='', supplier_id='', from_date='', to_date='', page=1)
 
 
 @stock_in_bp.route('/print/<int:id>')

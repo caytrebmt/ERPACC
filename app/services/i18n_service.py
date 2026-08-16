@@ -49,10 +49,10 @@ class I18nService:
         return cls.DEFAULT_LANG
     
     @classmethod
-    def translate(cls, key: str, lang: str = None) -> str:
+    def translate(cls, key: str, lang: str = None, default: str = None) -> str:
         """
         Translate a key with fallback chain.
-        Priority: requested lang -> default lang (vi) -> raw key
+        Priority: requested lang -> default lang (vi) -> raw key -> provided default
         Example: "common.edit" or "reports.profit_by_customer"
         """
         if lang is None:
@@ -65,18 +65,18 @@ class I18nService:
         
         keys = key.split('.')
         
-        # Try requested language first
         value = cls._get_nested_value(cls._cache.get(lang, {}), keys)
         if value is not None:
             return value
         
-        # Fallback to default language (vi) if different from requested
         if lang != cls.DEFAULT_LANG:
             value = cls._get_nested_value(cls._cache.get(cls.DEFAULT_LANG, {}), keys)
             if value is not None:
                 return value
         
-        # Ultimate fallback: return the key itself
+        if default is not None:
+            return default
+        
         return key
     
     @classmethod
@@ -108,9 +108,9 @@ class I18nService:
         return cls.get_current_lang()
 
 # Shortcut function
-def t(key: str, **kwargs) -> str:
+def t(key: str, default: str = None, **kwargs) -> str:
     """Translate function for use in templates"""
-    translated = I18nService.translate(key)
+    translated = I18nService.translate(key, default=default)
     if kwargs:
         try:
             return translated % kwargs

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Calendar, User, Phone, MapPin, Loader2, Coins, Receipt, XCircle, RefreshCw, ShoppingCart, Info, CheckCircle } from "lucide-react";
+import { ArrowLeft, Calendar, User, Phone, MapPin, Loader2, Coins, Receipt, XCircle, RefreshCw, ShoppingCart, Info, CheckCircle, RotateCcw } from "lucide-react";
 import client from "../api/client";
 import { Order } from "../types";
 import { formatPrice, formatDate } from "../utils/format";
@@ -70,6 +70,27 @@ const OrderDetailPage: React.FC = () => {
     }
   };
 
+  const handleDeleteOrder = async () => {
+    if (!order) return;
+    if (!window.confirm("Bạn có chắc chắn muốn xóa đơn hàng này không? Thao tác này không thể hoàn tác.")) return;
+
+    try {
+      setSubmittingAction(true);
+      const res = await client.delete(`/api/shop/orders/${order.id}`);
+      if (res.data && res.data.ok) {
+        showToast("Đã xóa đơn hàng thành công!", "success");
+        navigate("/orders");
+      } else {
+        showToast(res.data.message || "Không thể xóa đơn hàng", "error");
+      }
+    } catch (err: any) {
+      const msg = err.response?.data?.message || "Lỗi khi xóa đơn hàng.";
+      showToast(msg, "error");
+    } finally {
+      setSubmittingAction(false);
+    }
+  };
+
   const handleReorder = async () => {
     if (!order) return;
     try {
@@ -77,13 +98,55 @@ const OrderDetailPage: React.FC = () => {
       const res = await client.post(`/api/shop/orders/${order.id}/reorder`);
       if (res.data && res.data.ok) {
         showToast("Sản phẩm đã được thêm vào giỏ hàng thành công!", "success");
-        await fetchCart(); // Force update cart badge count
+        await fetchCart();
         navigate("/cart");
       } else {
         showToast(res.data.message || "Không thể mua lại", "error");
       }
     } catch (err: any) {
       const msg = err.response?.data?.message || "Lỗi khi thực hiện mua lại.";
+      showToast(msg, "error");
+    } finally {
+      setSubmittingAction(false);
+    }
+  };
+
+  const handleRequestReturn = async () => {
+    if (!order) return;
+    if (!window.confirm("Bạn có chắc chắn muốn yêu cầu trả hàng cho đơn này không?")) return;
+
+    try {
+      setSubmittingAction(true);
+      const res = await client.post(`/api/shop/orders/${order.id}/request-return`);
+      if (res.data && res.data.ok) {
+        showToast("Yêu cầu trả hàng đã được gửi. Chúng tôi sẽ xử lý trong thời gian sớm nhất.", "success");
+        setOrder(res.data.data);
+      } else {
+        showToast(res.data.message || "Không thể gửi yêu cầu trả hàng", "error");
+      }
+    } catch (err: any) {
+      const msg = err.response?.data?.message || "Lỗi khi gửi yêu cầu trả hàng.";
+      showToast(msg, "error");
+    } finally {
+      setSubmittingAction(false);
+    }
+  };
+
+  const handleCancelReturn = async () => {
+    if (!order) return;
+    if (!window.confirm("Bạn có chắc chắn muốn hủy yêu cầu trả hàng này không?")) return;
+
+    try {
+      setSubmittingAction(true);
+      const res = await client.post(`/api/shop/orders/${order.id}/cancel-return`);
+      if (res.data && res.data.ok) {
+        showToast("Đã hủy yêu cầu trả hàng.", "success");
+        setOrder(res.data.data);
+      } else {
+        showToast(res.data.message || "Không thể hủy yêu cầu trả hàng", "error");
+      }
+    } catch (err: any) {
+      const msg = err.response?.data?.message || "Lỗi khi hủy yêu cầu trả hàng.";
       showToast(msg, "error");
     } finally {
       setSubmittingAction(false);
@@ -99,7 +162,9 @@ const OrderDetailPage: React.FC = () => {
       case "confirmed":
         return "bg-green-50 border-green-200 text-green-700 dark:bg-green-950/20 dark:border-green-900/40 dark:text-green-300";
       case "cancelled":
-        return "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/20 dark:border-red-900/40 dark:text-red-300";
+        return "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/20 dark:border-blue-900/40 dark:text-red-300";
+      case "returned":
+        return "bg-purple-50 border-purple-200 text-purple-700 dark:bg-purple-950/20 dark:border-blue-900/40 dark:text-purple-300";
       default:
         return "bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-850 dark:border-gray-800 dark:text-gray-300";
     }
@@ -115,8 +180,42 @@ const OrderDetailPage: React.FC = () => {
         return "Đã xác nhận";
       case "cancelled":
         return "Đã hủy bỏ";
+      case "returned":
+        return "Đã trả hàng";
       default:
         return status;
+    }
+  };
+
+  const getReturnStatusLabel = (): string => {
+    if (!order.return_status || order.return_status === "none") return "";
+    switch (order.return_status) {
+      case "requested":
+        return "Đang yêu cầu trả hàng";
+      case "approved":
+        return "Đã duyệt trả hàng";
+      case "rejected":
+        return "Từ chối trả hàng";
+      case "completed":
+        return "Đã hoàn tất trả hàng";
+      default:
+        return order.return_status;
+    }
+  };
+
+  const getReturnStatusBadgeClass = (): string => {
+    if (!order.return_status || order.return_status === "none") return "";
+    switch (order.return_status) {
+      case "requested":
+        return "bg-amber-50 border-amber-200 text-amber-700 dark:bg-amber-950/20 dark:border-blue-900/40 dark:text-amber-300";
+      case "approved":
+        return "bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-950/20 dark:border-blue-900/40 dark:text-blue-300";
+      case "rejected":
+        return "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/20 dark:border-blue-900/40 dark:text-red-300";
+      case "completed":
+        return "bg-green-50 border-green-200 text-green-700 dark:bg-green-950/20 dark:border-blue-900/40 dark:text-green-300";
+      default:
+        return "bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-850 dark:border-gray-800 dark:text-gray-300";
     }
   };
 
@@ -179,6 +278,11 @@ const OrderDetailPage: React.FC = () => {
                 : "bg-amber-50 border-amber-200 text-amber-700 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-300"
             }`}>
               {order.erp_status}
+            </span>
+          )}
+          {order.return_status && order.return_status !== "none" && (
+            <span className={`text-xs font-bold border px-3 py-1 rounded-full uppercase ${getReturnStatusBadgeClass()}`}>
+              {getReturnStatusLabel()}
             </span>
           )}
         </div>
@@ -329,13 +433,22 @@ const OrderDetailPage: React.FC = () => {
             <div className="flex flex-col gap-2 pt-3 border-t border-gray-100 dark:border-gray-800">
               {/* Cancel button if new */}
               {order.status === "new" && !order.stock_out_id && !order.erp_status && (
-                <button
-                  onClick={handleCancelOrder}
-                  disabled={submittingAction}
-                  className="w-full bg-red-50 hover:bg-red-100 dark:bg-red-950/20 dark:hover:bg-red-950/45 text-red-700 dark:text-red-400 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-red-200 dark:border-red-900/40"
-                >
-                  <XCircle className="w-4 h-4" /> Hủy bỏ đơn hàng
-                </button>
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={handleCancelOrder}
+                    disabled={submittingAction}
+                    className="w-full bg-red-50 hover:bg-red-100 dark:bg-red-950/20 dark:hover:bg-red-950/45 text-red-700 dark:text-red-400 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-red-200 dark:border-red-900/40"
+                  >
+                    <XCircle className="w-4 h-4" /> Hủy bỏ đơn hàng
+                  </button>
+                  <button
+                    onClick={handleDeleteOrder}
+                    disabled={submittingAction}
+                    className="w-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-gray-200 dark:border-gray-700"
+                  >
+                    <XCircle className="w-4 h-4" /> Xóa đơn hàng
+                  </button>
+                </div>
               )}
 
               {/* Reorder button */}
@@ -346,6 +459,26 @@ const OrderDetailPage: React.FC = () => {
                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
                 >
                   <RefreshCw className="w-4 h-4" /> Mua lại đơn hàng này
+                </button>
+              )}
+
+              {/* Return button for delivered orders */}
+              {order.erp_status === "Đã xuất kho" && order.return_status === "none" && (
+                <button
+                  onClick={handleRequestReturn}
+                  disabled={submittingAction}
+                  className="w-full bg-orange-50 hover:bg-orange-100 dark:bg-orange-950/20 dark:hover:bg-orange-950/45 text-orange-700 dark:text-orange-400 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-orange-200 dark:border-orange-900/40"
+                >
+                  <RotateCcw className="w-4 h-4" /> Yêu cầu trả hàng
+                </button>
+              )}
+              {order.return_status === "requested" && (
+                <button
+                  onClick={handleCancelReturn}
+                  disabled={submittingAction}
+                  className="w-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-gray-200 dark:border-gray-700"
+                >
+                  <XCircle className="w-4 h-4" /> Hủy yêu cầu trả hàng
                 </button>
               )}
             </div>

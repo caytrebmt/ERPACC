@@ -5,6 +5,7 @@ from flask import (Blueprint, current_app, render_template, request, redirect,
 from flask_login import login_required, current_user
 from app.database import db
 from app.domains.master.models import Product, Unit, Category, ProductImage
+from app.shared.filters import ProductFilters
 
 from app.shared.export.excel_exporter import ExcelExporter
 from app.shared.export.excel_importer import ExcelImporter
@@ -231,6 +232,7 @@ def index():
     categories = db.session.query(Product.category).filter(
         Product.category.isnot(None)).distinct().all()
     categories = sorted(set([c[0] for c in categories if c[0]]))
+    ProductFilters.save(search=search, category=category, page=page)
     return render_template('products/index.html',
                            products=products, search=search,
                            category=category, categories=categories)
@@ -373,7 +375,7 @@ def create():
             'success'
         )
 
-        return redirect(url_for('products.index'))
+        return ProductFilters.redirect('products.index', search='', category='', page=1)
 
     return render_template(
         'products/form.html',
@@ -521,7 +523,7 @@ def edit(id):
 
         db.session.commit()
         flash(f'Cập nhật hàng hóa {p.code} thành công!', 'success')
-        return redirect(url_for('products.index'))
+        return ProductFilters.redirect('products.index', search='', category='', page=1)
 
     return render_template('products/form.html', product=p, units=units, categories=cats, warehouses=warehouses, conversions=conversions)
         
@@ -531,7 +533,7 @@ def edit(id):
 @require_permission('products', 'view')
 def edit_missing_id():
     flash('Vui lòng chọn một hàng hóa cụ thể để chỉnh sửa.', 'warning')
-    return redirect(url_for('products.index'))
+    return ProductFilters.redirect('products.index', search='', category='', page=1)
 
 
 @products_bp.route('/delete/<int:id>', methods=['POST'])
@@ -550,7 +552,7 @@ def delete(id):
         db.session.delete(p)
         db.session.commit()
         flash(f'Xóa hàng hóa {p.code} thành công!', 'success')
-    return redirect(url_for('products.index'))
+    return ProductFilters.redirect('products.index', search='', category='', page=1)
 
 
 @products_bp.route('/export/excel')
@@ -571,16 +573,16 @@ def export_excel():
 def import_excel():
     if 'file' not in request.files:
         flash('Vui lòng chọn file Excel!', 'danger')
-        return redirect(url_for('products.index'))
+        return ProductFilters.redirect('products.index', search='', category='', page=1)
     file = request.files['file']
     if not file.filename.endswith(('.xlsx', '.xls')):
         flash('File không hợp lệ!', 'danger')
-        return redirect(url_for('products.index'))
+        return ProductFilters.redirect('products.index', search='', category='', page=1)
     imported, updated, errors = ExcelImporter.import_products(file)
     flash(f'Import thành công: {imported} mới, {updated} cập nhật.', 'success')
     for err in errors[:5]:
         flash(f'Lỗi: {err}', 'warning')
-    return redirect(url_for('products.index'))
+    return ProductFilters.redirect('products.index', search='', category='', page=1)
 
 
 @products_bp.route('/template/excel')

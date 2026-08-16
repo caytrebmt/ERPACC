@@ -344,8 +344,8 @@ def create_app(config_name=None):
 
     @app.context_processor
     def inject_globals():
-        def t(key: str) -> str:
-            return I18nService.translate(key)
+        def t(key: str, default: str = None) -> str:
+            return I18nService.translate(key, default=default)
 
         def menu_name(menu):
             if not getattr(menu, 'code', None):
