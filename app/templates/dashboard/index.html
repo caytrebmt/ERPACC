@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% block title %}{{ t('Dashboard') }}{% endblock %} {% block
-page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}{{ t('Dashboard') }}{% endblock %} {%
+block page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard')
+}}{% endblock %} {% block content %}
 <!-- KPI Row -->
 <div class="row g-2 mb-2">
   <div class="col-xl-3 col-md-6">
@@ -174,13 +174,13 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
       <div
         class="card-header d-flex justify-content-between align-items-center"
       >
-<span
-            ><i class="fas fa-chart-bar me-2"></i>{{ t('Net Revenue & COGS') }} ({{
-            chart_from|dateformat }} - {{ chart_to|dateformat }})</span
+        <span
+          ><i class="fas fa-chart-bar me-2"></i>{{ t('Net Revenue & COGS') }}
+          ({{ chart_from|dateformat }} - {{ chart_to|dateformat }})</span
         >
       </div>
-      <div class="card-body" style="height:400px">
-        <canvas id="revenueChart" ></canvas>
+      <div class="card-body" style="height: 400px">
+        <canvas id="revenueChart"></canvas>
       </div>
     </div>
   </div>
@@ -231,7 +231,7 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
 
 <!-- Recent Transactions -->
 <div class="row g-2">
-  <!--<div class="col-xl-6">
+  <div class="col-xl-6">
     <div class="card">
       <div class="card-header d-flex justify-content-between">
         <span
@@ -257,11 +257,15 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
           </thead>
           <tbody>
             {% for si in recent_stock_ins %}
-            <tr>
+            {% set online_order = si_to_online.get(si.id) %}
+            <tr class="{{ 'table-warning' if online_order else '' }}">
               <td>
                 <a href="{{ url_for('stock_in.detail', id=si.id) }}"
                   >{{ si.code }}</a
                 >
+                {% if online_order %}
+                <br><small class="text-muted">Trả hàng từ <a href="{{ url_for('ecommerce.order_detail', id=online_order.id) }}">{{ online_order.code }}</a></small>
+                {% endif %}
               </td>
               <td>{{ si.date|dateformat }}</td>
               <td>{{ si.supplier.name[:20] if si.supplier else '-' }}</td>
@@ -270,6 +274,9 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
                 <span class="badge badge-{{ (si.status or '')|lower }}"
                   >{{ si.status|status_label }}</span
                 >
+                {% if online_order and online_order.return_status == 'completed' %}
+                <span class="badge bg-warning text-dark ms-1">Đã trả hàng</span>
+                {% endif %}
               </td>
             </tr>
             {% endfor %}
@@ -277,7 +284,8 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
         </table>
       </div>
     </div>
-  </div>-->
+  </div>
+
   <div class="col-xl-6">
     <div class="card">
       <div class="card-header d-flex justify-content-between">
@@ -288,9 +296,10 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
         <a
           href="{{ url_for('stock_out.index') }}"
           class="btn btn-sm btn-outline-primary"
-          >Xem tất cả</a>
+          >Xem tất cả</a
         >
       </div>
+
       <div class="card-body p-0">
         <table class="table table-sm table-hover mb-0">
           <thead>
@@ -298,12 +307,14 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
               <th>{{ t('Code') }}</th>
               <th>{{ t('Date') }}</th>
               <th>{{ t('Customer') }}</th>
+              <th>Đơn web</th>
               <th class="text-end">{{ t('Total Amount') }}</th>
               <th>{{ t('Status') }}</th>
             </tr>
           </thead>
           <tbody>
             {% for so in recent_stock_outs %}
+            {% set online_order = so_to_online.get(so.id) %}
             <tr>
               <td>
                 <a href="{{ url_for('stock_out.detail', id=so.id) }}"
@@ -311,13 +322,27 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
                 >
               </td>
               <td>{{ so.date|dateformat }}</td>
-              <td class="customer-name" title="{{ so.customer.name if so.customer else '-' }}">
-                {{ so.customer.name[:20] if so.customer else '-' }}</td>
+              <td
+                class="customer-name"
+                title="{{ so.customer.name if so.customer else '-' }}"
+              >
+                {{ so.customer.name[:20] if so.customer else '-' }}
+              </td>
+              <td>
+                {% if online_order %}
+                <a href="{{ url_for('ecommerce.order_detail', id=online_order.id) }}" class="text-decoration-none">
+                  <span class="badge bg-info text-dark">{{ online_order.code }}</span>
+                </a>
+                {% endif %}
+              </td>
               <td class="text-end">{{ so.total_amount|currency }}</td>
               <td>
                 <span class="badge badge-{{ (so.status or '')|lower }}"
                   >{{ so.status|status_label }}</span
                 >
+                {% if online_order and online_order.return_status == 'completed' %}
+                <span class="badge bg-warning text-dark ms-1">Đã trả hàng</span>
+                {% endif %}
               </td>
             </tr>
             {% endfor %}
@@ -327,20 +352,20 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
     </div>
   </div>
 </div>
-  {% endblock %} {% block extra_js %}
-  <script id="dashboard-data" type="application/json">
-{
-  "labels": {{ chart_labels|tojson }},
-  "revenue": {{ chart_revenue|tojson }},
-  "purchase": {{ chart_purchase|tojson }},
-  "profit": {{ chart_profit|default([])|tojson }}
-}
+{% endblock %} {% block extra_js %}
+<script id="dashboard-data" type="application/json">
+  {
+    "labels": {{ chart_labels|tojson }},
+    "revenue": {{ chart_revenue|tojson }},
+    "purchase": {{ chart_purchase|tojson }},
+    "profit": {{ chart_profit|default([])|tojson }}
+  }
 </script>
 
 <script src="{{ url_for('static', filename='js/chart.umd.min.js') }}"></script>
 
 <script>
-(() => {
+  (() => {
     const canvas = document.getElementById("revenueChart");
 
     if (!canvas || typeof Chart === "undefined") return;
@@ -348,143 +373,140 @@ page_title %}<i class="fas fa-tachometer-alt me-2"></i>{{ t('Dashboard') }}{% en
     let dashboardData = {};
 
     try {
-        dashboardData = JSON.parse(
-            document.getElementById("dashboard-data").textContent
-        );
+      dashboardData = JSON.parse(
+        document.getElementById("dashboard-data").textContent,
+      );
     } catch (err) {
-        console.error("Lỗi parse dashboard data:", err);
-        return;
+      console.error("Lỗi parse dashboard data:", err);
+      return;
     }
 
     const ctx = canvas.getContext("2d");
     const isDarkTheme =
-        document.documentElement.getAttribute("data-bs-theme") === "dark" ||
-        document.body.classList.contains("dark-mode") ||
-        localStorage.getItem("theme") === "dark";
+      document.documentElement.getAttribute("data-bs-theme") === "dark" ||
+      document.body.classList.contains("dark-mode") ||
+      localStorage.getItem("theme") === "dark";
     const axisColor = isDarkTheme ? "#d1d5db" : "#334155";
     const gridColor = isDarkTheme
-        ? "rgba(255,255,255,0.08)"
-        : "rgba(15,23,42,0.08)";
+      ? "rgba(255,255,255,0.08)"
+      : "rgba(15,23,42,0.08)";
 
     // Hủy chart cũ nếu có
     if (window.revenueChart instanceof Chart) {
-        window.revenueChart.destroy();
+      window.revenueChart.destroy();
     }
 
     window.revenueChart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: dashboardData.labels || [],
-            datasets: [
-                {
-                     label: "{{ t('Net Revenue') }}",
-                    data: dashboardData.revenue || [],
-                    fill: true,
-                    backgroundColor: "rgba(59,130,246,0.12)",
-                    borderColor: "#3b82f6",
-                    borderWidth: 3,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    tension: 0.35,
-                },
-{
-                      label: "{{ t('COGS') }}",
-                     data: dashboardData.purchase || [],
-                    fill: true,
-                    backgroundColor: "rgba(16,185,129,0.10)",
-                    borderColor: "#10b981",
-                    borderWidth: 3,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    tension: 0.35,
-                },
-                {
-                    label: "{{ t('Profit') }}",
-                    data: dashboardData.profit || [],
-                    fill: false,
-                    borderColor: "#f59e0b",
-                    borderWidth: 3,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    tension: 0.35,
-                    hidden: !(dashboardData.profit || []).length,
-                },
-            ],
+      type: "line",
+      data: {
+        labels: dashboardData.labels || [],
+        datasets: [
+          {
+            label: "{{ t('Net Revenue') }}",
+            data: dashboardData.revenue || [],
+            fill: true,
+            backgroundColor: "rgba(59,130,246,0.12)",
+            borderColor: "#3b82f6",
+            borderWidth: 3,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            tension: 0.35,
+          },
+          {
+            label: "{{ t('COGS') }}",
+            data: dashboardData.purchase || [],
+            fill: true,
+            backgroundColor: "rgba(16,185,129,0.10)",
+            borderColor: "#10b981",
+            borderWidth: 3,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            tension: 0.35,
+          },
+          {
+            label: "{{ t('Profit') }}",
+            data: dashboardData.profit || [],
+            fill: false,
+            borderColor: "#f59e0b",
+            borderWidth: 3,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            tension: 0.35,
+            hidden: !(dashboardData.profit || []).length,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        interaction: {
+          mode: "index",
+          intersect: false,
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
 
-            interaction: {
-                mode: "index",
-                intersect: false,
+        plugins: {
+          legend: {
+            position: "top",
+            labels: {
+              color: axisColor,
+              usePointStyle: true,
+              padding: 20,
             },
+          },
 
-            plugins: {
-                legend: {
-                    position: "top",
-                    labels: {
-                        color: axisColor,
-                        usePointStyle: true,
-                        padding: 20,
-                    },
-                },
+          tooltip: {
+            backgroundColor: "#111827",
+            titleColor: "#fff",
+            bodyColor: "#fff",
+            borderColor: "#374151",
+            borderWidth: 1,
 
-                tooltip: {
-                    backgroundColor: "#111827",
-                    titleColor: "#fff",
-                    bodyColor: "#fff",
-                    borderColor: "#374151",
-                    borderWidth: 1,
-
-                    callbacks: {
-                        label: (context) => {
-                            return (
-                                context.dataset.label +
-                                ": " +
-                                new Intl.NumberFormat("vi-VN").format(
-                                    context.raw || 0
-                                ) +
-                                " đ"
-                            );
-                        },
-                    },
-                },
+            callbacks: {
+              label: (context) => {
+                return (
+                  context.dataset.label +
+                  ": " +
+                  new Intl.NumberFormat("vi-VN").format(context.raw || 0) +
+                  " đ"
+                );
+              },
             },
-
-            scales: {
-                x: {
-                    ticks: {
-                        color: axisColor,
-                    },
-                    grid: {
-                        color: gridColor,
-                    },
-                },
-
-                y: {
-                    beginAtZero: true,
-
-                    ticks: {
-                        color: axisColor,
-
-                        callback: (value) =>
-                            new Intl.NumberFormat("vi-VN").format(value),
-                    },
-
-                    grid: {
-                        color: gridColor,
-                    },
-                },
-            },
-
-            elements: {
-                point: {
-                    hitRadius: 10,
-                },
-            },
+          },
         },
+
+        scales: {
+          x: {
+            ticks: {
+              color: axisColor,
+            },
+            grid: {
+              color: gridColor,
+            },
+          },
+
+          y: {
+            beginAtZero: true,
+
+            ticks: {
+              color: axisColor,
+
+              callback: (value) => new Intl.NumberFormat("vi-VN").format(value),
+            },
+
+            grid: {
+              color: gridColor,
+            },
+          },
+        },
+
+        elements: {
+          point: {
+            hitRadius: 10,
+          },
+        },
+      },
     });
-})();
+  })();
 </script>
-  {% endblock %}
+{% endblock %}

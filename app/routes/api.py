@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from app.database import db
 from app.domains.master.models import Product, Customer, Supplier, Warehouse, Unit, Category
 from app.domains.inventory.models import Inventory, StockOut
+from app.domains.ecommerce.models import OnlineOrder
 from app.domains.sales.services.profit_metrics import build_net_revenue_expr
 from app.shared.constants import DocStatus
 from app.shared.authz import require_permission
@@ -80,7 +81,10 @@ def dashboard_stats():
         'customers': Customer.query.filter_by(is_active=True).count(),
         'suppliers': Supplier.query.filter_by(is_active=True).count(),
         'revenue_month': float(db.session.query(func.sum(build_net_revenue_expr(StockOut))).filter(
-            StockOut.date >= month_start, StockOut.status == DocStatus.CONFIRMED).scalar() or 0),
+            StockOut.date >= month_start, StockOut.status == DocStatus.CONFIRMED)
+            .outerjoin(OnlineOrder, StockOut.id == OnlineOrder.stock_out_id)
+            .filter(db.or_(OnlineOrder.id.is_(None), OnlineOrder.return_status != 'completed'))
+            .scalar() or 0),
         'receivable': float(db.session.query(func.sum(Debt.balance)).filter(
             Debt.partner_type == 'customer', Debt.status != 'paid').scalar() or 0),
         'payable': float(db.session.query(func.sum(Debt.balance)).filter(

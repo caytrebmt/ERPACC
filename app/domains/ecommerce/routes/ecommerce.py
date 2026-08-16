@@ -171,9 +171,11 @@ def sync_inventory():
 
 
 @ecommerce_bp.route('/orders')
+@ecommerce_bp.route('/orders/board')
 @login_required
 @require_permission('ecommerce', 'view')
 def orders():
+    view = request.args.get('view', 'table')
     search = request.args.get('search', '')
     sync_status = request.args.get('sync_status', '')
     page = request.args.get('page', 1, type=int)
@@ -189,11 +191,39 @@ def orders():
     if sync_status:
         q = q.filter(OnlineOrder.sync_status == sync_status)
 
+    warehouses = Warehouse.query.filter_by(is_active=True).order_by(Warehouse.name).all()
+    EcommerceOrderFilters.save(search=search, sync_status=sync_status, page=page)
+
+    if view == 'board':
+        all_orders = q.order_by(OnlineOrder.created_at.desc()).all()
+        board = {
+            'new': [],
+            'pending': [],
+            'confirmed': [],
+            'shipped': [],
+            'returned': [],
+            'cancelled': [],
+        }
+        for o in all_orders:
+            if o.return_status == 'completed' or o.status == 'returned':
+                board['returned'].append(o)
+            elif o.stock_out_id and o.erp_status == 'Đã xuất kho':
+                board['shipped'].append(o)
+            elif o.status in board:
+                board[o.status].append(o)
+            else:
+                board['new'].append(o)
+        return render_template(
+            'ecommerce/orders_board.html',
+            board=board,
+            warehouses=warehouses,
+            search=search,
+            sync_status=sync_status,
+        )
+
     rows = q.order_by(OnlineOrder.created_at.desc()).paginate(
         page=page, per_page=30, error_out=False
     )
-    warehouses = Warehouse.query.filter_by(is_active=True).order_by(Warehouse.name).all()
-    EcommerceOrderFilters.save(search=search, sync_status=sync_status, page=page)
     return render_template(
         'ecommerce/orders.html',
         orders=rows,
@@ -264,7 +294,7 @@ def approve_return(id):
         db.session.flush()
         for item in order.stock_out.items.all():
             if item.product_id and item.quantity:
-                db.session.add(StockInItem(
+                si_item = StockInItem(
                     stock_in_id=stock_in.id,
                     product_id=item.product_id,
                     quantity=item.quantity,
@@ -272,7 +302,9 @@ def approve_return(id):
                     conversion_factor=item.conversion_factor or 1,
                     unit_price=item.unit_price or 0,
                     vat_rate=0,
-                ))
+                )
+                si_item.calculate()
+                db.session.add(si_item)
         db.session.flush()
         stock_in.calculate_totals()
         db.session.flush()

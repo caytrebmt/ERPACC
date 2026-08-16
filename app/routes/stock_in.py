@@ -10,6 +10,7 @@ from app.domains.inventory.models import (
     StockIn, StockInItem, UnitConversion,
     Inventory, InventoryHistory,
 )
+from app.domains.ecommerce.models import OnlineOrder
 from app.domains.inventory.services.inventory_service import InventoryService
 from app.shared.export.excel_exporter import ExcelExporter
 from app.shared.export.pdf_exporter import PdfExporter
@@ -112,13 +113,17 @@ def index():
     suppliers = Supplier.query.filter_by(
         is_active=True).order_by(Supplier.name).all()
 
+    si_ids = [si.id for si in stock_ins.items]
+    online_orders = OnlineOrder.query.filter(OnlineOrder.stock_in_id.in_(si_ids)).all() if si_ids else []
+    si_to_online = {o.stock_in_id: o for o in online_orders if o.stock_in_id}
+
     StockInFilters.save(search=search, status=status, supplier_id=supplier_id,
                         from_date=from_date, to_date=to_date, page=page)
     return render_template('stock_in/index.html',
                            stock_ins=stock_ins, search=search,
                            status=status, suppliers=suppliers,
                            supplier_id=supplier_id, from_date=from_date,
-                           to_date=to_date)
+                           to_date=to_date, si_to_online=si_to_online)
 
 
 @stock_in_bp.route('/create', methods=['GET', 'POST'])
@@ -230,11 +235,13 @@ def detail(id):
     items = StockInItem.query.filter_by(
         stock_in_id=si.id).order_by(StockInItem.id).all()
     qty_display_map = build_item_qty_display_map(items)
+    online_order = OnlineOrder.query.filter_by(stock_in_id=si.id).first()
     return render_template(
         'stock_in/detail.html',
         stock_in=si,
         items=items,
         qty_display_map=qty_display_map,
+        online_order=online_order,
     )
 
 

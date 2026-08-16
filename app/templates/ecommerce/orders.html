@@ -4,11 +4,15 @@
 {% block content %}
 <div class="card">
   <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-    <span>Đơn Hàng Online</span>
-    <a href="{{ url_for('ecommerce.listings') }}" class="btn btn-sm btn-outline-secondary">
-      <i class="fas fa-store me-1"></i>Sản phẩm web
-    </a>
-  </div>
+    <div class="d-flex align-items-center gap-2">
+      <span>Đơn Hàng Online</span>
+      <a href="{{ url_for('ecommerce.orders', view='board') }}" class="btn btn-sm btn-outline-info">
+        <i class="fas fa-columns me-1"></i>Bảng
+      </a>
+      <a href="{{ url_for('ecommerce.listings') }}" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-store me-1"></i>Sản phẩm web
+      </a>
+    </div>
   <div class="card-body pb-0">
     <form method="GET" class="row g-2 mb-3">
       <div class="col-md-5">

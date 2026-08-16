@@ -58,19 +58,27 @@
   </div>
   <div class="card-body p-0">
     <div class="table-responsive">
-      <table class="table table-erp table-hover mb-0" data-advanced-table="light" data-expand-url="/api/stock-in/detail">
-        <thead>
-          <tr>
-            <th>{{ t('Code') }}</th><th>{{ t('Date') }}</th><th>{{ t('Supplier') }}</th><th>{{ t('Warehouse') }}</th>
-            <th>{{ t('Supplier invoice no.') }}</th><th class="text-end">{{ t('Subtotal') }}</th>
-            <th class="text-end">{{ t('VAT') }}</th><th class="text-end">{{ t('Total') }}</th>
-            <th class="text-center">{{ t('Status') }}</th><th class="text-center no-print">{{ t('Actions') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for si in stock_ins.items %}
-          <tr>
-            <td><a href="{{ url_for('stock_in.detail', id=si.id) }}" class="fw-semibold">{{ si.code }}</a></td>
+    <table class="table table-erp table-hover mb-0" data-advanced-table="light" data-expand-url="/api/stock-in/detail">
+      <thead>
+        <tr>
+          <th>{{ t('Code') }}</th><th>{{ t('Date') }}</th><th>{{ t('Supplier') }}</th><th>{{ t('Warehouse') }}</th>
+          <th>{{ t('Supplier invoice no.') }}</th><th class="text-end">{{ t('Subtotal') }}</th>
+          <th class="text-end">{{ t('VAT') }}</th><th class="text-end">{{ t('Total') }}</th>
+          <th class="text-center">{{ t('Status') }}</th><th class="text-center no-print">{{ t('Actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for si in stock_ins.items %}
+        {% set online_order = si_to_online.get(si.id) %}
+        <tr class="{{ 'table-warning' if online_order else '' }}">
+          <td>
+            <a href="{{ url_for('stock_in.detail', id=si.id) }}" class="fw-semibold">
+              {{ si.code }}
+            </a>
+            {% if online_order %}
+            <br><small class="text-muted">Trả hàng từ <a href="{{ url_for('ecommerce.order_detail', id=online_order.id) }}">{{ online_order.code }}</a></small>
+            {% endif %}
+          </td>
             <td>{{ si.date|dateformat }}</td>
             <td>{{ si.supplier.name if si.supplier else '-' }}</td>
             <td>{{ si.warehouse.name if si.warehouse else '-' }}</td>

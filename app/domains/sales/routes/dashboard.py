@@ -5,6 +5,7 @@ from sqlalchemy import func, case
 from app.database import db
 from app.domains.master.models import Product, Supplier, Customer
 from app.domains.inventory.models import (StockIn, StockOut, StockOutItem, Inventory)
+from app.domains.ecommerce.models import OnlineOrder
 from app.models.transaction import (Debt, VatRecord)
 from app.domains.inventory.services.inventory_service import InventoryService
 from app.domains.sales.services.profit_metrics import (
@@ -19,6 +20,13 @@ dashboard_bp = Blueprint('dashboard', __name__)
 
 def _confirmed_filter(model):
     return model.status == DocStatus.CONFIRMED
+
+
+def _exclude_returned_online_orders():
+    return db.or_(
+        OnlineOrder.id.is_(None),
+        OnlineOrder.return_status != 'completed'
+    )
 
 
 def _stock_out_revenue_expr():
@@ -65,6 +73,8 @@ def index():
     revenue_month = db.session.query(func.sum(_stock_out_revenue_expr())).filter(
         StockOut.date >= month_start,
         _confirmed_filter(StockOut)
+    ).outerjoin(OnlineOrder, StockOut.id == OnlineOrder.stock_out_id).filter(
+        _exclude_returned_online_orders()
     ).scalar() or 0
 
     purchase_month = db.session.query(
@@ -98,6 +108,16 @@ def index():
     recent_stock_outs = StockOut.query.order_by(
         StockOut.created_at.desc()).limit(5).all()
 
+    recent_online_orders_for_so = OnlineOrder.query.filter(
+        OnlineOrder.stock_out_id.in_([so.id for so in recent_stock_outs])
+    ).all()
+    so_to_online = {o.stock_out_id: o for o in recent_online_orders_for_so if o.stock_out_id}
+
+    recent_online_orders_for_si = OnlineOrder.query.filter(
+        OnlineOrder.stock_in_id.in_([si.id for si in recent_stock_ins])
+    ).all()
+    si_to_online = {o.stock_in_id: o for o in recent_online_orders_for_si if o.stock_in_id}
+
     overdue_debts = Debt.query.filter(
         Debt.status == DebtStatus.OVERDUE
     ).limit(5).all()
@@ -112,6 +132,8 @@ def index():
         db.session.query(StockOut.date, func.sum(_stock_out_revenue_expr()))
         .filter(StockOut.date >= chart_from, StockOut.date <= chart_to,
                 StockOut.status == DocStatus.CONFIRMED)
+        .outerjoin(OnlineOrder, StockOut.id == OnlineOrder.stock_out_id)
+        .filter(_exclude_returned_online_orders())
         .group_by(StockOut.date).all()
     )
     cost_by_date = dict(
@@ -120,6 +142,8 @@ def index():
         .join(Product, StockOutItem.product_id == Product.id)
         .filter(StockOut.date >= chart_from, StockOut.date <= chart_to,
                 StockOut.status == DocStatus.CONFIRMED)
+        .outerjoin(OnlineOrder, StockOut.id == OnlineOrder.stock_out_id)
+        .filter(_exclude_returned_online_orders())
         .group_by(StockOut.date).all()
     )
     chart_revenue = [float(rev_by_date.get(d) or 0) for d in chart_dates]
@@ -150,9 +174,11 @@ def index():
                            payable=float(payable),
                            inv_value=float(inv_value),
                            low_stock=low_stock,
-                           recent_stock_ins=recent_stock_ins,
-                           recent_stock_outs=recent_stock_outs,
-                           overdue_debts=overdue_debts,
+                            recent_stock_ins=recent_stock_ins,
+                            recent_stock_outs=recent_stock_outs,
+                            si_to_online=si_to_online,
+                            so_to_online=so_to_online,
+                            overdue_debts=overdue_debts,
                            chart_labels=chart_labels,
                            chart_revenue=chart_revenue,
                            chart_purchase=chart_purchase,

@@ -55,6 +55,47 @@ E-commerce - Chi tiết đơn online {% endblock %} {% block content %}
   </div>
 
   <div class="card-body">
+    <div class="card mb-3 bg-light border-0">
+      <div class="card-body py-2">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          {% set step = 0 %}
+          {% if order.status in ['new', 'pending', 'confirmed'] %}
+          {% set step = 1 %}
+          <span class="badge bg-primary rounded-pill px-3 py-2">1. Đơn mới</span>
+          <i class="fas fa-arrow-right text-muted"></i>
+          {% endif %}
+          {% if order.stock_out_id %}
+          {% set step = 2 %}
+          <span class="badge bg-success rounded-pill px-3 py-2">2. Đã xuất kho</span>
+          <i class="fas fa-arrow-right text-muted"></i>
+          {% endif %}
+          {% if order.return_status == 'completed' or order.status == 'returned' %}
+          {% set step = 3 %}
+          <span class="badge bg-purple rounded-pill px-3 py-2" style="background-color: #6f42c1; color: white;">3. Đã trả hàng</span>
+          {% elif order.status == 'cancelled' %}
+          {% set step = -1 %}
+          <span class="badge bg-danger rounded-pill px-3 py-2">Đã hủy</span>
+          {% else %}
+          {% if step >= 2 %}
+          <span class="badge bg-warning text-dark rounded-pill px-3 py-2">3. Chờ giao hàng</span>
+          {% endif %}
+          {% endif %}
+          {% if step == 0 %}
+          <span class="badge bg-secondary rounded-pill px-3 py-2">Chưa xử lý</span>
+          {% endif %}
+        </div>
+        <div class="small text-muted mt-1">
+          {% if order.return_status == 'requested' %}
+          <i class="fas fa-info-circle me-1"></i>Đang có yêu cầu trả hàng cần xử lý
+          {% elif not order.stock_out_id and order.status not in ['cancelled', 'returned'] %}
+          <i class="fas fa-info-circle me-1"></i>Bước tiếp theo: Sync đơn sang phiếu xuất kho
+          {% elif order.stock_out_id and order.return_status == 'none' and order.status not in ['cancelled', 'returned'] %}
+          <i class="fas fa-info-circle me-1"></i>Đơn đã xuất kho, chờ giao hàng
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
     <div class="row g-3 mb-3">
       <div class="col-md-3">
         <div class="small text-muted">Tổng tiền</div>

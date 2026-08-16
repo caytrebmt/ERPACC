@@ -57,6 +57,27 @@
         </div>
       </div>
       <div class="card-body">
+        {% if online_order %}
+        <div class="alert alert-warning d-flex align-items-center gap-2">
+          <i class="fas fa-undo me-1"></i>
+          <div>
+            <strong>Phiếu nhập trả hàng</strong> từ đơn online
+            <a href="{{ url_for('ecommerce.order_detail', id=online_order.id) }}" class="text-decoration-none fw-bold">
+              {{ online_order.code }}
+            </a>
+            {% if online_order.stock_out %}
+            · Phiếu xuất liên quan:
+            <a href="{{ url_for('stock_out.detail', id=online_order.stock_out.id) }}" class="text-decoration-none">
+              {{ online_order.stock_out.code }}
+            </a>
+            {% endif %}
+            <div class="small text-muted">
+              Khách: {{ online_order.customer_name }} |
+              Trạng thái đơn: {{ online_order.return_status }}
+            </div>
+          </div>
+        </div>
+        {% endif %}
         <div class="row g-3 mb-3">
           <div class="col-md-3">
             <small class="text-muted">{{ t('Code') }}</small>

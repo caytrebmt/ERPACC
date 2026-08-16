@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Bảng đơn online{% endblock %}
+{% block page_title %}<i class="fas fa-receipt me-2 text-primary"></i>E-commerce - Bảng đơn online{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <span>Pipeline đơn hàng</span>
+      <a href="{{ url_for('ecommerce.orders') }}" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-list me-1"></i>Danh sách
+      </a>
+    </div>
+    <div class="d-flex gap-2">
+      <form method="GET" class="d-flex gap-1">
+        <input type="text" name="search" value="{{ search }}" class="form-control form-control-sm" placeholder="Tìm đơn...">
+        <input type="hidden" name="view" value="board">
+        <button class="btn btn-sm btn-primary"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <div class="row g-0" style="min-height: 500px;">
+      {% set cols = [
+        ('new', 'Mới', 'bg-blue-50 dark:bg-blue-950/20', 'border-blue-200 dark:border-blue-900'),
+        ('pending', 'Chờ TT', 'bg-amber-50 dark:bg-amber-950/20', 'border-amber-200 dark:border-amber-900'),
+        ('confirmed', 'Đã xác nhận', 'bg-indigo-50 dark:bg-indigo-950/20', 'border-indigo-200 dark:border-indigo-900'),
+        ('shipped', 'Đã xuất kho', 'bg-emerald-50 dark:bg-emerald-950/20', 'border-emerald-200 dark:border-emerald-900'),
+        ('returned', 'Đã trả hàng', 'bg-purple-50 dark:bg-purple-950/20', 'border-purple-200 dark:border-purple-900'),
+        ('cancelled', 'Đã hủy', 'bg-red-50 dark:bg-red-950/20', 'border-red-200 dark:border-red-900'),
+      ] %}
+      {% for key, label, bg, border in cols %}
+      {% set items = board.get(key, []) %}
+      <div class="col-12 col-md-6 col-xl-2 border-end {{ border }}">
+        <div class="p-2 border-bottom {{ bg }} fw-semibold small d-flex justify-content-between align-items-center">
+          <span>{{ label }}</span>
+          <span class="badge bg-white text-dark border">{{ items|length }}</span>
+        </div>
+        <div class="p-2" style="min-height: 400px; max-height: 70vh; overflow-y: auto;">
+          {% for order in items %}
+          <div class="card mb-2 shadow-xs border {{ bg }}">
+            <div class="card-body p-3">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <a href="{{ url_for('ecommerce.order_detail', id=order.id) }}" class="fw-bold small text-primary text-decoration-none">
+                  {{ order.code }}
+                </a>
+                <small class="text-muted">{{ order.created_at|dateformat }}</small>
+              </div>
+              <div class="small text-muted mb-2">
+                {{ order.customer_name }}<br>
+                {{ order.customer_phone or order.customer_email }}
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-semibold small">{{ order.total_amount|currency }}</span>
+                {% if order.stock_out %}
+                <a href="{{ url_for('stock_out.detail', id=order.stock_out.id) }}" class="badge bg-success text-decoration-none" title="Phiếu xuất">
+                  PX: {{ order.stock_out.code }}
+                </a>
+                {% endif %}
+              </div>
+              {% if order.return_status == 'requested' %}
+              <div class="alert alert-warning py-1 px-2 mb-2 small">
+                <i class="fas fa-undo me-1"></i>Yêu cầu trả hàng
+              </div>
+              {% endif %}
+              {% if order.return_status == 'completed' %}
+              <div class="alert alert-success py-1 px-2 mb-2 small">
+                <i class="fas fa-check me-1"></i>Đã trả hàng
+                {% if order.stock_in %}
+                <a href="{{ url_for('stock_in.detail', id=order.stock_in.id) }}" class="text-decoration-none ms-1">PN: {{ order.stock_in.code }}</a>
+                {% endif %}
+              </div>
+              {% endif %}
+              <div class="d-flex gap-1 flex-wrap">
+                {% if not order.stock_out_id and order.status not in ['cancelled', 'returned'] %}
+                <form method="POST" action="{{ url_for('ecommerce.sync_order', id=order.id) }}" class="d-inline">
+                  <input type="hidden" name="warehouse_id" value="{{ warehouses[0].id if warehouses else '' }}">
+                  <input type="hidden" name="confirm_inventory" value="1">
+                  <button class="btn btn-xs btn-primary py-0 px-1" title="Sync ERP">
+                    <i class="fas fa-truck"></i>
+                  </button>
+                </form>
+                {% endif %}
+                {% if order.return_status == 'requested' %}
+                <a href="{{ url_for('ecommerce.order_detail', id=order.id) }}" class="btn btn-xs btn-warning py-0 px-1" title="Xử lý trả hàng">
+                  <i class="fas fa-undo"></i>
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="text-center text-muted py-4 small">Chưa có đơn</div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
