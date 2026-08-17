@@ -18,6 +18,8 @@ services:
         value: erpmini-secret-key-2024
       - key: SHOP_CORS_ORIGINS
         value: https://webshop-f9iq.onrender.com
+      - key: SHOP_BACKEND_URL
+        value: https://erpacc-i7uy.onrender.com
 
   - type: web
     name: webshop
