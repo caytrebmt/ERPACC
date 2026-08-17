@@ -3,13 +3,13 @@ import { storage } from "../utils/storage";
 
 // Since frontend and backend run on the same Origin in AI Studio (Port 3000), 
 // we use a relative base URL or fall back to window.location.origin
-const API_BASE =
-  import.meta.env.VITE_ERPACC_BACKEND_URL ||  "http://localhost:5000";
+const API_BASE = "/";
 const client = axios.create({
   baseURL: API_BASE,
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 // Interceptor for sending access token and guest cart session ID
