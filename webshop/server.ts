@@ -6,7 +6,9 @@ import cors from "cors";
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
-const ERPACC_BACKEND = process.env.ERPACC_BACKEND_URL || "http://localhost:5000";
+const ERPACC_BACKEND =  process.env.ERPACC_BACKEND_URL;
+
+if (!ERPACC_BACKEND) { throw new Error( "ERPACC_BACKEND_URL is required" );}
 
 app.use(cors());
 
@@ -88,6 +90,8 @@ function proxyToERP(req: express.Request, res: express.Response) {
 }
 
 app.use("/api/shop", (req, res) => {
+  console.log(`[SHOP PROXY] ${req.method} ${req.originalUrl}`
+  );
   proxyToERP(req, res);
 });
 
@@ -114,6 +118,7 @@ async function startServer() {
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`WebShop frontend listening on port ${PORT}`);
     console.log(`Proxying /api/shop/* -> ${ERPACC_BACKEND}/api/shop/*`);
+    console.log("ERPACC_BACKEND:", ERPACC_BACKEND);
   });
 }
 
