@@ -166,7 +166,10 @@ def create_app(config_name=None):
 
     if app.config.get('SHOP_CORS_ORIGINS'):
         from flask_cors import CORS
-        CORS(app, resources={r"/api/shop/*": {"origins": app.config['SHOP_CORS_ORIGINS']}})
+        CORS(app, resources={
+            r"/api/*": {"origins": app.config['SHOP_CORS_ORIGINS']},
+            r"/auth/*": {"origins": app.config['SHOP_CORS_ORIGINS']},
+        })
 
     if config_name == 'production' and app.config.get('SECRET_KEY') == 'erpmini-secret-key-2024':
         app.logger.warning('SECURITY WARNING: SECRET_KEY is default value in production.')

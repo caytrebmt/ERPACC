@@ -4,12 +4,20 @@ services:
     runtime: python
     rootDir: .
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --bind 0.0.0.0:$PORT server:application
+    startCommand: gunicorn --bind 0.0.0.0:$PORT wsgi:application
     envVars:
       - key: PYTHON_VERSION
         value: "3.13"
       - key: FLASK_ENV
         value: production
+      - key: SECRET_KEY
+        value: erpmini-secret-key-2024
+      - key: DATABASE_URL
+        value: postgresql://postgres:password@localhost:5432/erpmini
+      - key: JWT_SECRET_KEY
+        value: erpmini-secret-key-2024
+      - key: SHOP_CORS_ORIGINS
+        value: https://webshop-f9iq.onrender.com
 
   - type: web
     name: webshop
@@ -20,3 +28,5 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: ERPACC_BACKEND_URL
+        value: https://erpacc-i7uy.onrender.com

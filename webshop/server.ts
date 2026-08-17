@@ -91,7 +91,19 @@ app.use("/api/shop", (req, res) => {
   proxyToERP(req, res);
 });
 
+app.use("/api/erp", (req, res) => {
+  proxyToERP(req, res);
+});
+
+app.use("/api", (req, res) => {
+  proxyToERP(req, res);
+});
+
 app.use("/static", (req, res) => {
+  proxyToERP(req, res);
+});
+
+app.use("/placeholder.svg", (req, res) => {
   proxyToERP(req, res);
 });
 
