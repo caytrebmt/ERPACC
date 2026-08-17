@@ -87,7 +87,7 @@ def _num(v, default=0.0):
         return float(v or default)
     except Exception:
         return float(default)
-    
+
 def _resolve_image_url(image_url):
     if not image_url:
         return ''
