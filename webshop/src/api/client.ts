@@ -6,7 +6,7 @@ import { storage } from "../utils/storage";
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL ||  "http://localhost:5000";
 const client = axios.create({
-  baseURL: "API_BASE",
+  baseURL: API_BASE,
   headers: {
     "Content-Type": "application/json",
   },
