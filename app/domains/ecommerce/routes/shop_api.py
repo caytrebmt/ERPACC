@@ -87,7 +87,16 @@ def _num(v, default=0.0):
         return float(v or default)
     except Exception:
         return float(default)
-
+        
+def _resolve_image_url(image_url):
+    if not image_url:
+        return ''
+    if image_url.startswith(('http://', 'https://')):
+        return image_url
+    backend_url = current_app.config.get('SHOP_BACKEND_URL')
+    if backend_url and image_url.startswith('/'):
+        return f'{backend_url}{image_url}'
+    return image_url
 
 def _json_ok(data=None, message='', status=200):
     payload = {'ok': True}
