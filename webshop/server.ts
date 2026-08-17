@@ -6,9 +6,7 @@ import cors from "cors";
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
-const ERPACC_BACKEND =  process.env.ERPACC_BACKEND_URL;
-
-if (!ERPACC_BACKEND) { throw new Error( "ERPACC_BACKEND_URL is required" );}
+const ERPACC_BACKEND = process.env.ERPACC_BACKEND_URL || "http://localhost:5000";
 
 app.use(cors());
 
