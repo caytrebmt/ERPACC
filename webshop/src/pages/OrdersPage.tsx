@@ -66,9 +66,17 @@ const OrdersPage: React.FC = () => {
       case "pending":
         return "bg-amber-50 border-amber-200 text-amber-700 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-300";
       case "confirmed":
-        return "bg-green-50 border-green-200 text-green-700 dark:bg-green-950/20 dark:border-green-900/40 dark:text-green-300";
+        return "bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-950/20 dark:border-indigo-900/40 dark:text-indigo-300";
+      case "processing":
+        return "bg-cyan-50 border-cyan-200 text-cyan-700 dark:bg-cyan-950/20 dark:border-cyan-900/40 dark:text-cyan-300";
+      case "shipping":
+        return "bg-orange-50 border-orange-200 text-orange-700 dark:bg-orange-950/20 dark:border-orange-900/40 dark:text-orange-300";
+      case "completed":
+        return "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-300";
       case "cancelled":
         return "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/20 dark:border-red-900/40 dark:text-red-300";
+      case "returned":
+        return "bg-purple-50 border-purple-200 text-purple-700 dark:bg-purple-950/20 dark:border-purple-900/40 dark:text-purple-300";
       default:
         return "bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-800 dark:border-gray-750 dark:text-gray-300";
     }
@@ -82,8 +90,16 @@ const OrdersPage: React.FC = () => {
         return "Chờ thanh toán";
       case "confirmed":
         return "Đã xác nhận";
+      case "processing":
+        return "Chờ đóng gói";
+      case "shipping":
+        return "Đang giao hàng";
+      case "completed":
+        return "Đã hoàn thành";
       case "cancelled":
         return "Đã hủy bỏ";
+      case "returned":
+        return "Đã trả hàng";
       default:
         return status;
     }
@@ -146,6 +162,11 @@ const OrdersPage: React.FC = () => {
                     <span className={`text-[10px] font-bold border px-2 py-0.5 rounded-full uppercase ${getStatusBadgeClass(order.status)}`}>
                       {getStatusLabel(order.status)}
                     </span>
+                    {order.delivered_at && (
+                      <span className="text-[10px] font-bold border px-2 py-0.5 rounded-full uppercase bg-teal-50 border-teal-200 text-teal-700 dark:bg-teal-950/20 dark:border-teal-900/40 dark:text-teal-300">
+                        Đã giao hàng
+                      </span>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 mt-2.5 text-[11px] text-gray-500 dark:text-gray-400">

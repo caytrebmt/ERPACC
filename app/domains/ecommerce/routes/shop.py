@@ -16,6 +16,7 @@ from app.domains.ecommerce.models import (
     Promotion,
     WebCustomer,
 )
+from app.domains.ecommerce.services.order_log_service import add_log as add_order_log
 from app.domains.master.models import Customer, Product
 from app.domains.ecommerce.services.ecommerce_sync_service import (
     generate_online_order_code,
@@ -57,7 +58,7 @@ def _get_or_create_customer_session():
 
     if _is_web_customer():
         customer_session.customer_id = current_user.customer_id
-        customer_session.name = current_user.name
+        customer_session.name = getattr(current_user, 'name', None) or getattr(current_user, 'full_name', None)
         customer_session.email = current_user.email
         customer_session.phone = current_user.phone
     customer_session.last_seen_at = now_vn()
@@ -403,7 +404,7 @@ def checkout():
             customer_id=customer_id,
             **({'web_customer_id': current_user.id} if _is_web_customer() and hasattr(OnlineOrder, 'web_customer_id') else {}),
             promotion_id=promotion.id if promotion else None,
-            customer_name=request.form.get('customer_name') or (current_user.name if _is_web_customer() else 'Khách online'),
+            customer_name=request.form.get('customer_name') or (getattr(current_user, 'name', None) or getattr(current_user, 'full_name', None) if _is_web_customer() else 'Khách online'),
             customer_phone=request.form.get('customer_phone') or (current_user.phone if _is_web_customer() else None),
             customer_email=request.form.get('customer_email') or (current_user.email if _is_web_customer() else None),
             shipping_address=request.form.get('shipping_address'),
@@ -593,7 +594,7 @@ def account():
 @shop_bp.route('/account/profile', methods=['POST'])
 @login_required
 def update_profile():
-    current_user.name         = request.form.get('name', '').strip()
+    current_user.name = request.form.get('name', '').strip()
     current_user.phone        = request.form.get('phone', '').strip()
     current_user.company_name = request.form.get('company_name', '').strip()
     current_user.tax_code     = request.form.get('tax_code', '').strip()
@@ -601,7 +602,7 @@ def update_profile():
     if email:
         current_user.email = email.strip().lower()
     customer = _ensure_erp_customer_for_web(current_user)
-    customer.name = current_user.name
+    customer.name = getattr(current_user, 'name', None) or getattr(current_user, 'full_name', None)
     customer.phone = current_user.phone
     if email:
         customer.email = current_user.email
@@ -707,12 +708,13 @@ def cancel_order(order_id):
     order = base_q.filter_by(id=order_id).first() if base_q is not None else None
     if not order:
         return jsonify({'ok': False, 'message': 'Không tìm thấy đơn hàng.'}), 404
-    if order.status != 'new':
-        return jsonify({'ok': False, 'message': 'Chỉ có thể hủy đơn hàng ở trạng thái Mới.'}), 400
+    if order.status not in {'new', 'pending', 'confirmed'}:
+        return jsonify({'ok': False, 'message': 'Chỉ có thể hủy đơn hàng ở trạng thái Mới, Chờ thanh toán hoặc Đã xác nhận.'}), 400
     if order.stock_out_id or order.erp_status:
         return jsonify({'ok': False, 'message': 'Đơn hàng đã được đồng bộ với phiếu xuất kho, không thể hủy.'}), 400
     order.status = 'cancelled'
     db.session.commit()
+    add_order_log(order, 'cancelled', status_from=order.status, status_to='cancelled', message='Đơn hàng bị hủy bởi khách hàng.', created_by=current_user.id, created_by_name=getattr(current_user, 'name', None) or getattr(current_user, 'full_name', None))
     return jsonify({'ok': True})
 
 

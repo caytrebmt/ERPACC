@@ -90,6 +90,44 @@ def create_app(config_name=None):
                 ADD COLUMN IF NOT EXISTS plain_password VARCHAR(255) NULL
             """))
             db.session.execute(text("""
+                ALTER TABLE online_orders 
+                ADD COLUMN IF NOT EXISTS delivered_at TIMESTAMP NULL
+            """))
+            db.session.execute(text("""
+                ALTER TABLE online_orders 
+                ADD COLUMN IF NOT EXISTS completed_at TIMESTAMP NULL
+            """))
+            db.session.execute(text("""
+                ALTER TABLE online_orders 
+                ADD COLUMN IF NOT EXISTS tracking_number VARCHAR(120) NULL
+            """))
+            db.session.execute(text("""
+                ALTER TABLE online_orders 
+                ADD COLUMN IF NOT EXISTS tracking_carrier VARCHAR(50) NULL
+            """))
+            db.session.execute(text("""
+                CREATE TABLE IF NOT EXISTS order_logs (
+                    id SERIAL PRIMARY KEY,
+                    online_order_id INTEGER NOT NULL REFERENCES online_orders(id) ON DELETE CASCADE,
+                    action VARCHAR(50) NOT NULL,
+                    status_from VARCHAR(20) NULL,
+                    status_to VARCHAR(20) NULL,
+                    message TEXT NULL,
+                    meta TEXT NULL,
+                    created_by INTEGER NULL,
+                    created_by_name VARCHAR(120) NULL,
+                    created_at TIMESTAMP DEFAULT NOW()
+                )
+            """))
+            db.session.execute(text("""
+                CREATE INDEX IF NOT EXISTS ix_order_logs_online_order_id 
+                ON order_logs(online_order_id)
+            """))
+            db.session.execute(text("""
+                CREATE INDEX IF NOT EXISTS ix_order_logs_created_at 
+                ON order_logs(created_at)
+            """))
+            db.session.execute(text("""
                 CREATE TABLE IF NOT EXISTS notification_instances (
                     id SERIAL PRIMARY KEY,
                     user_id INTEGER NOT NULL REFERENCES users(id),

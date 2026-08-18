@@ -8,7 +8,8 @@ from flask import Blueprint, flash, jsonify, redirect, render_template, request,
 from flask_login import current_user, login_required
 
 from app.database import db
-from app.domains.ecommerce.models import OnlineOrder, OnlineOrderItem, ProductListing, WebCustomer
+from app.domains.ecommerce.models import OnlineOrder, OnlineOrderItem, OrderLog, ProductListing, WebCustomer
+from app.domains.ecommerce.services.order_log_service import add_log as add_order_log
 from app.domains.inventory.models import StockIn, StockInItem
 from app.domains.master.models import Category, Product, Warehouse
 from app.domains.platform.models import NotificationInstance
@@ -200,17 +201,19 @@ def orders():
             'new': [],
             'pending': [],
             'confirmed': [],
-            'shipped': [],
+            'processing': [],
+            'shipping': [],
+            'completed': [],
             'returned': [],
             'cancelled': [],
         }
         for o in all_orders:
             if o.return_status == 'completed' or o.status == 'returned':
                 board['returned'].append(o)
-            elif o.stock_out_id and o.erp_status == 'Đã xuất kho':
-                board['shipped'].append(o)
             elif o.status in board:
                 board[o.status].append(o)
+            elif o.stock_out_id and o.erp_status == 'Đã xuất kho':
+                board['shipping'].append(o)
             else:
                 board['new'].append(o)
         return render_template(
@@ -259,6 +262,47 @@ def delete_order(id):
     db.session.commit()
     flash(f'Đã xóa đơn hàng {order_code}.', 'success')
     return EcommerceOrderFilters.redirect('ecommerce.orders', search='', sync_status='', page=1)
+
+
+@ecommerce_bp.post('/orders/<int:id>/cancel')
+@login_required
+@require_permission('ecommerce', 'edit')
+def cancel_order(id):
+    order = OnlineOrder.query.get_or_404(id)
+    if order.status == 'cancelled':
+        flash('Đơn hàng đã bị hủy.', 'info')
+        return redirect(url_for('ecommerce.order_detail', id=id))
+    if order.status == 'returned':
+        flash('Đơn hàng đã trả hàng, không thể hủy.', 'warning')
+        return redirect(url_for('ecommerce.order_detail', id=id))
+    order_code = order.code
+    try:
+        if order.stock_out_id:
+            stock_out = order.stock_out
+            if stock_out and stock_out.status != 'cancelled':
+                if stock_out.status == 'confirmed':
+                    from app.domains.inventory.services.inventory_service import InventoryService
+                    for item in stock_out.items.all():
+                        if item.product_id and item.quantity:
+                            InventoryService.stock_in(
+                                item.product_id,
+                                stock_out.warehouse_id,
+                                float(item.quantity),
+                                float(item.cost_price or 0),
+                                reference_code=f'Huy don {order.code}',
+                                note=f'Hoan tra hang tu don hang online {order.code}',
+                            )
+                stock_out.status = 'cancelled'
+                order.erp_status = 'Đã hủy'
+                order.erp_note = f'Đơn hàng bị hủy bởi admin. Phiếu xuất {stock_out.code} đã được hủy và tồn kho đã được hoàn trả.'
+        order.status = 'cancelled'
+        db.session.commit()
+        add_order_log(order, 'cancelled', status_from=order.status, status_to='cancelled', message='Đơn hàng bị hủy bởi admin.', created_by=current_user.id, created_by_name=getattr(current_user, 'full_name', None) or getattr(current_user, 'name', None))
+        flash(f'Đã hủy đơn hàng {order_code}.', 'success')
+    except Exception as exc:
+        db.session.rollback()
+        flash(f'Lỗi hủy đơn hàng: {exc}', 'danger')
+    return redirect(url_for('ecommerce.order_detail', id=id))
 
 
 @ecommerce_bp.post('/orders/<int:id>/approve-return')
@@ -332,6 +376,7 @@ def approve_return(id):
         order.returned_at = datetime.utcnow()
         order.status = 'returned'
         db.session.commit()
+        add_order_log(order, 'returned', status_from='requested', status_to='returned', message=f'Đã xử lý trả hàng. Phiếu nhập kho: {stock_in.code}', created_by=current_user.id, created_by_name=getattr(current_user, 'full_name', None) or getattr(current_user, 'name', None))
         flash(f'Đã xử lý trả hàng cho đơn {order.code}. Phiếu nhập kho: {stock_in.code}', 'success')
     except Exception as exc:
         db.session.rollback()
@@ -352,6 +397,7 @@ def reject_return(id):
     order.return_processed_at = datetime.utcnow()
     order.return_note = note
     db.session.commit()
+    add_order_log(order, 'reject_return', status_from='requested', status_to='rejected', message='Từ chối yêu cầu trả hàng.', created_by=current_user.id, created_by_name=getattr(current_user, 'full_name', None) or getattr(current_user, 'name', None))
     flash(f'Đã từ chối yêu cầu trả hàng cho đơn {order.code}.', 'success')
     return redirect(url_for('ecommerce.order_detail', id=id))
 
@@ -369,6 +415,11 @@ def sync_order(id):
             user_id=current_user.id,
             confirm_inventory=confirm_inventory,
         )
+        order = OnlineOrder.query.get(id)
+        if order and order.status == 'new':
+            order.status = 'confirmed'
+            add_order_log(order, 'confirmed', status_from='new', status_to='confirmed', message='Đơn hàng đã được xác nhận và sync sang phiếu xuất.', created_by=current_user.id, created_by_name=getattr(current_user, 'full_name', None) or getattr(current_user, 'name', None))
+            db.session.commit()
         flash(f'Đã sync đơn online sang phiếu xuất {stock_out.code}.', 'success')
     except Exception as exc:
         order = OnlineOrder.query.get(id)
@@ -378,6 +429,78 @@ def sync_order(id):
             db.session.commit()
         flash(str(exc), 'danger')
     return EcommerceOrderFilters.redirect('ecommerce.orders', search='', sync_status='', page=1)
+
+
+@ecommerce_bp.post('/orders/<int:id>/deliver')
+@login_required
+@require_permission('ecommerce', 'edit')
+def deliver_order(id):
+    order = OnlineOrder.query.get_or_404(id)
+    if not order.stock_out_id:
+        flash('Đơn hàng chưa có phiếu xuất kho, không thể đánh dấu đã giao.', 'warning')
+        return redirect(url_for('ecommerce.order_detail', id=id))
+    if order.delivered_at:
+        flash('Đơn hàng đã được đánh dấu giao thành công.', 'info')
+        return redirect(url_for('ecommerce.order_detail', id=id))
+    order.delivered_at = datetime.utcnow()
+    order.completed_at = datetime.utcnow()
+    order.status = 'completed'
+    db.session.commit()
+    add_order_log(order, 'completed', status_from='shipping', status_to='completed', message='Đơn hàng đã giao hàng thành công.', created_by=current_user.id, created_by_name=getattr(current_user, 'full_name', None) or getattr(current_user, 'name', None))
+    flash(f'Đã đánh dấu giao hàng thành công cho đơn {order.code}.', 'success')
+    return redirect(url_for('ecommerce.order_detail', id=id))
+
+
+@ecommerce_bp.post('/orders/<int:id>/tracking')
+@login_required
+@require_permission('ecommerce', 'edit')
+def update_tracking(id):
+    order = OnlineOrder.query.get_or_404(id)
+    if order.status in ['cancelled', 'returned', 'completed']:
+        flash('Không thể cập nhật vận đơn cho đơn đã hủy/trả/hoàn thành.', 'warning')
+        return redirect(url_for('ecommerce.order_detail', id=id))
+    tracking_number = request.form.get('tracking_number', '').strip() or None
+    tracking_carrier = request.form.get('tracking_carrier', '').strip() or None
+    order.tracking_number = tracking_number
+    order.tracking_carrier = tracking_carrier
+    if tracking_number and order.status in ['confirmed', 'processing']:
+        order.status = 'shipping'
+        add_order_log(order, 'shipping', status_from=order.status, status_to='shipping', message=f'Cập nhật mã vận đơn {tracking_number} ({tracking_carrier}).', created_by=current_user.id, created_by_name=getattr(current_user, 'full_name', None) or getattr(current_user, 'name', None))
+    db.session.commit()
+    flash('Đã cập nhật thông tin vận đơn.', 'success')
+    return redirect(url_for('ecommerce.order_detail', id=id))
+
+
+@ecommerce_bp.post('/orders/<int:id>/webhook')
+@login_required
+@require_permission('ecommerce', 'edit')
+def order_webhook(id):
+    order = OnlineOrder.query.get_or_404(id)
+    payload = request.get_json(silent=True) or request.form.to_dict()
+    carrier = (payload.get('carrier') or '').strip() or None
+    status = (payload.get('status') or '').strip()
+    tracking = (payload.get('tracking_number') or '').strip() or None
+    if tracking:
+        order.tracking_number = tracking
+    if carrier:
+        order.tracking_carrier = carrier
+    mapping = {
+        'delivered': 'completed',
+        'completed': 'completed',
+        'shipping': 'shipping',
+        'in_transit': 'shipping',
+        'cancelled': 'cancelled',
+    }
+    new_status = mapping.get(status.lower(), order.status)
+    if new_status != order.status and new_status in OnlineOrder.VALID_STATUSES:
+        old_status = order.status
+        order.status = new_status
+        if new_status == 'completed':
+            order.delivered_at = datetime.utcnow()
+            order.completed_at = datetime.utcnow()
+        add_order_log(order, 'webhook', status_from=old_status, status_to=new_status, message=f'Webhook {carrier} cập nhật trạng thái: {status}', created_by=current_user.id, created_by_name=getattr(current_user, 'full_name', None) or getattr(current_user, 'name', None))
+    db.session.commit()
+    return jsonify({'ok': True, 'status': order.status})
 
 
 # ===================== SHOP CUSTOMERS =====================
@@ -615,3 +738,12 @@ def events():
 @require_permission('ecommerce', 'view')
 def events_last():
     return jsonify({'ok': True, 'ts': time.time()})
+
+
+@ecommerce_bp.get('/orders/<int:id>/logs')
+@login_required
+@require_permission('ecommerce', 'view')
+def order_logs(id):
+    order = OnlineOrder.query.get_or_404(id)
+    logs = [l.to_dict() for l in order.logs.order_by(OrderLog.created_at.asc()).all()]
+    return jsonify({'ok': True, 'items': logs})

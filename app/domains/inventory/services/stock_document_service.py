@@ -140,9 +140,20 @@ class StockDocumentService:
             _post_journal_for_stock_out(so)
             db.session.commit()
 
-            from app.domains.ecommerce.models import OnlineOrder
+            from app.domains.ecommerce.models import OnlineOrder, OrderLog
+            from app.domains.ecommerce.services.order_log_service import add_log as add_order_log
             for online_order in OnlineOrder.query.filter_by(stock_out_id=so.id).all():
                 online_order.update_erp_status(source='auto')
+                if online_order.status not in {'cancelled', 'returned', 'completed'}:
+                    online_order.status = 'shipping'
+                    add_order_log(
+                        online_order,
+                        'shipping',
+                        status_from=online_order.status,
+                        status_to='shipping',
+                        message=f'Phiếu xuất {so.code} đã được xác nhận. Đơn đang giao hàng.',
+                        created_by=user_id,
+                    )
             db.session.commit()
             return ConfirmResult(True, so.code)
 
@@ -167,8 +178,19 @@ class StockDocumentService:
         db.session.commit()
 
         from app.domains.ecommerce.models import OnlineOrder
+        from app.domains.ecommerce.services.order_log_service import add_log as add_order_log
         for online_order in OnlineOrder.query.filter_by(stock_out_id=so.id).all():
             online_order.update_erp_status(source='auto')
+            if online_order.status not in {'cancelled', 'returned', 'completed'}:
+                online_order.status = 'cancelled'
+                add_order_log(
+                    online_order,
+                    'cancelled',
+                    status_from=online_order.status,
+                    status_to='cancelled',
+                    message=f'Phiếu xuất {so.code} đã bị hủy. Đơn hàng bị hủy theo.',
+                    created_by=user_id,
+                )
         db.session.commit()
         return CancelResult(True, so.code)
 

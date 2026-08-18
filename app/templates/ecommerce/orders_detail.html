@@ -1,7 +1,16 @@
 {% extends "base.html" %} {% block title %}Chi tiết đơn online{% endblock %} {%
 block page_title %}
 <i class="fas fa-receipt me-2 text-primary"></i>
-E-commerce - Chi tiết đơn online {% endblock %} {% block content %}
+E-commerce - Chi tiết đơn online {% endblock %} {% block head %}
+<style>
+.timeline { position: relative; padding-left: 1.5rem; }
+.timeline-item { position: relative; padding-bottom: 1rem; }
+.timeline-item:not(:last-child) { border-left: 2px solid #e5e7eb; margin-left: 0.35rem; }
+.timeline-marker { position: absolute; left: -0.6rem; top: 0.2rem; width: 0.6rem; height: 0.6rem; border-radius: 50%; }
+.timeline-content { margin-left: 0.75rem; }
+.dark .timeline-item:not(:last-child) { border-left-color: #374151; }
+</style>
+{% endblock %} {% block content %}
 <div class="card">
   <div
     class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2"
@@ -28,6 +37,22 @@ E-commerce - Chi tiết đơn online {% endblock %} {% block content %}
       </div>
       {% endif %}
     </div>
+
+    {% if order.status not in ['cancelled', 'returned', 'completed'] %}
+    <form method="POST" action="{{ url_for('ecommerce.update_tracking', id=order.id) }}" class="d-inline-flex gap-1 align-items-center flex-wrap">
+      <input type="text" name="tracking_number" value="{{ order.tracking_number or '' }}" class="form-control form-control-sm" placeholder="Mã vận đơn" style="width: 180px;">
+      <select name="tracking_carrier" class="form-select form-select-sm" style="width: 150px;">
+        <option value="">-- NVVC --</option>
+        <option value="GHTK" {{ 'selected' if order.tracking_carrier=='GHTK' }}>GHTK</option>
+        <option value="GHN" {{ 'selected' if order.tracking_carrier=='GHN' }}>GHN</option>
+        <option value="Viettel Post" {{ 'selected' if order.tracking_carrier=='Viettel Post' }}>Viettel Post</option>
+        <option value="Grab" {{ 'selected' if order.tracking_carrier=='Grab' }}>Grab</option>
+        <option value="J&T" {{ 'selected' if order.tracking_carrier=='J&T' }}>J&T</option>
+      </select>
+      <button class="btn btn-sm btn-outline-primary py-0 px-2">Lưu vận đơn</button>
+    </form>
+    {% endif %}
+
     <div class="d-flex gap-2">
       <a
         href="{{ url_for('ecommerce.orders') }}"
@@ -43,14 +68,28 @@ E-commerce - Chi tiết đơn online {% endblock %} {% block content %}
         <i class="fas fa-truck me-1"></i>Phiếu xuất: {{ order.stock_out.code }}
       </a>
       {% endif %}
-      {% if order.stock_in %}
-      <a
-        href="{{ url_for('stock_in.detail', id=order.stock_in.id) }}"
-        class="btn btn-sm btn-success"
-      >
-        <i class="fas fa-undo me-1"></i>Phiếu nhập trả: {{ order.stock_in.code }}
-      </a>
-      {% endif %}
+    {% if order.stock_in %}
+    <a
+      href="{{ url_for('stock_in.detail', id=order.stock_in.id) }}"
+      class="btn btn-sm btn-success"
+    >
+      <i class="fas fa-undo me-1"></i>Phiếu nhập trả: {{ order.stock_in.code }}
+    </a>
+    {% endif %}
+    {% if order.status not in ['cancelled', 'returned', 'completed'] %}
+    <form method="POST" action="{{ url_for('ecommerce.cancel_order', id=order.id) }}" class="d-inline" onsubmit="return confirm('Huy don hang nay? Thao tac se huy phieu xuat kho neu da duoc tao.')">
+      <button class="btn btn-sm btn-danger">
+        <i class="fas fa-times-circle me-1"></i>Hủy đơn hàng
+      </button>
+    </form>
+    {% endif %}
+    {% if order.status in ['shipping', 'confirmed', 'processing'] %}
+    <form method="POST" action="{{ url_for('ecommerce.deliver_order', id=order.id) }}" class="d-inline" onsubmit="return confirm('Danh dau don nay da giao hang thanh cong?')">
+      <button class="btn btn-sm btn-success">
+        <i class="fas fa-check-circle me-1"></i>Đánh dấu đã giao hàng
+      </button>
+    </form>
+    {% endif %}
     </div>
   </div>
 
@@ -72,6 +111,9 @@ E-commerce - Chi tiết đơn online {% endblock %} {% block content %}
           {% if order.return_status == 'completed' or order.status == 'returned' %}
           {% set step = 3 %}
           <span class="badge bg-purple rounded-pill px-3 py-2" style="background-color: #6f42c1; color: white;">3. Đã trả hàng</span>
+          {% elif order.delivered_at %}
+          {% set step = 3 %}
+          <span class="badge bg-success rounded-pill px-3 py-2">3. Đã giao hàng</span>
           {% elif order.status == 'cancelled' %}
           {% set step = -1 %}
           <span class="badge bg-danger rounded-pill px-3 py-2">Đã hủy</span>
@@ -155,6 +197,37 @@ E-commerce - Chi tiết đơn online {% endblock %} {% block content %}
         </tbody>
       </table>
     </div>
+
+    <div class="card mb-3">
+      <div class="card-header fw-semibold">Lịch sử trạng thái</div>
+      <div class="card-body">
+        <div class="timeline">
+          {% for log in order.logs %}
+          <div class="timeline-item">
+            <div class="timeline-marker bg-primary"></div>
+            <div class="timeline-content">
+              <div class="d-flex justify-content-between align-items-center">
+                <strong class="small">{{ log.action|title }}</strong>
+                <small class="text-muted">{{ log.created_at|dateformat }} {{ log.created_at.strftime('%H:%M') if log.created_at else '' }}</small>
+              </div>
+              {% if log.status_from or log.status_to %}
+              <div class="small text-muted">
+                {% if log.status_from %}{{ log.status_from }}{% endif %}
+                {% if log.status_from and log.status_to %} → {% endif %}
+                {% if log.status_to %}{{ log.status_to }}{% endif %}
+              </div>
+              {% endif %}
+              {% if log.message %}<div class="small">{{ log.message }}</div>{% endif %}
+              {% if log.created_by_name %}<div class="small text-muted">Bởi: {{ log.created_by_name }}</div>{% endif %}
+            </div>
+          </div>
+          {% else %}
+          <div class="text-center text-muted small py-3">Chưa có lịch sử cập nhật.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
     {% if order.return_status and order.return_status != 'none' %}
     <div class="alert alert-info">
       <strong>Trạng thái trả hàng:</strong>

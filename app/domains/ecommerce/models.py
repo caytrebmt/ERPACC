@@ -314,8 +314,15 @@ class OnlineOrder(db.Model):
     return_note = db.Column(db.Text, nullable=True)
     stock_in_id = db.Column(db.Integer, db.ForeignKey('stock_ins.id'), nullable=True)
     returned_at = db.Column(db.DateTime, nullable=True)
+    delivered_at = db.Column(db.DateTime, nullable=True, comment='Thoi gian giao hang thanh cong')
+    completed_at = db.Column(db.DateTime, nullable=True, comment='Thoi gian don hoan thanh')
+    tracking_number = db.Column(db.String(120), nullable=True, comment='Ma van don tu nha van chuyen')
+    tracking_carrier = db.Column(db.String(50), nullable=True, comment='Nha van chuyen (GHTK, GHN, Viettel Post)')
 
     customer = db.relationship('Customer', foreign_keys=[customer_id])
+    logs = db.relationship('OrderLog', backref='online_order', lazy='dynamic', cascade='all, delete-orphan')
+
+    VALID_STATUSES = {'new', 'pending', 'confirmed', 'processing', 'shipping', 'completed', 'cancelled', 'returned'}
     web_customer = db.relationship('WebCustomer', foreign_keys=[web_customer_id], backref='orders')
     session = db.relationship('CustomerSession', foreign_keys=[session_id])
     promotion = db.relationship('Promotion', foreign_keys=[promotion_id])
@@ -343,7 +350,7 @@ class OnlineOrder(db.Model):
         if source == 'auto':
             from zoneinfo import ZoneInfo
             vn_now = datetime.now(ZoneInfo('Asia/Ho_Chi_Minh'))
-            self.erp_note = f'Đồng bộ tự động từ phiếu xuất {so.code} lúc {vn_now.strftime("%d/%m/%Y %H:%M")}.'
+            self.erp_note = f'Số phiếu: {so.code} lúc {vn_now.strftime("%d/%m/%Y %H:%M")}.'
 
 class OnlineOrderItem(db.Model):
     __tablename__ = 'online_order_items'
@@ -362,3 +369,30 @@ class OnlineOrderItem(db.Model):
 
     def calculate(self):
         self.amount = float(self.quantity or 0) * float(self.unit_price or 0)
+
+
+class OrderLog(db.Model):
+    __tablename__ = 'order_logs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    online_order_id = db.Column(db.Integer, db.ForeignKey('online_orders.id', ondelete='CASCADE'), nullable=False)
+    action = db.Column(db.String(50), nullable=False, comment='Hanh dong: created, confirmed, shipped, delivered, completed, cancelled, returned, sync, note')
+    status_from = db.Column(db.String(20), nullable=True)
+    status_to = db.Column(db.String(20), nullable=True)
+    message = db.Column(db.Text, nullable=True)
+    meta = db.Column(db.Text, nullable=True, comment='JSON du lieu bo sung')
+    created_by = db.Column(db.Integer, nullable=True, comment='User ID hoac web_customer_id')
+    created_by_name = db.Column(db.String(120), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'action': self.action,
+            'status_from': self.status_from,
+            'status_to': self.status_to,
+            'message': self.message,
+            'meta': self.meta,
+            'created_by_name': self.created_by_name,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+        }

@@ -23,6 +23,7 @@ from app.domains.ecommerce.models import (
     Promotion,
     WebCustomer,
 )
+from app.domains.ecommerce.services.order_log_service import add_log as add_order_log
 from app.domains.master.models import Category, Customer, Product
 from app.domains.platform.models import NotificationInstance
 from app.domains.ecommerce.services.ecommerce_sync_service import (
@@ -223,7 +224,7 @@ def _get_or_create_shop_customer_session():
         db.session.flush()
     if current_user.is_authenticated and isinstance(current_user._get_current_object(), WebCustomer):
         cs.customer_id = current_user.customer_id
-        cs.name = current_user.name
+        cs.name = getattr(current_user, 'name', None) or getattr(current_user, 'full_name', None)
         cs.email = current_user.email
         cs.phone = current_user.phone
     cs.last_seen_at = datetime.utcnow()
@@ -729,6 +730,11 @@ def _serialize_order(order):
         'return_processed_at': order.return_processed_at.isoformat() if order.return_processed_at else None,
         'return_note': order.return_note,
         'returned_at': order.returned_at.isoformat() if order.returned_at else None,
+        'delivered_at': order.delivered_at.isoformat() if getattr(order, 'delivered_at', None) else None,
+        'completed_at': order.completed_at.isoformat() if getattr(order, 'completed_at', None) else None,
+        'tracking_number': order.tracking_number,
+        'tracking_carrier': order.tracking_carrier,
+        'logs': [l.to_dict() for l in getattr(order, 'logs', []).order_by('created_at').all()] if hasattr(order, 'logs') else [],
         'items': [
             {
                 'id': it.id,
@@ -938,8 +944,8 @@ def cancel_order(order_id):
     order = q.filter_by(id=order_id).first()
     if not order:
         return _json_err('Không tìm thấy đơn hàng.', 404)
-    if order.status != 'new':
-        return _json_err('Chỉ có thể hủy đơn hàng ở trạng thái Mới.', 400)
+    if order.status not in {'new', 'pending', 'confirmed'}:
+        return _json_err('Chỉ có thể hủy đơn hàng ở trạng thái Mới, Chờ thanh toán hoặc Đã xác nhận.', 400)
     if order.stock_out_id or order.erp_status:
         return _json_err('Đơn hàng đã được đồng bộ với phiếu xuất kho, không thể hủy.', 400)
     order.status = 'cancelled'
@@ -966,6 +972,7 @@ def cancel_order(order_id):
             order.erp_status = 'Da huy'
             order.erp_note = f'Don hang bi huy boi khach hang. Phieu xuat {stock_out.code} da duoc huy va ton kho da duoc hoan tra.'
     db.session.commit()
+    add_order_log(order, 'cancelled', status_from='new', status_to='cancelled', message='Đơn hàng bị hủy bởi khách hàng.', created_by=web_customer.id, created_by_name=web_customer.name)
     _notify_admins(
         title=f'Khach hang huy don {order.code}',
         message=f'Don hang {order.code} cua khach {order.customer_name} da bi huy boi khach hang.',

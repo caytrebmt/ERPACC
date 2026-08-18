@@ -560,10 +560,52 @@ def _ensure_online_orders_status_columns():
                 ADD COLUMN erp_note TEXT NULL
             """))
             conn.execute(text("""
-                COMMENT ON COLUMN online_orders.erp_status IS 'Trạng thái bản ghi xuất kho ERP'
+                COMMENT ON COLUMN online_orders.erp_status IS 'Trang thai ban ghi xuat kho ERP'
             """))
             conn.execute(text("""
-                COMMENT ON COLUMN online_orders.erp_note IS 'Ghi chú cập nhật từ ERP'
+                COMMENT ON COLUMN online_orders.erp_note IS 'Ghi chu cap nhat tu ERP'
+            """))
+        if 'delivered_at' not in existing:
+            conn.execute(text("""
+                ALTER TABLE online_orders
+                ADD COLUMN delivered_at TIMESTAMP NULL
+            """))
+        if 'completed_at' not in existing:
+            conn.execute(text("""
+                ALTER TABLE online_orders
+                ADD COLUMN completed_at TIMESTAMP NULL
+            """))
+        if 'tracking_number' not in existing:
+            conn.execute(text("""
+                ALTER TABLE online_orders
+                ADD COLUMN tracking_number VARCHAR(120) NULL
+            """))
+        if 'tracking_carrier' not in existing:
+            conn.execute(text("""
+                ALTER TABLE online_orders
+                ADD COLUMN tracking_carrier VARCHAR(50) NULL
+            """))
+    if not inspector.has_table('order_logs'):
+        with db.engine.begin() as conn:
+            conn.execute(text("""
+                CREATE TABLE IF NOT EXISTS order_logs (
+                    id SERIAL PRIMARY KEY,
+                    online_order_id INTEGER NOT NULL REFERENCES online_orders(id) ON DELETE CASCADE,
+                    action VARCHAR(50) NOT NULL,
+                    status_from VARCHAR(20) NULL,
+                    status_to VARCHAR(20) NULL,
+                    message TEXT NULL,
+                    meta TEXT NULL,
+                    created_by INTEGER NULL,
+                    created_by_name VARCHAR(120) NULL,
+                    created_at TIMESTAMP DEFAULT NOW()
+                )
+            """))
+            conn.execute(text("""
+                CREATE INDEX IF NOT EXISTS ix_order_logs_online_order_id ON order_logs(online_order_id)
+            """))
+            conn.execute(text("""
+                CREATE INDEX IF NOT EXISTS ix_order_logs_created_at ON order_logs(created_at)
             """))
 
 

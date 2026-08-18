@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Calendar, User, Phone, MapPin, Loader2, Coins, Receipt, XCircle, RefreshCw, ShoppingCart, Info, CheckCircle, RotateCcw } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  User,
+  Phone,
+  MapPin,
+  Loader2,
+  Coins,
+  Receipt,
+  XCircle,
+  RefreshCw,
+  ShoppingCart,
+  Info,
+  CheckCircle,
+  RotateCcw,
+} from "lucide-react";
 import client from "../api/client";
 import { Order } from "../types";
 import { formatPrice, formatDate } from "../utils/format";
@@ -51,7 +66,8 @@ const OrderDetailPage: React.FC = () => {
 
   const handleCancelOrder = async () => {
     if (!order) return;
-    if (!window.confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?")) return;
+    if (!window.confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?"))
+      return;
 
     try {
       setSubmittingAction(true);
@@ -72,7 +88,12 @@ const OrderDetailPage: React.FC = () => {
 
   const handleDeleteOrder = async () => {
     if (!order) return;
-    if (!window.confirm("Bạn có chắc chắn muốn xóa đơn hàng này không? Thao tác này không thể hoàn tác.")) return;
+    if (
+      !window.confirm(
+        "Bạn có chắc chắn muốn xóa đơn hàng này không? Thao tác này không thể hoàn tác.",
+      )
+    )
+      return;
 
     try {
       setSubmittingAction(true);
@@ -113,19 +134,33 @@ const OrderDetailPage: React.FC = () => {
 
   const handleRequestReturn = async () => {
     if (!order) return;
-    if (!window.confirm("Bạn có chắc chắn muốn yêu cầu trả hàng cho đơn này không?")) return;
+    if (
+      !window.confirm(
+        "Bạn có chắc chắn muốn yêu cầu trả hàng cho đơn này không?",
+      )
+    )
+      return;
 
     try {
       setSubmittingAction(true);
-      const res = await client.post(`/api/shop/orders/${order.id}/request-return`);
+      const res = await client.post(
+        `/api/shop/orders/${order.id}/request-return`,
+      );
       if (res.data && res.data.ok) {
-        showToast("Yêu cầu trả hàng đã được gửi. Chúng tôi sẽ xử lý trong thời gian sớm nhất.", "success");
+        showToast(
+          "Yêu cầu trả hàng đã được gửi. Chúng tôi sẽ xử lý trong thời gian sớm nhất.",
+          "success",
+        );
         setOrder(res.data.data);
       } else {
-        showToast(res.data.message || "Không thể gửi yêu cầu trả hàng", "error");
+        showToast(
+          res.data.message || "Không thể gửi yêu cầu trả hàng",
+          "error",
+        );
       }
     } catch (err: any) {
-      const msg = err.response?.data?.message || "Lỗi khi gửi yêu cầu trả hàng.";
+      const msg =
+        err.response?.data?.message || "Lỗi khi gửi yêu cầu trả hàng.";
       showToast(msg, "error");
     } finally {
       setSubmittingAction(false);
@@ -134,19 +169,28 @@ const OrderDetailPage: React.FC = () => {
 
   const handleCancelReturn = async () => {
     if (!order) return;
-    if (!window.confirm("Bạn có chắc chắn muốn hủy yêu cầu trả hàng này không?")) return;
+    if (
+      !window.confirm("Bạn có chắc chắn muốn hủy yêu cầu trả hàng này không?")
+    )
+      return;
 
     try {
       setSubmittingAction(true);
-      const res = await client.post(`/api/shop/orders/${order.id}/cancel-return`);
+      const res = await client.post(
+        `/api/shop/orders/${order.id}/cancel-return`,
+      );
       if (res.data && res.data.ok) {
         showToast("Đã hủy yêu cầu trả hàng.", "success");
         setOrder(res.data.data);
       } else {
-        showToast(res.data.message || "Không thể hủy yêu cầu trả hàng", "error");
+        showToast(
+          res.data.message || "Không thể hủy yêu cầu trả hàng",
+          "error",
+        );
       }
     } catch (err: any) {
-      const msg = err.response?.data?.message || "Lỗi khi hủy yêu cầu trả hàng.";
+      const msg =
+        err.response?.data?.message || "Lỗi khi hủy yêu cầu trả hàng.";
       showToast(msg, "error");
     } finally {
       setSubmittingAction(false);
@@ -160,11 +204,17 @@ const OrderDetailPage: React.FC = () => {
       case "pending":
         return "bg-amber-50 border-amber-200 text-amber-700 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-300";
       case "confirmed":
-        return "bg-green-50 border-green-200 text-green-700 dark:bg-green-950/20 dark:border-green-900/40 dark:text-green-300";
+        return "bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-950/20 dark:border-indigo-900/40 dark:text-indigo-300";
+      case "processing":
+        return "bg-cyan-50 border-cyan-200 text-cyan-700 dark:bg-cyan-950/20 dark:border-cyan-900/40 dark:text-cyan-300";
+      case "shipping":
+        return "bg-orange-50 border-orange-200 text-orange-700 dark:bg-orange-950/20 dark:border-orange-900/40 dark:text-orange-300";
+      case "completed":
+        return "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-300";
       case "cancelled":
-        return "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/20 dark:border-blue-900/40 dark:text-red-300";
+        return "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/20 dark:border-red-900/40 dark:text-red-300";
       case "returned":
-        return "bg-purple-50 border-purple-200 text-purple-700 dark:bg-purple-950/20 dark:border-blue-900/40 dark:text-purple-300";
+        return "bg-purple-50 border-purple-200 text-purple-700 dark:bg-purple-950/20 dark:border-purple-900/40 dark:text-purple-300";
       default:
         return "bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-850 dark:border-gray-800 dark:text-gray-300";
     }
@@ -178,6 +228,12 @@ const OrderDetailPage: React.FC = () => {
         return "Chờ thanh toán";
       case "confirmed":
         return "Đã xác nhận";
+      case "processing":
+        return "Chờ đóng gói";
+      case "shipping":
+        return "Đang giao hàng";
+      case "completed":
+        return "Đã hoàn thành";
       case "cancelled":
         return "Đã hủy bỏ";
       case "returned":
@@ -233,7 +289,9 @@ const OrderDetailPage: React.FC = () => {
     return (
       <div className="min-h-[50vh] flex flex-col items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-indigo-600 mb-2" />
-        <p className="text-xs text-gray-500 dark:text-gray-400">Đang truy xuất thông tin chi tiết đơn hàng...</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          Đang truy xuất thông tin chi tiết đơn hàng...
+        </p>
       </div>
     );
   }
@@ -243,7 +301,9 @@ const OrderDetailPage: React.FC = () => {
   }
 
   // VietQR parameters integration
-  const showVietQr = order.paymentMethod === "VIETQR" && (order.status === "new" || order.status === "pending");
+  const showVietQr =
+    order.paymentMethod === "VIETQR" &&
+    (order.status === "new" || order.status === "pending");
   const vietQrUrl = `https://img.vietqr.io/image/vcb-0071000123456-compact2.png?amount=${order.total_amount}&addInfo=${encodeURIComponent(order.code)}&accountName=CONG%20TY%20CONG%20NGHE%20ERP%20VIET`;
 
   return (
@@ -251,38 +311,58 @@ const OrderDetailPage: React.FC = () => {
       {/* Header breadcrumb link */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-3">
         <div className="flex items-center gap-2">
-          <Link to="/orders" className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full text-gray-500 dark:text-gray-450 transition-colors">
+          <Link
+            to="/orders"
+            className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full text-gray-500 dark:text-gray-450 transition-colors"
+          >
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
             <h1 className="text-lg md:text-xl font-bold text-gray-850 dark:text-white m-0 uppercase flex items-center gap-2">
-              CHI TIẾT ĐƠN HÀNG <span className="font-mono text-indigo-600 dark:text-indigo-400 font-black text-sm select-all">{order.code}</span>
+              CHI TIẾT ĐƠN HÀNG{" "}
+              <span className="font-mono text-indigo-600 dark:text-indigo-400 font-black text-sm select-all">
+                {order.code}
+              </span>
             </h1>
             <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5 m-0 flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 shrink-0" /> Ngày tạo: <strong className="dark:text-gray-300">{formatDate(order.createdAt)}</strong>
+              <Calendar className="w-3.5 h-3.5 shrink-0" /> Ngày tạo:{" "}
+              <strong className="dark:text-gray-300">
+                {formatDate(order.createdAt)}
+              </strong>
             </p>
           </div>
         </div>
 
         {/* Status badges header */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className={`text-xs font-bold border px-3 py-1 rounded-full uppercase ${getStatusBadgeClass(order.status)}`}>
+          <span
+            className={`text-xs font-bold border px-3 py-1 rounded-full uppercase ${getStatusBadgeClass(order.status)}`}
+          >
             {getStatusLabel(order.status)}
           </span>
           {order.erp_status && (
-            <span className={`text-xs font-bold border px-3 py-1 rounded-full uppercase ${
-              order.erp_status === "Đã xuất kho"
-                ? "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-300"
-                : order.erp_status === "Đã hủy"
-                ? "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/20 dark:border-red-900/40 dark:text-red-300"
-                : "bg-amber-50 border-amber-200 text-amber-700 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-300"
-            }`}>
+            <span
+              className={`text-xs font-bold border px-3 py-1 rounded-full uppercase ${
+                order.erp_status === "Đã xuất kho"
+                  ? "bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/20 dark:border-emerald-900/40 dark:text-emerald-300"
+                  : order.erp_status === "Đã hủy"
+                    ? "bg-red-50 border-red-200 text-red-700 dark:bg-red-950/20 dark:border-red-900/40 dark:text-red-300"
+                    : "bg-amber-50 border-amber-200 text-amber-700 dark:bg-amber-950/20 dark:border-amber-900/40 dark:text-amber-300"
+              }`}
+            >
               {order.erp_status}
             </span>
           )}
           {order.return_status && order.return_status !== "none" && (
-            <span className={`text-xs font-bold border px-3 py-1 rounded-full uppercase ${getReturnStatusBadgeClass()}`}>
+            <span
+              className={`text-xs font-bold border px-3 py-1 rounded-full uppercase ${getReturnStatusBadgeClass()}`}
+            >
               {getReturnStatusLabel()}
+            </span>
+          )}
+          {order.delivered_at && (
+            <span className="text-xs font-bold border px-3 py-1 rounded-full uppercase bg-teal-50 border-teal-200 text-teal-700 dark:bg-teal-950/20 dark:border-teal-900/40 dark:text-teal-300">
+              Đã giao hàng
             </span>
           )}
         </div>
@@ -308,24 +388,41 @@ const OrderDetailPage: React.FC = () => {
             {/* List */}
             <div className="divide-y divide-gray-100 dark:divide-gray-800">
               {order.items.map((item) => (
-                <div key={item.id} className="p-4 grid grid-cols-1 md:grid-cols-12 gap-3 items-center relative text-xs">
+                <div
+                  key={item.id}
+                  className="p-4 grid grid-cols-1 md:grid-cols-12 gap-3 items-center relative text-xs"
+                >
                   <div className="col-span-1 md:col-span-6 flex flex-col">
                     <h4 className="font-semibold text-gray-800 dark:text-gray-200 m-0 leading-tight">
                       {item.name}
                     </h4>
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-1 font-mono m-0">SKU: {item.sku}</p>
+                    <p className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-1 font-mono m-0">
+                      SKU: {item.sku}
+                    </p>
                   </div>
                   <div className="col-span-1 md:col-span-2 md:text-center flex justify-between md:block">
-                    <span className="text-gray-400 md:hidden font-medium">Đơn giá:</span>
-                    <span className="font-semibold text-gray-700 dark:text-gray-300">{formatPrice(item.unit_price)}</span>
+                    <span className="text-gray-400 md:hidden font-medium">
+                      Đơn giá:
+                    </span>
+                    <span className="font-semibold text-gray-700 dark:text-gray-300">
+                      {formatPrice(item.unit_price)}
+                    </span>
                   </div>
                   <div className="col-span-1 md:col-span-2 md:text-center flex justify-between md:block">
-                    <span className="text-gray-400 md:hidden font-medium">Số lượng:</span>
-                    <span className="font-bold text-gray-800 dark:text-gray-200">{item.quantity}</span>
+                    <span className="text-gray-400 md:hidden font-medium">
+                      Số lượng:
+                    </span>
+                    <span className="font-bold text-gray-800 dark:text-gray-200">
+                      {item.quantity}
+                    </span>
                   </div>
                   <div className="col-span-1 md:col-span-2 flex justify-between md:block text-right">
-                    <span className="text-gray-400 md:hidden font-medium">Tổng tiền:</span>
-                    <span className="font-bold text-gray-900 dark:text-white">{formatPrice(item.amount)}</span>
+                    <span className="text-gray-400 md:hidden font-medium">
+                      Tổng tiền:
+                    </span>
+                    <span className="font-bold text-gray-900 dark:text-white">
+                      {formatPrice(item.amount)}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -335,42 +432,90 @@ const OrderDetailPage: React.FC = () => {
           {/* Logistics Tracking Timeline Information */}
           <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs flex flex-col gap-4 transition-colors duration-200">
             <h3 className="font-bold text-gray-900 dark:text-white text-xs border-b border-gray-100 dark:border-gray-800 pb-2.5 uppercase tracking-wider flex items-center gap-1.5">
-              <Info className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> LỘ TRÌNH ĐƠN HÀNG (ERPACC SYNC)
+              <Info className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />{" "}
+              LỘ TRÌNH ĐƠN HÀNG
             </h3>
 
             <div className="flex flex-col gap-4 text-xs pl-3 relative border-l border-gray-100 dark:border-gray-800">
-              {/* Point 1 */}
+              {/* Step 1: Mới / Chờ xác nhận */}
               <div className="relative">
                 <span className={`absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 ${order.status === "cancelled" ? "bg-red-500 ring-red-100 dark:ring-red-950" : "bg-indigo-600 ring-indigo-50 dark:ring-indigo-950"}`}></span>
-                <p className="font-bold text-gray-850 dark:text-white m-0 leading-tight">Ghi nhận đơn hàng trên WebShop</p>
-                <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">Thời gian: {formatDate(order.createdAt)}</p>
+                <p className="font-bold text-gray-850 dark:text-white m-0 leading-tight">
+                  Bước 1: Mới / Chờ xác nhận
+                </p>
+                <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">
+                  Thời gian: {formatDate(order.createdAt)}
+                </p>
               </div>
 
-              {/* Point 2 */}
-              {order.status !== "cancelled" ? (
-                <>
-                  <div className="relative">
-                    <span className={`absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 ${getErpSyncDone() ? "bg-indigo-600 ring-indigo-50 dark:ring-indigo-950" : "bg-gray-300 ring-gray-100 dark:ring-gray-800"}`}></span>
-                    <p className={`font-bold m-0 leading-tight ${getErpSyncDone() ? "text-gray-800 dark:text-gray-200" : "text-gray-400 dark:text-gray-550"}`}>Đồng bộ ERPACC & Duyệt Kho Hàng</p>
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">Trạng thái: {getErpStatusLabel()}</p>
-                    {order.erp_note && (
-                      <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0 italic">{order.erp_note}</p>
-                    )}
-                  </div>
-                  <div className="relative">
-                    <span className={`absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 ${getErpSyncDone() ? "bg-indigo-600 ring-indigo-50 dark:ring-indigo-950" : "bg-gray-300 dark:bg-gray-800 ring-gray-100 dark:ring-gray-900"}`}></span>
-                    <p className={`font-bold m-0 leading-tight ${getErpSyncDone() ? "text-gray-800 dark:text-gray-200" : "text-gray-400 dark:text-gray-550"}`}>Đóng gói & Bàn giao Shipper</p>
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">{getErpSyncDone() ? "Đã sẵn sàng bàn giao" : "Chờ cập nhật"}</p>
-                  </div>
-                </>
-              ) : (
+              {/* Step 2: Đã xác nhận / Chờ đóng gói */}
+              {(order.status === "confirmed" || order.status === "processing" || order.status === "shipping" || order.status === "completed") && (
+                <div className="relative">
+                  <span className={`absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 ${(order.status === "confirmed" || order.status === "processing" || order.status === "shipping" || order.status === "completed") ? "bg-indigo-600 ring-indigo-50 dark:ring-indigo-950" : "bg-gray-300 ring-gray-100 dark:ring-gray-800"}`}></span>
+                  <p className={`font-bold m-0 leading-tight ${(order.status === "confirmed" || order.status === "processing" || order.status === "shipping" || order.status === "completed") ? "text-gray-800 dark:text-gray-200" : "text-gray-400 dark:text-gray-550"}`}>
+                    Bước 2: Đã xác nhận / Chờ đóng gói
+                  </p>
+                  <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">
+                    {(order.status === "confirmed" || order.status === "processing" || order.status === "shipping" || order.status === "completed") ? "Đã xác nhận và tạo chứng từ xuất kho" : "Chờ cập nhật"}
+                  </p>
+                </div>
+              )}
+
+              {/* Step 3: Đang giao hàng */}
+              {(order.status === "shipping" || order.status === "completed") && (
+                <div className="relative">
+                  <span className={`absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 ${(order.status === "shipping" || order.status === "completed") ? "bg-orange-500 ring-orange-50 dark:ring-orange-950" : "bg-gray-300 ring-gray-100 dark:ring-gray-800"}`}></span>
+                  <p className={`font-bold m-0 leading-tight ${(order.status === "shipping" || order.status === "completed") ? "text-gray-800 dark:text-gray-200" : "text-gray-400 dark:text-gray-550"}`}>
+                    Bước 3: Đang giao hàng
+                  </p>
+                  <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">
+                    {(order.status === "shipping" || order.status === "completed") ? (order.tracking_carrier || "Đã bàn giao vận chuyển") : "Chờ cập nhật"}
+                    {order.tracking_number && <span className="ml-1">- Mã vận đơn: {order.tracking_number}</span>}
+                  </p>
+                </div>
+              )}
+
+              {/* Step 4: Đã hoàn thành */}
+              {order.status === "completed" && (
+                <div className="relative">
+                  <span className="absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 bg-emerald-500 ring-emerald-50 dark:ring-emerald-950"></span>
+                  <p className="font-bold text-emerald-700 dark:text-emerald-300 m-0 leading-tight">
+                    Bước 4: Đã hoàn thành
+                  </p>
+                  <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">
+                    Khách đã nhận hàng thành công
+                    {order.completed_at && <span> - {formatDate(order.completed_at)}</span>}
+                  </p>
+                </div>
+              )}
+
+              {/* Cancelled */}
+              {order.status === "cancelled" && (
                 <div className="relative">
                   <span className="absolute -left-[17px] top-1.5 w-2 h-2 rounded-full ring-4 bg-red-500 ring-red-100 dark:ring-red-950"></span>
-                  <p className="font-bold text-red-600 dark:text-red-400 m-0 leading-tight">Đơn hàng đã hủy bỏ</p>
-                  <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">Tồn kho đã được hoàn trả lại hệ thống ERP.</p>
+                  <p className="font-bold text-red-600 dark:text-red-400 m-0 leading-tight">
+                    Đơn hàng đã hủy bỏ
+                  </p>
+                  <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 m-0">
+                    Tồn kho đã được hoàn trả lại hệ thống ERP.
+                  </p>
                 </div>
               )}
             </div>
+
+            {order.logs && order.logs.length > 0 && (
+              <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800">
+                <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Nhật ký cập nhật</p>
+                <div className="flex flex-col gap-2">
+                  {order.logs.slice(-5).map((log) => (
+                    <div key={log.id} className="text-[10px] text-gray-500 dark:text-gray-400 flex justify-between">
+                      <span>{log.message || log.action}</span>
+                      <span className="text-gray-400">{log.created_at ? new Date(log.created_at).toLocaleString('vi-VN') : ''}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -384,13 +529,25 @@ const OrderDetailPage: React.FC = () => {
 
             <div className="flex flex-col gap-2.5">
               <p className="m-0 flex items-center gap-1.5">
-                <User className="w-4 h-4 text-gray-400 dark:text-gray-550 shrink-0" /> Họ tên: <strong className="text-gray-800 dark:text-gray-200">{order.customerName}</strong>
+                <User className="w-4 h-4 text-gray-400 dark:text-gray-550 shrink-0" />{" "}
+                Họ tên:{" "}
+                <strong className="text-gray-800 dark:text-gray-200">
+                  {order.customerName}
+                </strong>
               </p>
               <p className="m-0 flex items-center gap-1.5">
-                <Phone className="w-4 h-4 text-gray-400 dark:text-gray-550 shrink-0" /> Điện thoại: <strong className="text-gray-800 dark:text-gray-200">{order.customerPhone}</strong>
+                <Phone className="w-4 h-4 text-gray-400 dark:text-gray-550 shrink-0" />{" "}
+                Điện thoại:{" "}
+                <strong className="text-gray-800 dark:text-gray-200">
+                  {order.customerPhone}
+                </strong>
               </p>
               <p className="m-0 flex items-start gap-1.5">
-                <MapPin className="w-4 h-4 text-gray-400 dark:text-gray-550 shrink-0 mt-0.5" /> Địa chỉ: <span className="text-gray-700 dark:text-gray-300 leading-normal">{order.shippingAddress}</span>
+                <MapPin className="w-4 h-4 text-gray-400 dark:text-gray-550 shrink-0 mt-0.5" />{" "}
+                Địa chỉ:{" "}
+                <span className="text-gray-700 dark:text-gray-300 leading-normal">
+                  {order.shippingAddress}
+                </span>
               </p>
               {order.note && (
                 <div className="bg-gray-50 dark:bg-gray-850 p-2.5 rounded-lg border border-gray-100 dark:border-gray-800 text-[11px] text-gray-500 italic">
@@ -409,7 +566,9 @@ const OrderDetailPage: React.FC = () => {
             <div className="flex flex-col gap-2.5 text-xs text-gray-600 dark:text-gray-400">
               <div className="flex justify-between">
                 <span>Tạm tính (Subtotal):</span>
-                <span className="font-semibold text-gray-800 dark:text-gray-200">{formatPrice(order.subtotal_amount)}</span>
+                <span className="font-semibold text-gray-800 dark:text-gray-200">
+                  {formatPrice(order.subtotal_amount)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Phí vận chuyển:</span>
@@ -422,7 +581,9 @@ const OrderDetailPage: React.FC = () => {
                 </div>
               )}
               <div className="border-t border-gray-100 dark:border-gray-800 pt-3 flex justify-between items-baseline">
-                <span className="text-sm font-bold text-gray-900 dark:text-white">Tổng thanh toán:</span>
+                <span className="text-sm font-bold text-gray-900 dark:text-white">
+                  Tổng thanh toán:
+                </span>
                 <span className="text-base font-black text-indigo-600 dark:text-indigo-400">
                   {formatPrice(order.total_amount)}
                 </span>
@@ -432,46 +593,52 @@ const OrderDetailPage: React.FC = () => {
             {/* Action buttons CTAs */}
             <div className="flex flex-col gap-2 pt-3 border-t border-gray-100 dark:border-gray-800">
               {/* Cancel button if new */}
-              {order.status === "new" && !order.stock_out_id && !order.erp_status && (
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={handleCancelOrder}
-                    disabled={submittingAction}
-                    className="w-full bg-red-50 hover:bg-red-100 dark:bg-red-950/20 dark:hover:bg-red-950/45 text-red-700 dark:text-red-400 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-red-200 dark:border-red-900/40"
-                  >
-                    <XCircle className="w-4 h-4" /> Hủy bỏ đơn hàng
-                  </button>
-                  <button
-                    onClick={handleDeleteOrder}
-                    disabled={submittingAction}
-                    className="w-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-gray-200 dark:border-gray-700"
-                  >
-                    <XCircle className="w-4 h-4" /> Xóa đơn hàng
-                  </button>
-                </div>
-              )}
+              {(order.status === "new" || order.status === "pending") &&
+                !order.stock_out_id &&
+                !order.erp_status && (
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={handleCancelOrder}
+                      disabled={submittingAction}
+                      className="w-full bg-red-50 hover:bg-red-100 dark:bg-red-950/20 dark:hover:bg-red-950/45 text-red-700 dark:text-red-400 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-red-200 dark:border-red-900/40"
+                    >
+                      <XCircle className="w-4 h-4" /> Hủy đơn
+                    </button>
+                    <button
+                      onClick={handleDeleteOrder}
+                      disabled={submittingAction}
+                      className="w-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-gray-200 dark:border-gray-700"
+                    >
+                      <XCircle className="w-4 h-4" /> Xóa đơn
+                    </button>
+                  </div>
+                )}
 
               {/* Reorder button */}
-              {(order.status === "cancelled" || order.status === "confirmed") && !order.stock_out_id && !order.erp_status && (
-                <button
-                  onClick={handleReorder}
-                  disabled={submittingAction}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
-                >
-                  <RefreshCw className="w-4 h-4" /> Mua lại đơn hàng này
-                </button>
-              )}
+              {(order.status === "cancelled" || order.status === "returned") &&
+                !order.stock_out_id &&
+                !order.erp_status && (
+                  <button
+                    onClick={handleReorder}
+                    disabled={submittingAction}
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                  >
+                    <RefreshCw className="w-4 h-4" /> Mua lại đơn hàng này
+                  </button>
+                )}
 
-              {/* Return button for delivered orders */}
-              {order.erp_status === "Đã xuất kho" && order.return_status === "none" && (
-                <button
-                  onClick={handleRequestReturn}
-                  disabled={submittingAction}
-                  className="w-full bg-orange-50 hover:bg-orange-100 dark:bg-orange-950/20 dark:hover:bg-orange-950/45 text-orange-700 dark:text-orange-400 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-orange-200 dark:border-orange-900/40"
-                >
-                  <RotateCcw className="w-4 h-4" /> Yêu cầu trả hàng
-                </button>
-              )}
+              {/* Return button for non-shipped/non-completed orders */}
+              {order.status !== "shipping" &&
+                order.status !== "completed" &&
+                order.return_status === "none" && (
+                  <button
+                    onClick={handleRequestReturn}
+                    disabled={submittingAction}
+                    className="w-full bg-orange-50 hover:bg-orange-100 dark:bg-orange-950/20 dark:hover:bg-orange-950/45 text-orange-700 dark:text-orange-400 font-bold py-2.5 rounded-lg text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-orange-200 dark:border-orange-900/40"
+                  >
+                    <RotateCcw className="w-4 h-4" /> Trả hàng
+                  </button>
+                )}
               {order.return_status === "requested" && (
                 <button
                   onClick={handleCancelReturn}
@@ -491,11 +658,28 @@ const OrderDetailPage: React.FC = () => {
                 MÃ QUÉT CHUYỂN KHOẢN
               </h3>
               <div className="relative aspect-square w-full max-w-[160px] border border-gray-150 dark:border-gray-800 p-1.5 rounded-lg bg-white">
-                <img src={vietQrUrl} alt="VietQR Vietcombank" className="w-full h-full object-contain" />
+                <img
+                  src={vietQrUrl}
+                  alt="VietQR Vietcombank"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div className="text-[10px] text-gray-400 dark:text-gray-500 leading-normal max-w-[200px]">
-                <p className="m-0 font-bold text-indigo-600 dark:text-indigo-400 mb-0.5">Mã chuyển khoản nhanh VietQR</p>
-                <p className="m-0">Vui lòng quét bằng điện thoại ngân hàng để thanh toán hỏa tốc đơn hàng <strong className="text-gray-800 dark:text-gray-200">{order.code}</strong> số tiền <strong className="text-gray-800 dark:text-gray-200">{formatPrice(order.total_amount)}</strong>.</p>
+                <p className="m-0 font-bold text-indigo-600 dark:text-indigo-400 mb-0.5">
+                  Mã chuyển khoản nhanh VietQR
+                </p>
+                <p className="m-0">
+                  Vui lòng quét bằng điện thoại ngân hàng để thanh toán hỏa tốc
+                  đơn hàng{" "}
+                  <strong className="text-gray-800 dark:text-gray-200">
+                    {order.code}
+                  </strong>{" "}
+                  số tiền{" "}
+                  <strong className="text-gray-800 dark:text-gray-200">
+                    {formatPrice(order.total_amount)}
+                  </strong>
+                  .
+                </p>
               </div>
             </div>
           )}

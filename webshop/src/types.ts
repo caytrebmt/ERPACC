@@ -73,7 +73,7 @@ export interface Order {
   promo_code: string | null;
   promo_desc: string;
   total_amount: number;
-  status: "new" | "pending" | "confirmed" | "cancelled" | "returned" | string;
+  status: "new" | "pending" | "confirmed" | "processing" | "shipping" | "completed" | "cancelled" | "returned" | string;
   createdAt: string;
   erp_status?: string | null;
   erp_note?: string | null;
@@ -82,6 +82,22 @@ export interface Order {
   return_processed_at?: string | null;
   return_note?: string | null;
   returned_at?: string | null;
+  delivered_at?: string | null;
+  completed_at?: string | null;
+  tracking_number?: string | null;
+  tracking_carrier?: string | null;
+  logs?: OrderLog[];
+}
+
+export interface OrderLog {
+  id: number;
+  action: string;
+  status_from?: string | null;
+  status_to?: string | null;
+  message?: string | null;
+  meta?: string | null;
+  created_by_name?: string | null;
+  created_at?: string | null;
 }
 
 export interface Promotion {
