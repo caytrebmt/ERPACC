@@ -14,7 +14,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U bamboo -d erpmini"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-erpuser} -d erpmini"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -53,7 +53,7 @@ services:
       sh -c "python wait_for_db.py &&
              if [ \"$APP_MODE\" = 'dev' ];
              then python run.py;
-             else gunicorn -c gunicorn.conf.py wsgi:app;
+             else gunicorn -c gunicorn.conf.py wsgi:application;
              fi"
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost:8000/auth/login >/dev/null || curl -fsS http://localhost:5000/auth/login >/dev/null"]

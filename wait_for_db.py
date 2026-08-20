@@ -1,88 +1,110 @@
-import time
-import psycopg2
+"""Wait for PostgreSQL and apply the Alembic migrations.
+
+This script is used by the container and Railway entrypoints.  It deliberately
+runs migrations only after PostgreSQL accepts connections.  Schema changes
+belong to Alembic; applying an ``ALTER TABLE`` before migrations made a fresh
+installation fail because ``online_orders`` did not exist yet.
+"""
+
+from __future__ import annotations
+
 import os
+import subprocess
+import sys
+import time
 
-DB_HOST = os.getenv("DB_HOST") or os.getenv("PGHOST", "localhost")
-DB_NAME = os.getenv("DB_NAME") or os.getenv("PGDATABASE")
-DB_USER = os.getenv("DB_USER") or os.getenv("PGUSER")
-DB_PASS = os.getenv("DB_PASS") or os.getenv("PGPASSWORD") or ""
+import psycopg2
 
-if not DB_NAME or not DB_USER:
-    if os.getenv("DATABASE_URL"):
-        try:
-            from urllib.parse import urlparse
-            p = urlparse(os.getenv("DATABASE_URL"))
-            if p.hostname:
-                DB_HOST = p.hostname
-            if p.path and p.path != "/":
-                DB_NAME = p.path.lstrip("/")
-            if p.username:
-                DB_USER = p.username
-            if p.password:
-                DB_PASS = p.password
-        except Exception:
-            pass
 
-if not DB_NAME or not DB_USER or not DB_PASS:
-    print("❌ Missing DB credentials. Set DB_NAME, DB_USER, DB_PASS environment variables.")
-    exit(1)
+RETRY_COUNT = int(os.getenv("DB_WAIT_RETRIES", "30"))
+RETRY_DELAY = float(os.getenv("DB_WAIT_DELAY", "2"))
+DATABASE_URL = (os.getenv("DATABASE_URL") or "").strip()
 
-for i in range(10):
-    try:
-        conn = psycopg2.connect(
-            host=DB_HOST,
-            database=DB_NAME,
-            user=DB_USER,
-            password=DB_PASS
+
+def _database_dsn() -> str | None:
+    """Return a psycopg2-compatible DSN when DATABASE_URL is configured."""
+    if not DATABASE_URL:
+        return None
+    # SQLAlchemy URLs sometimes use the driver-qualified scheme. psycopg2
+    # accepts the PostgreSQL URI but not the ``+psycopg2`` suffix.
+    if DATABASE_URL.startswith("postgresql+"):
+        return "postgresql" + DATABASE_URL[len("postgresql+") :]
+    return DATABASE_URL
+
+
+def _connection_kwargs() -> dict[str, object]:
+    """Build connection arguments for installations using discrete DB vars."""
+    dsn = _database_dsn()
+    if dsn:
+        return {"dsn": dsn}
+
+    database = os.getenv("DB_NAME") or os.getenv("PGDATABASE")
+    user = os.getenv("DB_USER") or os.getenv("PGUSER")
+    if not database or not user:
+        raise RuntimeError(
+            "Missing database configuration. Set DATABASE_URL or DB_NAME and DB_USER."
         )
-        conn.close()
-        print("✅ DB READY")
-        break
-    except Exception:
-        print("⏳ Waiting for DB...")
-        time.sleep(2)
-else:
-    print("❌ DB NOT READY")
-    exit(1)
 
-try:
-    conn = psycopg2.connect(
-        host=DB_HOST,
-        database=DB_NAME,
-        user=DB_USER,
-        password=DB_PASS
-    )
-    conn.autocommit = True
-    cur = conn.cursor()
+    kwargs: dict[str, object] = {
+        "host": os.getenv("DB_HOST") or os.getenv("PGHOST", "localhost"),
+        "port": int(os.getenv("DB_PORT") or os.getenv("PGPORT", "5432")),
+        "database": database,
+        "user": user,
+        "password": os.getenv("DB_PASS") or os.getenv("PGPASSWORD") or "",
+    }
+    return kwargs
 
-    print("🔧 Checking online_orders.tracking_token column...")
-    cur.execute("""
-        ALTER TABLE online_orders
-        ADD COLUMN IF NOT EXISTS tracking_token VARCHAR(64) NULL
-    """)
-    cur.execute("""
-        CREATE UNIQUE INDEX IF NOT EXISTS ix_online_orders_tracking_token
-        ON online_orders (tracking_token)
-    """)
-    cur.close()
-    conn.close()
-    print("✅ Direct SQL migration applied")
-except Exception as sql_err:
-    print(f"❌ Direct SQL migration failed: {sql_err}")
-    exit(1)
 
-try:
-    import subprocess
+def _connect():
+    kwargs = _connection_kwargs()
+    return psycopg2.connect(connect_timeout=5, **kwargs)
+
+
+def wait_for_db() -> None:
+    """Block until PostgreSQL is available or fail with a useful error."""
+    last_error: Exception | None = None
+    for attempt in range(1, RETRY_COUNT + 1):
+        try:
+            conn = _connect()
+            conn.close()
+            print("✅ DB READY", flush=True)
+            return
+        except Exception as exc:  # pragma: no cover - depends on external DB
+            last_error = exc
+            print(
+                f"⏳ Waiting for DB ({attempt}/{RETRY_COUNT})... {exc}",
+                flush=True,
+            )
+            if attempt < RETRY_COUNT:
+                time.sleep(RETRY_DELAY)
+
+    raise RuntimeError(f"Database was not ready after {RETRY_COUNT} attempts: {last_error}")
+
+
+def run_migrations() -> None:
+    """Run the checked-in Alembic revisions and fail startup on errors."""
+    env = {**os.environ, "FLASK_APP": "wsgi.py"}
     result = subprocess.run(
-        ["python", "-m", "flask", "db", "upgrade"],
-        env={**os.environ, "FLASK_APP": "wsgi.py"},
-        capture_output=True,
-        text=True
+        [sys.executable, "-m", "flask", "db", "upgrade"],
+        env=env,
+        check=False,
     )
-    print(result.stdout)
     if result.returncode != 0:
-        print(f"⚠️ flask db upgrade failed: {result.stderr}")
-    else:
-        print("✅ FLASK MIGRATIONS APPLIED")
-except Exception as e:
-    print(f"⚠️ flask db upgrade error: {e}")
+        raise RuntimeError(
+            "Database migrations failed. See the Alembic output above."
+        )
+    print("✅ FLASK MIGRATIONS APPLIED", flush=True)
+
+
+def main() -> int:
+    try:
+        wait_for_db()
+        run_migrations()
+    except Exception as exc:
+        print(f"❌ Startup database check failed: {exc}", file=sys.stderr, flush=True)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
