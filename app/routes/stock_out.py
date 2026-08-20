@@ -25,8 +25,6 @@ from app.shared.constants import DocStatus
 from app.services.i18n_service import t
 from app.shared.filters import StockOutFilters
 from decimal import Decimal, ROUND_HALF_UP
-from weasyprint import HTML
-from flask import render_template, request
 
 stock_out_bp = Blueprint('stock_out', __name__, url_prefix='/stock-out')
 

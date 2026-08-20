@@ -6,6 +6,6 @@
 
 
 1. Install dependencies:
-   `npm install`
+   `npm ci`
 2. Run the app:
    `npm run dev`

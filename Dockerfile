@@ -35,4 +35,4 @@ RUN if [ -d translations ]; then \
     fi
 
 # Mặc định chạy theo kiểu production; compose dev sẽ override command.
-CMD ["sh", "-c", "python wait_for_db.py && gunicorn -c gunicorn.conf.py --bind 0.0.0.0:$PORT wsgi:app"]
+CMD ["sh", "-c", "python wait_for_db.py && gunicorn -c gunicorn.conf.py --bind 0.0.0.0:$PORT wsgi:application"]

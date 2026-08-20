@@ -121,7 +121,8 @@
     </div>
 
     <script>
-        const API_BASE = 'http://localhost:5000/api/shop';
+        // Use the same origin so this page also works behind the production proxy.
+        const API_BASE = '/api/shop';
         let accessToken = localStorage.getItem('access_token');
         let refreshToken = localStorage.getItem('refresh_token');
         let currentUser = JSON.parse(localStorage.getItem('current_user') || 'null');

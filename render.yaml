@@ -4,18 +4,19 @@ services:
     runtime: python
     rootDir: .
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --bind 0.0.0.0:$PORT wsgi:application
+    startCommand: sh -c 'python wait_for_db.py && gunicorn --bind 0.0.0.0:$PORT wsgi:application'
     envVars:
       - key: PYTHON_VERSION
         value: "3.13"
       - key: FLASK_ENV
         value: production
+      # Set these secrets in the Render service environment.
       - key: SECRET_KEY
-        value: erpmini-secret-key-2024
+        sync: false
       - key: DATABASE_URL
-        value: postgresql://postgres:password@localhost:5432/erpmini
+        sync: false
       - key: JWT_SECRET_KEY
-        value: erpmini-secret-key-2024
+        sync: false
       - key: SHOP_CORS_ORIGINS
         value: https://webshop-f9iq.onrender.com
       - key: SHOP_BACKEND_URL
@@ -25,7 +26,7 @@ services:
     name: webshop
     runtime: node
     rootDir: webshop
-    buildCommand: npm install && npm run build
+    buildCommand: npm ci && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
